@@ -1,5 +1,6 @@
 package com.example.vary;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +34,17 @@ public class CommandsSource {
         return sInstance;
     }
 
+    public static ArrayList getCommandNames() {
+        ArrayList<String> names = new ArrayList<>();
+
+        for (int i = 0; i < sInstance.commands.size(); i++) {
+            names.add(sInstance.commands.get(i).mName);
+        }
+
+        return names;
+    }
+
     public void renameCommand(String name, int pos) {
         commands.get(pos).mName = name;
     }
-
 }

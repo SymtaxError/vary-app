@@ -15,4 +15,17 @@
     <string name="sound_on">Включить звук</string>
     <string name="push_on">Включить push уведомления</string>
     <string name="check_updates">Проверять обновления</string>
+
+    <string name="settings_game">Настройки игры</string>
+    <string name="deck_of_cards">Колода карт</string>
+    <string name="amount_cards">Количество карт</string>
+    <string name="time_round">Время раунда</string>
+    <string name="penalty">Штраф за пропуск</string>
+    <string name="no">Нет</string>
+    <string name="loss_of_points">Потеря баллов</string>
+    <string name="players_task">Задание от игроков</string>
+    <string name="yes">Да</string>
+    <string name="theft_right">Право на кражу</string>
+    <string name="random_command">Случайная команда</string>
+    <string name="start_command">Начинающая команда</string>
 </resources>
