@@ -7,10 +7,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+//    private final DbManager.CountListener countListener = new DbManager.CountListener() {
+//        @Override
+//        public void onGetCount (final int cardCount, final int catCount) {
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+////                    showStringList(allItems);
+//                    String countText = "Loaded " + cardCount + " cards in " + catCount + " categories";
+//                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
+//                }
+//            });
+//        }
+//    };
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             fragment.checkContinueButtonVisibility();
         }
+
+//        final DbManager manager = DbManager.getInstance(this);
+//
+//        manager.getCount(countListener);
     }
 
 
@@ -54,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
             case open_rules:
                 showRules();
                 break;
+            case play_game:
+                playGame();
+                break;
             default:
                 break;
         }
@@ -65,12 +90,23 @@ public class MainActivity extends AppCompatActivity {
                 .getClass()
                 .equals(SetCommandsFragment.class)) {
             SetCommandsFragment fragment = new SetCommandsFragment();
+            fragment.setCallback(this::callback);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
                     .addToBackStack(null)
                     .commit();
         }
+    }
+
+    void playGame() {
+//        commands = CommandsSource.getInstance().getRemoteData();
+        OnGameFragment fragment = new OnGameFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     void startNewGame() {
@@ -87,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 .getClass()
                 .equals(SetCommandsFragment.class)) {
             SetCommandsFragment fragment = new SetCommandsFragment();
+            fragment.setCallback(this::callback);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)

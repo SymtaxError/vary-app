@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Vary</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="add_command">+</string>
+    <string name="add_command"><b>+</b></string>
     <string name="next">Далее</string>
     <string name="insert_command_name">Название:</string>
     <string name="save">Сохранить</string>
@@ -15,4 +15,8 @@
     <string name="sound_on">Включить звук</string>
     <string name="push_on">Включить push уведомления</string>
     <string name="check_updates">Проверять обновления</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

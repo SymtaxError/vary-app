@@ -5,4 +5,5 @@ public enum GameActions {
     continue_game_action,
     open_settings,
     open_rules,
+    play_game
 }

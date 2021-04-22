@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SetCommandsFragment extends Fragment {
     RecyclerView recyclerView;
     CommandsAdapter adapter = null;
+    CallbackFragment callback;
 
     @Nullable
     @Override
@@ -32,6 +34,12 @@ public class SetCommandsFragment extends Fragment {
         recyclerView.setItemViewCacheSize(10);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+
+        //TODO delete
+        Button startGameButton = view.findViewById(R.id.open_game_settings);
+        startGameButton.setOnClickListener(v -> {
+            callback.callback(GameActions.play_game);
+        });
 
         return view;
     }
@@ -109,4 +117,7 @@ public class SetCommandsFragment extends Fragment {
         }
     }
 
+    public void setCallback(CallbackFragment callback) {
+        this.callback = callback;
+    }
 }
