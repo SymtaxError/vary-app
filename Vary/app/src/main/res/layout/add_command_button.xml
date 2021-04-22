@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_command"
-        android:textStyle="italic"
+        android:layout_margin="10dp"
+        android:background="@drawable/button_shape"
+        android:textStyle="bold"
         android:textSize="20sp"
         android:backgroundTint="@color/secondary"
         tools:targetApi="lollipop" />

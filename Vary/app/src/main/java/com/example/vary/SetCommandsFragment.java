@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -14,8 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Objects;
 
 public class SetCommandsFragment extends Fragment {
     RecyclerView recyclerView;
@@ -26,32 +23,18 @@ public class SetCommandsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.set_commands_fragment_placeholder, container, false);
 
-
         adapter = new CommandsAdapter();
         adapter.setOnDeleteCommandClickListener(this::deleteItem);
         adapter.setOnAddCommandClickListener(this::addItem);
         adapter.setOnChangeCommandClickListener(this::renameItem);
         regulateMinAmount();
-
         recyclerView = view.findViewById(R.id.commands_list);
         recyclerView.setItemViewCacheSize(10);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
-
-        Button gameSettingsBut = view.findViewById(R.id.open_game_settings);
-        gameSettingsBut.setOnClickListener(v -> {
-            GameSettingsFragment fragment = new GameSettingsFragment();
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
-
         return view;
     }
-
 
     protected void regulateMinAmount() { // Добавление двух команд по умолчанию
         int min_amount = getResources().getInteger(R.integer.min_commands_amount);
