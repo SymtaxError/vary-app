@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="max_command_name_len">20</integer>
+    <integer name="min_commands_amount">2</integer>
+    <integer name="time_step">5</integer>
+    <integer name="card_amount_step">10</integer>
+    <integer name="default_time">50</integer>
+    <integer name="defalut_amount_card">50</integer>
+</resources>

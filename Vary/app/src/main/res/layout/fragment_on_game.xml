@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    tools:context=".OnGameFragment">
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/game_top_shape"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/game_bot_shape"/>
+
+    <TextView
+        android:id="@+id/team_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ИМЯ КОМАНДЫ"
+        android:textColor="@color/secondary"
+        android:textSize="25sp"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/round_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/secondary"
+        android:textSize="25sp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_gravity="center"/>
+
+    <RelativeLayout
+        android:id="@+id/card_root"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/team_name"
+        android:layout_above="@+id/round_score">
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/card_wrapper"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content">-->
+<!--        <Button-->
+<!--            android:id="@+id/card"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:gravity="center"-->
+<!--            android:text="карточка"-->
+<!--            android:textSize="20sp" />-->
+<!--        </RelativeLayout>-->
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

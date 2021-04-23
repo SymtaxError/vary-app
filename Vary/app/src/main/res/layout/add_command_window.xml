@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/command_add_root">
+<!--    android:background="@drawable/button_shape"-->
+<!--    android:backgroundTint="@color/primary">-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notification_new_command"
+        android:text="@string/insert_command_name"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        />
+
+    <EditText
+        android:id="@+id/edit_command_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:maxLength="@integer/max_command_name_len"
+        android:inputType="text"
+        android:autofillHints="@string/command"
+        android:hint="@string/insert_command_name"
+        >
+        <requestFocus/>
+    </EditText>
+
+</LinearLayout>
