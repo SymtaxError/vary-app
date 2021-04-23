@@ -3,14 +3,19 @@ package com.example.vary;
 // TODO: дохимичить с полноэкранным режимом
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+    private CardsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +32,25 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .add(R.id.container, fragment)
                     .commit();
-        } else {
-            fragment.checkContinueButtonVisibility();
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Observer<List<CommandModel>> observer = new Observer<List<CommandModel>>() {
+            @Override
+            public void onChanged(List<CommandModel> commandModels) {
+            }
+        };
+
+        viewModel = new ViewModelProvider(this).get(CardsViewModel.class);
+        viewModel
+                .getCommands()
+                .observe(this, observer);
+
+
+    }
 
     public int getWidth() {
         DisplayMetrics displayMetrics = getApplicationContext()
@@ -74,11 +93,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void startNewGame() {
-        if (CommandsSource
-                .getInstance()
-                .getRemoteData()
-                .size() != 0) {
-            CommandsSource
+        if (viewModel.getSize() != 0) {
+            CommandsRepo
                     .getInstance()
                     .removeCommands();
         }
@@ -104,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 .equals(StartFragment.class)) {
             StartFragment fragment = (StartFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.container);
-            fragment.checkContinueButtonVisibility();
+            fragment.checkContinueButtonVisibility(viewModel.getSize());
         }
     }
 

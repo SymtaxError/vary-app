@@ -6,14 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     OnDeleteCommandClickListener deleteListener;
     OnAddCommandClickListener addListener;
     OnChangeCommandClickListener renameListener;
+    private List<CommandModel> mCommands = new ArrayList<>();
+    private CardsViewModel mViewModel = new CardsViewModel();
 
     public final int type_command = 0;
     public final int type_add_button = 1;
@@ -38,9 +44,7 @@ public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final int itemType = getItemViewType(position);
         if (itemType == type_command) {
-            CommandModel model = CommandsSource
-                    .getInstance()
-                    .getRemoteData()
+            CommandModel model = mCommands
                     .get(position);
             View.OnClickListener delListener = v -> deleteListener.deleteItem(position);
             View.OnClickListener renListener = v -> renameListener.renameItem(position);
@@ -59,6 +63,11 @@ public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
         return type_command;
     }
 
+    public void setCommands(List<CommandModel> commands) {
+        mCommands = commands;
+        notifyDataSetChanged();
+    }
+
     public void setOnDeleteCommandClickListener(OnDeleteCommandClickListener listener) {
         deleteListener = listener;
     }
@@ -71,11 +80,13 @@ public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
         renameListener = listener;
     }
 
+    public void setViewModel(CardsViewModel viewModel) {
+        mViewModel = viewModel;
+    }
+
     @Override
     public int getItemCount() {
-        return CommandsSource
-                .getInstance()
-                .getRemoteData()
+        return mCommands
                 .size() + 1;
     }
 }

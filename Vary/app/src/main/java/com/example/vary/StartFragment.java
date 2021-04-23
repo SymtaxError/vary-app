@@ -3,6 +3,8 @@ package com.example.vary;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +13,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.ViewGroup.MarginLayoutParams;
 
+import java.util.List;
+
 public class StartFragment extends Fragment {
 
     CallbackFragment fCallback;
     Button continue_game;
     View view;
     int width;
+    private CardsViewModel viewModel;
 
     public StartFragment() {
         // Required empty public constructor
@@ -39,7 +44,6 @@ public class StartFragment extends Fragment {
         params.setMarginEnd(margin);
         params.setMarginStart(margin);
         continue_game.setLayoutParams(params);
-        checkContinueButtonVisibility();
 
         Button new_game = view.findViewById(R.id.new_game);
         new_game.setOnClickListener(v -> fCallback.callback(GameActions.new_game_action));
@@ -47,6 +51,20 @@ public class StartFragment extends Fragment {
 
         bindButton(R.id.rules, GameActions.open_rules);
         bindImageButton(R.id.settings, GameActions.open_settings);
+
+        Observer<List<CommandModel>> observer = new Observer<List<CommandModel>>() {
+            @Override
+            public void onChanged(List<CommandModel> commandModels) {
+                checkContinueButtonVisibility(commandModels.size());
+            }
+        };
+
+        viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
+
+        viewModel
+                .getCommands()
+                .observe(getViewLifecycleOwner(), observer);
+
 
         return view;
     }
@@ -70,12 +88,9 @@ public class StartFragment extends Fragment {
         fCallback = callback;
     }
 
-    void checkContinueButtonVisibility() { //Настройка прозрачности кнопки "продолжить" в зависимости от наличия сохраненного состояния
+    void checkContinueButtonVisibility(int size) { //Настройка прозрачности кнопки "продолжить" в зависимости от наличия сохраненного состояния
         int amount = getResources().getInteger(R.integer.min_commands_amount);
-        if (CommandsSource
-                .getInstance()
-                .getRemoteData()
-                .size() <= amount) {
+        if (size <= amount) {
             continue_game.setVisibility(View.GONE);
         } else {
             continue_game.setVisibility(View.VISIBLE);
