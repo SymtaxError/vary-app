@@ -26,11 +26,18 @@
             android:id="@+id/open_game_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_margin="10dp"
             android:gravity="center"
             android:text="@string/next"
             android:textSize="20sp"
             android:background="@drawable/button_shape"
+=======
+            android:gravity="center"
+            android:text="@string/next"
+            android:textStyle="italic"
+            android:textSize="20sp"
+>>>>>>> project-interface
             android:backgroundTint="@color/secondary"
             tools:targetApi="lollipop" />
     </LinearLayout>

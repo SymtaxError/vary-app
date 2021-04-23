@@ -10,6 +10,7 @@
     <string name="settings">Настройки</string>
     <string name="continue_game">Продолжить</string>
     <string name="new_game">Новая игра</string>
+<<<<<<< HEAD
     <string name="available_settings">Доступные настройки</string>
     <string name="vk_auth">Войти с помощью VK</string>
     <string name="sound_on">Включить звук</string>
@@ -28,4 +29,7 @@
     <string name="theft_right">Право на кражу</string>
     <string name="random_command">Случайная команда</string>
     <string name="start_command">Начинающая команда</string>
+=======
+    <string name="settings_file">vary_settings</string>
+>>>>>>> project-interface
 </resources>

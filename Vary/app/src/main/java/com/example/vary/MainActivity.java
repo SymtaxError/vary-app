@@ -9,6 +9,19 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.WindowManager;
+import android.widget.Toast;
+
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,10 +39,14 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
+    private CardsViewModel viewModel;
+    private int version = 0;
+    private final String opened_key = "opened";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        restorePreferences();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
@@ -42,14 +59,29 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .add(R.id.container, fragment)
                     .commit();
-        } else {
-            fragment.checkContinueButtonVisibility();
         }
         final DbManager manager = DbManager.getInstance(this);
 //
         manager.getCount(countListener);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Observer<List<CommandModel>> observer = new Observer<List<CommandModel>>() {
+            @Override
+            public void onChanged(List<CommandModel> commandModels) {
+            }
+        };
+
+        viewModel = new ViewModelProvider(this).get(CardsViewModel.class);
+        viewModel
+                .getCommands()
+                .observe(this, observer);
+
+
+    }
 
     public int getWidth() {
         DisplayMetrics displayMetrics = getApplicationContext()
@@ -77,6 +109,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    void restorePreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                getResources().getString(R.string.settings_file),
+                Context.MODE_PRIVATE);
+        boolean opened = sharedPreferences.getBoolean(opened_key, false);
+        if (!opened) {
+            Editor editor = sharedPreferences.edit();
+            editor.putBoolean(opened_key, true);
+            editor.commit();
+
+            Log.d("prefs", "first check");
+        }
+        else {
+            Log.d("prefs", "already visited");
+        }
+
+    }
+
     void continueGame() {
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
@@ -92,11 +142,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void startNewGame() {
-        if (CommandsSource
-                .getInstance()
-                .getRemoteData()
-                .size() != 0) {
-            CommandsSource
+        if (viewModel.getSize() != 0) {
+            CommandsRepo
                     .getInstance()
                     .removeCommands();
         }
@@ -122,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 .equals(StartFragment.class)) {
             StartFragment fragment = (StartFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.container);
-            fragment.checkContinueButtonVisibility();
+            fragment.checkContinueButtonVisibility(viewModel.getSize());
         }
     }
 

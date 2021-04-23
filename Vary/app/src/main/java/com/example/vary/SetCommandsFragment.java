@@ -15,9 +15,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 public class SetCommandsFragment extends Fragment {
     RecyclerView recyclerView;
     CommandsAdapter adapter = null;
+    private CardsViewModel viewModel;
 
     @Nullable
     @Override
@@ -43,13 +54,26 @@ public class SetCommandsFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+        Observer<List<CommandModel>> observer = new Observer<List<CommandModel>>() {
+            @Override
+            public void onChanged(List<CommandModel> commandModels) {
+                if (commandModels != null) {
+                    adapter.setCommands(commandModels);
+                }
+            }
+        };
+
+        viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
+        viewModel
+                .getCommands()
+                .observe(getViewLifecycleOwner(), observer);
 
         return view;
     }
 
     protected void regulateMinAmount() { // Добавление двух команд по умолчанию
         int min_amount = getResources().getInteger(R.integer.min_commands_amount);
-        if (CommandsSource.getInstance().getRemoteData().size() < min_amount)
+        if (viewModel.getSize() < min_amount)
         {
             addItem();
             addItem();
@@ -70,7 +94,7 @@ public class SetCommandsFragment extends Fragment {
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton(add, (dialog, which) -> {
-                    CommandsSource
+                    CommandsRepo
                             .getInstance()
                             .renameCommand(commandInput.getText().toString(), pos);
                     notifyChangedRecyclerView(pos);
@@ -82,23 +106,15 @@ public class SetCommandsFragment extends Fragment {
 
     protected void addItem() { // Добавить элемент
         String command = getResources().getString(R.string.command);
-        int number = CommandsSource
-                .getInstance()
-                .getRemoteData()
-                .size() + 1;
-        CommandsSource
-                .getInstance()
-                .addCommand(command + ' ' + number);
+        int number = viewModel.getSize() + 1;
+        viewModel.addCommand(command + ' ' + number);
         notifyAddedRecyclerView();
     }
 
     protected void deleteItem(int pos) { // Удалить элемент
         int amount = getResources().getInteger(R.integer.min_commands_amount);
         if (adapter != null && adapter.getItemCount() > amount + 1) {
-            CommandsSource
-                    .getInstance()
-                    .getRemoteData()
-                    .remove(pos);
+            viewModel.removeCommand(pos);
             adapter.notifyItemRemoved(pos);
             adapter.notifyItemRangeChanged(pos, adapter.getItemCount());
         }
@@ -106,11 +122,7 @@ public class SetCommandsFragment extends Fragment {
 
     public void notifyAddedRecyclerView() {
         if (adapter != null) {
-
-            adapter.notifyItemInserted(CommandsSource
-                    .getInstance()
-                    .getRemoteData()
-                    .size());
+            adapter.notifyItemInserted(viewModel.getSize());
         }
     }
 

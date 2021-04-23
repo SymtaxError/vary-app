@@ -149,3 +149,4 @@ crashlytics-build.properties
 *.jar
 *.war
 *.ear
+/build
