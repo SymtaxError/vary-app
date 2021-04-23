@@ -107,5 +107,11 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
     public void onStartGameButtonClick(View view) {
         // TODO выбрали настройки и нажали на далее
+            OnGameFragment fragment = new OnGameFragment();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
     }
 }

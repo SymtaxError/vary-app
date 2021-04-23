@@ -11,8 +11,8 @@
         android:text="@string/add_command"
         android:layout_margin="10dp"
         android:background="@drawable/button_shape"
+        android:backgroundTint="@color/secondary"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:backgroundTint="@color/secondary"
         tools:targetApi="lollipop" />
 </LinearLayout>

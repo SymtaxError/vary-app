@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,16 @@ public class SetCommandsFragment extends Fragment {
         recyclerView.setItemViewCacheSize(10);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+
+        Button gameSettingsBut = view.findViewById(R.id.open_game_settings);
+        gameSettingsBut.setOnClickListener(v -> {
+            GameSettingsFragment fragment = new GameSettingsFragment();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }

@@ -38,7 +38,8 @@
         android:layout_width="283dp"
         android:layout_height="33dp"
         android:layout_marginTop="12dp"
-        android:background="@color/secondary"
+        android:background="@drawable/button_shape"
+        android:backgroundTint="@color/secondary"
         android:text="@string/deck_of_cards"
         android:textSize="@dimen/game_text_size"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,6 +111,7 @@
             android:layout_width="185dp"
             android:layout_height="20dp"
             android:text="@string/no"
+            android:checked="true"
             android:textColor="@color/black" />
 
         <RadioButton
@@ -155,7 +157,8 @@
         android:layout_width="344dp"
         android:layout_height="34dp"
         android:layout_marginTop="25dp"
-        android:background="@color/secondary"
+        android:background="@drawable/button_shape"
+        android:backgroundTint="@color/secondary"
         android:text="@string/next"
         android:textSize="@dimen/game_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
