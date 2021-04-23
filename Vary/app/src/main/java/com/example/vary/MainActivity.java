@@ -6,9 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,10 +21,13 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private CardsViewModel viewModel;
+    private int version = 0;
+    private final String opened_key = "opened";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        restorePreferences();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
@@ -76,6 +84,24 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    void restorePreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                getResources().getString(R.string.settings_file),
+                Context.MODE_PRIVATE);
+        boolean opened = sharedPreferences.getBoolean(opened_key, false);
+        if (!opened) {
+            Editor editor = sharedPreferences.edit();
+            editor.putBoolean(opened_key, true);
+            editor.commit();
+
+            Log.d("prefs", "first check");
+        }
+        else {
+            Log.d("prefs", "already visited");
+        }
+
     }
 
     void continueGame() {

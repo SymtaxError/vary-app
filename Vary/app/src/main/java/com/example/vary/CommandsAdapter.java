@@ -19,7 +19,7 @@ public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
     OnAddCommandClickListener addListener;
     OnChangeCommandClickListener renameListener;
     private List<CommandModel> mCommands = new ArrayList<>();
-    private CardsViewModel mViewModel = new CardsViewModel();
+//    private CardsViewModel mViewModel = new CardsViewModel();
 
     public final int type_command = 0;
     public final int type_add_button = 1;
@@ -80,9 +80,9 @@ public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
         renameListener = listener;
     }
 
-    public void setViewModel(CardsViewModel viewModel) {
-        mViewModel = viewModel;
-    }
+//    public void setViewModel(CardsViewModel viewModel) {
+//        mViewModel = viewModel;
+//    }
 
     @Override
     public int getItemCount() {

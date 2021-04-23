@@ -7,19 +7,19 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardsViewModel extends ViewModel {
+public class CardsViewModel extends ViewModel implements LoadDataCallback{
     private CardsRepo mCardsRepo = new CardsRepo();
     private CommandsRepo mCommandsRepo = new CommandsRepo();
     private LiveData<List<CommandModel>> mCommands = mCommandsRepo.getCommands();
     private int version;
     private LiveData<List<CardModel>> mCards;
-    private LiveData<LoadStatus> mLoadStatus = new MutableLiveData<>();
+    private MutableLiveData<LoadStatus> mLoadStatus = new MutableLiveData<>();
 
     private CategoriesRepo mCategoriesRepo = new CategoriesRepo();
     private LiveData<List<CategoryModel>> mCategories = mCategoriesRepo.getCategories();
 
     public void getNewCategories() {
-        mCategoriesRepo.getNewCategories(version);
+        mCategoriesRepo.getNewCategories(version, this);
     }
 
 
@@ -75,6 +75,10 @@ public class CardsViewModel extends ViewModel {
 
     public void removeCommand(int pos) {
         mCommandsRepo.removeCommand(pos);
+    }
+
+    public void onError(Throwable throwable) {
+        mLoadStatus.postValue(new LoadStatus(throwable));
     }
 
     public CardModel getCard(int pos) {

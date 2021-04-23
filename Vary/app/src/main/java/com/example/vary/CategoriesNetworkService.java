@@ -21,7 +21,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class CategoriesNetworkService {
     private static CategoriesNetworkService mInstance;
-    private static final String mBaseUrl = "";
+    private static final String mBaseUrl = "http:";
     private Retrofit mRetrofit;
     private final static MutableLiveData<List<CategoryModel>> mDecks = new MutableLiveData<>();
     private final static String TAG = "CardsNetworkService";
@@ -107,47 +107,49 @@ public class CategoriesNetworkService {
 //        });
 //    }
 
-    public void getNewCategories(int version) {
+    public void getNewCategories(int version, LoadDataCallback callback) {
         mCategoriesAPI.getNewCategories(new Version(version)).enqueue(new Callback<List<CategoriesAPI.CategoryPlain>>() {
             @Override
             public void onResponse(Call<List<CategoriesAPI.CategoryPlain>> call,
                                    Response<List<CategoriesAPI.CategoryPlain>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    mDecks.postValue(transformDeck(response.body()));
+                    mDecks.postValue(transformDeck(response.body(), callback));
                 }
             }
 
             @Override
             public void onFailure(Call<List<CategoriesAPI.CategoryPlain>> call, Throwable t) {
                 Log.d(TAG, "Failed to load decks ", t);
+                callback.onError(t);
 //                loadStatus.postValue(new LoadStatus(t));
                 t.printStackTrace();
             }
         });
     }
 
-    private List<CategoryModel> transformDeck(List<CategoriesAPI.CategoryPlain> body) {
+    private List<CategoryModel> transformDeck(List<CategoriesAPI.CategoryPlain> body, LoadDataCallback callback) {
         List<CategoryModel> result = new ArrayList<>();
         for (CategoriesAPI.CategoryPlain categoryPlain : body) {
             try {
-                CategoryModel deck = map(categoryPlain);
+                CategoryModel deck = map(categoryPlain, callback);
                 result.add(deck);
                 Log.e(TAG, "Loaded deck" + deck.mId);
             } catch (ParseException e) {
+                callback.onError(e);
                 e.printStackTrace();
             }
         }
         return result;
     }
 
-    private static CategoryModel map(CategoriesAPI.CategoryPlain categoryPlain) throws ParseException {
+    private static CategoryModel map(CategoriesAPI.CategoryPlain categoryPlain, LoadDataCallback callback) throws ParseException {
         return new CategoryModel(
                 categoryPlain.id,
                 categoryPlain.name,
                 categoryPlain.version,
                 categoryPlain.adult,
                 categoryPlain.accessLevel,
-                transformCard(categoryPlain.cards)
+                transformCard(categoryPlain.cards, callback)
         );
     }
 
@@ -159,7 +161,7 @@ public class CategoriesNetworkService {
         );
     }
 
-    private static List<CardModel> transformCard(List<CategoriesAPI.CardPlain> cardPlains) {
+    private static List<CardModel> transformCard(List<CategoriesAPI.CardPlain> cardPlains, LoadDataCallback callback) {
         List<CardModel> result = new ArrayList<>();
         for (CategoriesAPI.CardPlain cardPlain : cardPlains) {
             try {
@@ -167,6 +169,7 @@ public class CategoriesNetworkService {
                 result.add(card);
                 Log.e(TAG, "Loaded card" + card.mText);
             } catch (ParseException e) {
+                callback.onError(e);
                 e.printStackTrace();
             }
         }

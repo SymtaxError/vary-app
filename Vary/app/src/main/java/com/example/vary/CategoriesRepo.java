@@ -50,9 +50,9 @@ public class CategoriesRepo {
         return categoriesNetworkService.getCategoriesAPI();
     }
 
-    public void getNewCategories(int version) {
+    public void getNewCategories(int version, LoadDataCallback callback) {
         //откуда брать версию?
-        categoriesNetworkService.getNewCategories(version);
+        categoriesNetworkService.getNewCategories(version, callback);
 //        if (loadStatus.getValue().error == null)
             loadCategoriesToDatabase();
     }
