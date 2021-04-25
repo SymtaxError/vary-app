@@ -9,16 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_command"
-<<<<<<< HEAD
         android:layout_margin="10dp"
         android:background="@drawable/button_shape"
         android:backgroundTint="@color/secondary"
         android:textStyle="bold"
         android:textSize="20sp"
-=======
-        android:textStyle="italic"
-        android:textSize="20sp"
-        android:backgroundTint="@color/secondary"
->>>>>>> project-interface
         tools:targetApi="lollipop" />
 </LinearLayout>

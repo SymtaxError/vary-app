@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary"
-    tools:context=".GameSettingsFragment">
+    tools:context=".UI.GameSettingsFragment">
 
 
     <TextView
@@ -33,19 +33,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time_round_text" />
 
-    <Button
-        android:id="@+id/button_deck_card"
+    <Spinner
+        android:id="@+id/spinner_deck_card"
         android:layout_width="283dp"
         android:layout_height="33dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/button_shape"
-        android:backgroundTint="@color/secondary"
-        android:text="@string/deck_of_cards"
-        android:textSize="@dimen/game_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_game" />
+
+    <!--    <Button-->
+<!--        android:id="@+id/button_deck_card"-->
+<!--        android:layout_width="283dp"-->
+<!--        android:layout_height="33dp"-->
+<!--        android:layout_marginTop="12dp"-->
+<!--        android:background="@drawable/button_shape"-->
+<!--        android:backgroundTint="@color/secondary"-->
+<!--        android:text="@string/deck_of_cards"-->
+<!--        android:textSize="@dimen/game_text_size"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.476"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/settings_game" />-->
 
     <TextView
         android:id="@+id/amount_cards"
@@ -58,7 +68,7 @@
         android:textSize="@dimen/game_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_deck_card" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_deck_card" />
 
     <SeekBar
         android:id="@+id/bar_amount_cards"
