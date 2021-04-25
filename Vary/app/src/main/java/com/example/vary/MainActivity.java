@@ -4,6 +4,8 @@ package com.example.vary;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String prefs = "settingsPrefs";
 
     private final DbManager.CountListener countListener = new DbManager.CountListener() {
         @Override
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             fragment.checkContinueButtonVisibility();
         }
         final DbManager manager = DbManager.getInstance(this);
-//
+
         manager.getCount(countListener);
     }
 
@@ -171,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 .getClass()
                 .equals(SetCommandsFragment.class)) {
             SettingsFragment fragment = new SettingsFragment();
+            fragment.setSharedPreferences(getSharedPreferences(prefs, MODE_PRIVATE));
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
