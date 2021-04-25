@@ -15,43 +15,41 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Objects;
-
 public class SetCommandsFragment extends Fragment {
     RecyclerView recyclerView;
     CommandsAdapter adapter = null;
+    CallbackFragment fCallback;
+    View view;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.set_commands_fragment_placeholder, container, false);
-
+        view = inflater.inflate(R.layout.set_commands_fragment_placeholder, container, false);
 
         adapter = new CommandsAdapter();
         adapter.setOnDeleteCommandClickListener(this::deleteItem);
         adapter.setOnAddCommandClickListener(this::addItem);
         adapter.setOnChangeCommandClickListener(this::renameItem);
         regulateMinAmount();
-
         recyclerView = view.findViewById(R.id.commands_list);
         recyclerView.setItemViewCacheSize(10);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
-
-        Button gameSettingsBut = view.findViewById(R.id.open_game_settings);
-        gameSettingsBut.setOnClickListener(v -> {
-            GameSettingsFragment fragment = new GameSettingsFragment();
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
+        bindButton(R.id.open_game_settings, GameActions.open_game_settings);
 
         return view;
     }
 
+    void setCallback(CallbackFragment callback) {
+        fCallback = callback;
+    }
+
+    void bindButton(int id, GameActions action) {
+        Button button = view.findViewById(id);
+        button.setOnClickListener(v -> fCallback.callback(action));
+    }
 
     protected void regulateMinAmount() { // Добавление двух команд по умолчанию
         int min_amount = getResources().getInteger(R.integer.min_commands_amount);

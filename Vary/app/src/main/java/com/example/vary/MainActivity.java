@@ -6,13 +6,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final DbManager.CountListener countListener = new DbManager.CountListener() {
+        @Override
+        public void onGetCount (final int cardCount, final int catCount) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+    //                    showStringList(allItems);
+                    String countText = "Loaded " + cardCount + " cards in " + catCount + " categories";
+                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             fragment.checkContinueButtonVisibility();
         }
+        final DbManager manager = DbManager.getInstance(this);
+//
+        manager.getCount(countListener);
     }
 
 
@@ -56,8 +72,42 @@ public class MainActivity extends AppCompatActivity {
             case open_rules:
                 showRules();
                 break;
+            case open_game_settings:
+                openGameSettings();
+                break;
+            case start_game_process:
+                startGameProcess();
             default:
                 break;
+        }
+    }
+
+    void openGameSettings() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(GameSettingsFragment.class)) {
+            GameSettingsFragment fragment = new GameSettingsFragment();
+            fragment.setCallback(this::callback);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    void startGameProcess() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(OnGameFragment.class)) {
+            OnGameFragment fragment = new OnGameFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 
@@ -89,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 .getClass()
                 .equals(SetCommandsFragment.class)) {
             SetCommandsFragment fragment = new SetCommandsFragment();
+            fragment.setCallback(this::callback);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)

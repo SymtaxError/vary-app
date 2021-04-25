@@ -35,8 +35,9 @@
             android:id="@+id/continue_game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_shape"
             android:backgroundTint="@color/secondary"
-
             android:visibility="visible"
             android:gravity="center"
             android:text="@string/continue_game"
@@ -51,6 +52,9 @@
             android:id="@+id/new_game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+
+            android:background="@drawable/button_shape"
             android:layout_marginTop="15dp"
             android:text="@string/new_game"
             android:backgroundTint="@color/secondary"

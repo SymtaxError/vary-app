@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/command_add_root">
+<!--    android:background="@drawable/button_shape"-->
+<!--    android:backgroundTint="@color/primary">-->
 
     <TextView
         android:layout_width="wrap_content"

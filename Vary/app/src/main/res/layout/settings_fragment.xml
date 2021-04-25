@@ -27,6 +27,7 @@
         android:background="@color/white"
         android:contentDescription="@string/vk_auth"
         android:src="@drawable/vk_button"
+        android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

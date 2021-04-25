@@ -81,5 +81,4 @@ public class StartFragment extends Fragment {
             continue_game.setVisibility(View.VISIBLE);
         }
     }
-
 }
