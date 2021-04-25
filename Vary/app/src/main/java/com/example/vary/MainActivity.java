@@ -72,8 +72,42 @@ public class MainActivity extends AppCompatActivity {
             case open_rules:
                 showRules();
                 break;
+            case open_game_settings:
+                openGameSettings();
+                break;
+            case start_game_process:
+                startGameProcess();
             default:
                 break;
+        }
+    }
+
+    void openGameSettings() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(GameSettingsFragment.class)) {
+            GameSettingsFragment fragment = new GameSettingsFragment();
+            fragment.setCallback(this::callback);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    void startGameProcess() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(OnGameFragment.class)) {
+            OnGameFragment fragment = new OnGameFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 
@@ -105,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 .getClass()
                 .equals(SetCommandsFragment.class)) {
             SetCommandsFragment fragment = new SetCommandsFragment();
+            fragment.setCallback(this::callback);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
