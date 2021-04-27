@@ -3,27 +3,30 @@ package com.example.vary.Database;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import com.example.vary.Models.CardModel;
 
 import java.util.List;
 
 @Dao
-public interface CardDao {
+public interface CardModelDao {
 
     // Добавление карточки
-    @Insert
-    void insertAll(Card... cards);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertAll(CardModel... cards);
 
     // Удаление карточки
     @Delete
-    void delete(Card person);
+    void delete(CardModel person);
 
 //    // Получение всех карточек TODO delete
 //    @Query("SELECT * FROM card")
 //    List<Card> getAllCards();
 //
     // Получение количества карточек  TODO delete
-    @Query("SELECT COUNT(*) FROM card")
+    @Query("SELECT COUNT(*) FROM cardmodel")
     int getCardsCount();
 //
 //    // Получение количества карточек из определенной категории TODO delete
@@ -35,8 +38,8 @@ public interface CardDao {
 //    Card getCardById(int id);
 
     // Получение всех карточек определенной категории
-    @Query("SELECT * FROM card WHERE categoryId = :categoryId")
-    List<Card> getAllCategoryCards(int categoryId);
+    @Query("SELECT * FROM cardmodel WHERE mCategory = :category")
+    List<CardModel> getAllCategoryCards(String category);
 
 
 }

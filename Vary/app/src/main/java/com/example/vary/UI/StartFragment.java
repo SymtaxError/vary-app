@@ -59,7 +59,7 @@ public class StartFragment extends Fragment {
         infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.getNewCategories(0);
+                viewModel.getNewCategories();
             }
         });
         Observer<List<CommandModel>> observer = new Observer<List<CommandModel>>() {

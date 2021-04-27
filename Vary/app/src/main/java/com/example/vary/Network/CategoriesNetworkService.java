@@ -89,12 +89,13 @@ public class CategoriesNetworkService {
     }
 
     private static CategoryModel map(CategoriesAPI.CategoryPlain categoryPlain, LoadDataCallback callback) throws ParseException {
-        return new CategoryModel(
+        CategoryModel categoryModel = new CategoryModel(
                 categoryPlain.name,
                 categoryPlain.version,
-                categoryPlain.accessLevel,
-                transformCard(categoryPlain.name, categoryPlain.cards, callback)
+                categoryPlain.accessLevel
         );
+        categoryModel.mCards = transformCard(categoryPlain.name, categoryPlain.cards, callback);
+        return categoryModel;
     }
 
     private static CardModel map(String categoryName, CategoriesAPI.CardPlain cardPlain) throws ParseException {
@@ -116,6 +117,10 @@ public class CategoriesNetworkService {
             } catch (ParseException e) {
                 callback.onLoad(e);
                 e.printStackTrace();
+//            } catch (NullPointerException e) {
+//                Log.d(TAG, "NULL loaded card, error");
+            } catch (Exception e) {
+                Log.d(TAG, "An error:\n"+e.getMessage());
             }
         }
         return result;

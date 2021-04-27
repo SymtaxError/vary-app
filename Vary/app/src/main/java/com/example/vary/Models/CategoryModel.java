@@ -1,29 +1,62 @@
 package com.example.vary.Models;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.example.vary.Models.CardModel;
 
 import java.util.List;
 
+/**
+ * Пожалуйста, не трогайте, если не знаете, как это работает!
+ */
+
+@Entity
 public class CategoryModel {
-    String mName;
-    int mVersion;
-    int mAccessLevel;
+    @PrimaryKey @NonNull
+    public String mName;
+    public int mVersion;
+    public int mAccessLevel;
 
-    List<CardModel> mCards;
+    @Ignore
+    public List<CardModel> mCards;
 
+    @Ignore
     public String getName() {
         return mName;
     }
 
+    @Ignore
     public List<CardModel> getCards() {
         return mCards;
     }
 
-    public CategoryModel(String name, int version, int accessLevel, List<CardModel> cards) {
-        mVersion = version;
-        mName = name;
-        mAccessLevel = accessLevel;
-        mCards = cards;
+    public CategoryModel(String mName, int mVersion, int mAccessLevel) {
+        this.mVersion = mVersion;
+        this.mName = mName;
+        this.mAccessLevel = mAccessLevel;
+//        this.mCards = mCards;
     }
+
+    public int getVersion() {
+        return mVersion;
+    }
+
+
+//    public CategoryModel(String mName, int mVersion, int mAccessLevel, List<CardModel> mCards) {
+//        this.mVersion = mVersion;
+//        this.mName = mName;
+//        this.mAccessLevel = mAccessLevel;
+//        this.mCards = mCards;
+//    }
+
+//    @Ignore
+//    public CategoryModel(String name, int version, int accessLevel) {
+//        mVersion = version;
+//        mName = name;
+//        mAccessLevel = accessLevel;
+//    }
 
 }

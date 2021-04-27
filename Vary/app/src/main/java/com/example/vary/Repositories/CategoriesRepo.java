@@ -17,6 +17,7 @@ import com.example.vary.UI.SetDataCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CategoriesRepo implements SetDataCallback {
     private static CategoriesNetworkService categoriesNetworkService;
@@ -24,22 +25,31 @@ public class CategoriesRepo implements SetDataCallback {
     private static CategoriesRepo sInstance = null;
     private final static MutableLiveData<List<CategoryModel>> mCategories = new MutableLiveData<>();
     private final static LiveData<List<CardModel>> mCards = mCardsRepo.getCards();
-    private static DbManager dbManager = null;
+    private DbManager dbManager = null;
+    private static int version;
 
-
-    public CategoryModel getCategory(int index) {
-        if (index >= mCategories.getValue().size()) {
-            loadCategoriesFromDatabase(index);
+    private final DbManager.CategoryRepositoryListener categoryRepositoryListener = new DbManager.CategoryRepositoryListener() {
+        @Override
+        public void onGetCategoriesNoCards(List<CategoryModel> categoryModels) {
+            if (categoryModels.size() > 0)
+                mCategories.postValue(categoryModels); //TODO обработать
         }
-        return mCategories.getValue().get(index);
-    }
+    };
+
+
+//    public CategoryModel getCategory(int index) {
+//        if (index >= mCategories.getValue().size()) {
+//            loadCategoriesFromDatabase(index);
+//        }
+//        return mCategories.getValue().get(index);
+//    }
 
     public ArrayList<String> getCategoriesNames() {
         ArrayList<String> names = new ArrayList<>();
 
         for (int i = 0; i < getCategoriesSize(); i++) {
-            names.add(mCategories
-                    .getValue()
+            names.add(Objects.requireNonNull(mCategories
+                    .getValue())
                     .get(i)
                     .getName());
         }
@@ -49,6 +59,9 @@ public class CategoriesRepo implements SetDataCallback {
 
     public void setDbManager(Context context) {
         dbManager = DbManager.getInstance(context);
+        dbManager.setCategoryRepositoryListener(categoryRepositoryListener);
+        mCardsRepo.setDbManager(dbManager);
+        loadCategoriesFromDatabase();
     }
 
     public void setNetworkService(Context context) {
@@ -60,19 +73,8 @@ public class CategoriesRepo implements SetDataCallback {
     }
 
     public void fillCards(int index, int amount) {
-        List<CategoryModel> category = mCategories.getValue();
-        if (category == null) {
-            category = new ArrayList<>();
-            List<CardModel> cards = new ArrayList<>();
-            cards.add(new CardModel(1, "1", "Rain", "f"));
-            cards.add(new CardModel(1, "2", "Storm", "f"));
-            cards.add(new CardModel(1, "3", "Sun", "f"));
-            cards.add(new CardModel(1, "4", "Cloudy", "f"));
-            cards.add(new CardModel(1, "5", "Windy", "f"));
-            category.add(new CategoryModel("Weather", 1, 0, cards));
-            mCategories.postValue(category);
-        }
-        mCardsRepo.fillCards(category.get(index), amount);
+        CategoryModel category = Objects.requireNonNull(mCategories.getValue()).get(index);
+        mCardsRepo.fillCards(category.getName(), amount, index);
     }
 
     public LiveData<List<CardModel>> getCards() {
@@ -85,61 +87,117 @@ public class CategoriesRepo implements SetDataCallback {
         }
     }
 
-    public String getCard()
-    {
+    public String getCard() {
         return mCardsRepo.getCard();
     }
 
     public void saveState() {
-
+        //а надо ли?
     }
 
     public static synchronized CategoriesRepo getInstance() {
         if (sInstance == null) {
-
             Log.d("GetInstance", "created ");
             sInstance = new CategoriesRepo();
-
         }
-
         boolean voidCat = mCategories.getValue() == null;
         Log.d("GetInstance", "Categories are void inside " + voidCat);
         return sInstance;
     }
 
-    public void onLoaded(List<CategoryModel> categories, LoadDataCallback callback) {
+    public void onLoaded(List<CategoryModel> categories, LoadDataCallback callback) { //TODO вернуть из getNewCategories
         if (categories != null) {
-            Log.d("save loaded", "saved " + categories.size());
-            mCategories.postValue(categories);
-            loadCategoriesToDatabase();
+            Log.d("network", "add " + categories.size());
+            loadCategoriesToDatabase(categories);
+            addCategories(categories);
             callback.onLoad(null);
-        }
-        else {
+        } else {
             Log.d("Sadddd", "Wrong data back");
         }
     }
 
-    private void loadCategoriesFromDatabase(int index)
-    {
-        //DB
+    private void addCategories(List<CategoryModel> categories) {
+        List<CategoryModel> categoriesCapture = mCategories.getValue();
+        for (CategoryModel category: categories) {
+            CategoryModel oldCategory = null;
+            for (CategoryModel existingCategoryIter: categoriesCapture){
+                if (category.getName().equals(existingCategoryIter.getName())) {
+                    oldCategory = existingCategoryIter;
+                }
+            }
+            if (oldCategory == null)
+                categoriesCapture.add(category);
+        }
+        updateVersion(categories);
+    }
+
+    private void updateVersion() {
+        List<CategoryModel> categoriesValue = mCategories.getValue();
+        if (categoriesValue != null)
+            for (CategoryModel category : categoriesValue) {
+                int categoryVersion = category.getVersion();
+                if (categoryVersion > version)
+                    version = categoryVersion;
+            }
+        else
+            version = -1;
+    }
+
+    private void updateVersion(List <CategoryModel> newCategories) {
+        for (CategoryModel category : newCategories) {
+            int categoryVersion = category.getVersion();
+            if (categoryVersion > version)
+                version = categoryVersion;
+        }
+    }
+
+    private void loadCategoriesFromDatabase() {
+        dbManager.getCategoriesNoCards(); //TODO если их нет - грузить с нетворка + обыграть на UI загрузку
+        updateVersion();
     }
 
     public CategoriesAPI getCategoriesAPI() {
         return categoriesNetworkService.getCategoriesAPI();
     }
 
-    public void getNewCategories(int version, LoadDataCallback callback) {
-        //откуда брать версию?
+    public void getNewCategories(LoadDataCallback callback) { //TODO переделать
+        //откуда брать версию? отсюда же
+        updateVersion();
         categoriesNetworkService.getNewCategories(version, callback, this);
+//        dbManager.getCategoriesVersion(new DbManager.VersionCallback() {
+//            @Override
+//            public void onVersionGot(int version) {
+//                categoriesNetworkService.getNewCategories(version, callback, this {
+//                    @Override
+//                    public void onLoaded(List<CategoryModel> categories, LoadDataCallback callback) {
+//                        if (categories != null) {
+//                            Log.d("save loaded", "saved " + categories.size());
+//                            mCategories.postValue(categories);
+//                            loadCategoriesToDatabase();
+//                            callback.onLoad(null);
+//                            for (CategoryModel category : categories) {
+//                                int categoryVersion = category.getVersion();
+//                                if (categoryVersion > version)
+//                                    version = categoryVersion;
+//                            }
+//                        } else {
+//                            Log.d("Sadddd", "Wrong data back");
+//                        }
+//                    }
+//                });
+//            }
+//        });
     }
 
     public int getAmountOfCards() {
         return mCardsRepo.getAmountOfCards();
     }
 
-    private void loadCategoriesToDatabase(){
-        //Загрузка полученного
-    };
+    private void loadCategoriesToDatabase(List<CategoryModel> categoryModelList) {
+        dbManager.update(categoryModelList);
+    }
+
+    ;
 
     public int getCategoriesSize() {
         return mCategories

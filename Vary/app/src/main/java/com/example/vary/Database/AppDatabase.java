@@ -1,14 +1,20 @@
 package com.example.vary.Database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.example.vary.Models.CardModel;
+import com.example.vary.Models.CategoryModel;
 
 import java.util.ArrayList;
 
-@Database(entities = {Card.class, Category.class /* AThirdEntityType.class */}, version = 1)
+@Database(entities = {CardModel.class, CategoryModel.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -20,68 +26,17 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    public abstract CardDao getCardDao();
 
-    public abstract CategoryDao getCategoryDao();
+    public abstract CardModelDao getCardDao();
 
-    private static void addTestData(AppDatabase db) { //TODO DELETE!
-        CardDao cardDao = db.getCardDao();
-        if (cardDao.getCardsCount() == 0) {
+    public abstract CategoryModelDao getCategoryDao();
 
-            Category catEasy = new Category();
-            catEasy.id = 0;
-            catEasy.name = "Простой";
-            Category catMedium = new Category();
-            catMedium.id = 1;
-            catMedium.name = "Средний";
-            db.getCategoryDao().insertAll(catMedium, catEasy);
-
-
-            ArrayList<String> cardsMed = new ArrayList<String>();
-            cardsMed.add("заправка");
-            cardsMed.add("сленг");
-            cardsMed.add("адепт");
-            cardsMed.add("трость");
-            cardsMed.add("игрушка");
-            cardsMed.add("ров");
-            cardsMed.add("супруг");
-            cardsMed.add("принципиальность");
-            cardsMed.add("величина");
-            cardsMed.add("проза");
-            cardsMed.add("озорник");
-            cardsMed.add("смокинг");
-            cardsMed.add("впечатлительность");
-            cardsMed.add("знахарь");
-            cardsMed.add("капельница");
-            cardsMed.add("военкомат");
-            cardsMed.add("передряга");
-            cardsMed.add("поборник");
-            cardsMed.add("коэффициент");
-            cardsMed.add("редактор");
-            cardsMed.add("гангстер");
-            cardsMed.add("коллектив");
-            cardsMed.add("роскошь");
-            cardsMed.add("устье");
-            cardsMed.add("перенос");
-
-            int i = 0;
-            Card card = new Card();
-            card.categoryId = 1;
-            for (String element : cardsMed) {
-                card.id = i++;
-                card.name = element;
-                cardDao.insertAll(card);
-            }
-        }
-    }
 
     private static AppDatabase create(final Context context) {
-        AppDatabase db = Room.databaseBuilder(
+        return Room.databaseBuilder(
                 context,
                 AppDatabase.class,
                 "card_repo.db")
                 .build();
-        addTestData(db);
-        return db;
     }
 }

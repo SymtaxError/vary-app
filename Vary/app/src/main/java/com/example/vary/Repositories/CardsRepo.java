@@ -3,30 +3,48 @@ package com.example.vary.Repositories;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.vary.Database.DbManager;
 import com.example.vary.Models.CardModel;
-import com.example.vary.Models.CategoryModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class CardsRepo {
     private final static MutableLiveData<List<CardModel>> mCards = new MutableLiveData<>();
-    private int cur_pos;
+    private int currentPosition;
     private int amountOfCards;
+    private DbManager dbManager = null;
 
     private static CardsRepo sInstance;
 
     //DB resource?
 
+    private final DbManager.CardRepositoryListener cardRepositoryListener = new DbManager.CardRepositoryListener() {
+        @Override
+        public void onGetCards(List<CardModel> cardsModel) {
+            Random rand = new Random();
+            List<CardModel> randomCards = new ArrayList<>();
+            for (int i = 0; i < amountOfCards; i++) {
+                int randomIndex = rand.nextInt(cardsModel.size());
+                randomCards.add(cardsModel.get(randomIndex));
+                cardsModel.remove(randomIndex);
+            }
+            mCards.postValue(randomCards);
+        }
+    };
+
     public CardsRepo() {
     }
 
-    public void fillCards(CategoryModel category, int amount) {
+    public void fillCards(String categoryName, int amount, int index) {
         //Если количество больше,чем загружено, дозагрузить
         amountOfCards = amount;
-        mCards.postValue(category.getCards());
+//        mCards.postValue();
         // scan from db?
-        cur_pos = 0;
+        dbManager.getCards(categoryName);
+        currentPosition = 0;
     }
 
     public void mixCards() {
@@ -36,13 +54,13 @@ public class CardsRepo {
     }
 
     public String getCard() {
-        if (cur_pos == getAmountOfCards()) {
-            cur_pos = 0;
+        if (currentPosition == getAmountOfCards()) {
+            currentPosition = 0;
         }
         CardModel cards = mCards
                 .getValue()
-                .get(cur_pos);
-        cur_pos += 1;
+                .get(currentPosition);
+        currentPosition += 1;
         return cards.getText();
     }
 
@@ -53,8 +71,7 @@ public class CardsRepo {
         return sInstance;
     }
 
-    public LiveData<List<CardModel>> getCards()
-    {
+    public LiveData<List<CardModel>> getCards() {
         return mCards;
     } //?
 
@@ -66,4 +83,8 @@ public class CardsRepo {
         //saving curr cards to db?
     }
 
+    public void setDbManager(DbManager dbManager) {
+        this.dbManager = dbManager;
+        dbManager.setCardRepositoryListener(cardRepositoryListener);
+    }
 }

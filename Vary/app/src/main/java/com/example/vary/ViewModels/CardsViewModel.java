@@ -30,9 +30,8 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     private static LiveData<List<CategoryModel>> mCategories = mCategoriesRepo.getCategories();
     private static CurrentGameRepo gameRepo = CurrentGameRepo.getInstance();
 
-    public void getNewCategories(int version) {
-        mCategoriesRepo.getNewCategories(version, this);
-        
+    public void getNewCategories() {
+        mCategoriesRepo.getNewCategories(this);
     }
 
     public ArrayList<String> getCategoriesNames() {

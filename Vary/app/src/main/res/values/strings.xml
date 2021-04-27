@@ -30,5 +30,5 @@
     <string name="start_command">Начинающая команда</string>
     <string name="settings_file">vary_settings</string>
     <string name="error_server_load">Ошибка, не удалось загрузить данные</string>
-    <string name="base_url">http://10.0.2.2:8080</string>
+    <string name="base_url">http://158.255.154.106:33727</string>
 </resources>
