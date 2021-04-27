@@ -1,4 +1,4 @@
-package com.example.vary.Repositories;
+package com.example.vary.Network;
 
 public class LoadStatus {
     private Throwable error;

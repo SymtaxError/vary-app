@@ -4,8 +4,6 @@ package com.example.vary.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -16,7 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.vary.Database.DbManager;
-import com.example.vary.Repositories.LoadStatus;
+import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 

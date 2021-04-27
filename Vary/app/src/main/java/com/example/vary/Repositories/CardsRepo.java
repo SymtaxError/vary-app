@@ -16,7 +16,6 @@ public class CardsRepo {
     private int currentPosition;
     private int amountOfCards;
     private DbManager dbManager = null;
-
     private static CardsRepo sInstance;
 
     //DB resource?

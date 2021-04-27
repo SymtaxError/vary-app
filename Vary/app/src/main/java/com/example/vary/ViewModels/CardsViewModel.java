@@ -14,7 +14,7 @@ import com.example.vary.Database.DbManager;
 import com.example.vary.UI.FineType;
 import com.example.vary.UI.GameMode;
 import com.example.vary.UI.LoadDataCallback;
-import com.example.vary.Repositories.LoadStatus;
+import com.example.vary.Network.LoadStatus;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CategoryModel;
 import com.example.vary.Models.CommandModel;
