@@ -42,6 +42,9 @@ public class OnGameFragment extends Fragment {
     private FrameLayout card;
     private RelativeLayout pause;
     private boolean paused = false;
+    private boolean previewed;
+    private RelativeLayout preview;
+    private boolean cardTextSetted = false;
 
     public OnGameFragment() {
         // Required empty public constructor
@@ -77,14 +80,6 @@ public class OnGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
-        pause = view.findViewById(R.id.pause);
-        pause.setVisibility(View.INVISIBLE);
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                endPause();
-            }
-        });
         TextView teamName = view.findViewById(R.id.team_name_on_game);
         teamName.setText(viewModel.getCurTeamName(0));
         card = new FrameLayout(view.getContext());
@@ -101,7 +96,6 @@ public class OnGameFragment extends Fragment {
         cardText.setTypeface(Typeface.DEFAULT_BOLD);
         cardText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         card.addView(cardText);
-        cardText.setText(viewModel.getCard());
         RelativeLayout root = view.findViewById(R.id.card_root);
         roundScoreView = view.findViewById(R.id.round_score);
         roundScore = 0;
@@ -146,11 +140,26 @@ public class OnGameFragment extends Fragment {
             return true;
         };
         card.setOnTouchListener(cardSwipeListener);
+        pause = view.findViewById(R.id.pause);
+        setPause(false);
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endPause();
+            }
+        });
+        preview = view.findViewById(R.id.preview);
+        setPreview(true);
+        preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endPreview();
+            }
+        });
         return view;
     }
 
     boolean isPaused() {
-        Log.println(Log.DEBUG, "Pause", ""+paused);
         return paused;
     }
 
@@ -163,6 +172,44 @@ public class OnGameFragment extends Fragment {
         //TODO resume timer service
         setPause(false);
     }
+
+    boolean isPreviewed() {
+        return previewed;
+    }
+
+    public void toPreview() {
+        setPreview(true);
+    }
+
+    public void endPreview() {
+        setPreview(false);
+    }
+
+    private void setPreview(boolean newPreviewValue) {
+        if (newPreviewValue) {
+            card.setVisibility(View.INVISIBLE);
+            preview.setVisibility(View.VISIBLE);
+        }
+        else {
+            if (!cardTextSetted) {
+                try {
+                    cardText.setText(viewModel.getCard());
+                    cardTextSetted = true;
+                    card.setVisibility(View.VISIBLE);
+                    preview.setVisibility(View.INVISIBLE);
+                    previewed = false;
+                } catch (Exception e){
+                    Log.println(Log.ERROR, "Database", "Not loaded");
+                }
+            }
+            else {
+                card.setVisibility(View.VISIBLE);
+                preview.setVisibility(View.INVISIBLE);
+                previewed = false;
+            }
+        }
+    }
+
 
     private void setPause(boolean newPauseValue) {
         if (newPauseValue) {
@@ -188,4 +235,11 @@ public class OnGameFragment extends Fragment {
                 .getCards()
                 .observe(getViewLifecycleOwner(), observer);
     }
+
+    @Override
+    public void onPause() {
+        setPause(true);
+        super.onPause();
+    }
+
 }
