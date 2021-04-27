@@ -4,6 +4,7 @@ package com.example.vary.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -54,9 +55,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                     .add(R.id.container, fragment)
                     .commit();
         }
+
+        //TODO delete, test DB
         final DbManager manager = DbManager.getInstance(this);
-//
         manager.getCount(countListener);
+
+        //TODO delete, test sound
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep_short_on);
+        mp.start();
     }
 
 
