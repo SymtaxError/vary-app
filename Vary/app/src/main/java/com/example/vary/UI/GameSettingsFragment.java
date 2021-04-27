@@ -44,11 +44,13 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     private int startCommand;
     private int startCategory;
     private boolean steal;
+    CallbackFragment fCallback;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_game_settings, container, false);
+        view = inflater.inflate(R.layout.fragment_game_settings, container, false);
 
         Spinner cardDeckSpinner = view.findViewById(R.id.spinner_deck_card);
 //        Button cardDeckButton = view.findViewById(R.id.button_deck_card);
@@ -71,8 +73,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
 
 
-        Button startGameButton = view.findViewById(R.id.start_game_button);
-        startGameButton.setOnClickListener(v -> onStartGameButtonClick(view));
+        bindButton(R.id.start_game_button, GameActions.start_game_process);
 
         amountCards = view.findViewById(R.id.amount_cards);
         amountCards.setText(getResources().getText(R.string.amount_cards) + "   " + getResources().getInteger(R.integer.defalut_amount_card));
@@ -177,6 +178,15 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         steal = isChecked;
     }
 
+    void setCallback(CallbackFragment callback) {
+        fCallback = callback;
+    }
+
+    void bindButton(int id, GameActions action) {
+        Button button = view.findViewById(id);
+        button.setOnClickListener(v -> fCallback.callback(action));
+    }
+
     public void onPenaltyGroupClicked( RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.no_penalty:
@@ -192,19 +202,12 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     }
 
     public void onCardDeckButtonClick(View view) {
-
         // TODO нажали на кнопку выбрать деку
     }
 
-    public void onStartGameButtonClick(View view) {
+    @Override
+    public void onDestroyView() {
         viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startCommand);
-        // TODO выбрали настройки и нажали на далее
-
-            OnGameFragment fragment = new OnGameFragment();
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit();
+        super.onDestroyView();
     }
 }
