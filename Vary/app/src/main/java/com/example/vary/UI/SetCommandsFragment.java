@@ -27,12 +27,15 @@ import com.example.vary.ViewModels.CardsViewModel;
 public class SetCommandsFragment extends Fragment implements OnDeleteCommandClickListener, OnAddCommandClickListener, OnChangeCommandClickListener {
     RecyclerView recyclerView;
     CommandsAdapter adapter = null;
+    CallbackFragment fCallback;
+    View view;
+
     private CardsViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.set_commands_fragment_placeholder, container, false);
+        view = inflater.inflate(R.layout.set_commands_fragment_placeholder, container, false);
 
         adapter = new CommandsAdapter();
         adapter.setOnDeleteCommandClickListener(this);
@@ -43,15 +46,7 @@ public class SetCommandsFragment extends Fragment implements OnDeleteCommandClic
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        Button gameSettingsBut = view.findViewById(R.id.open_game_settings);
-        gameSettingsBut.setOnClickListener(v -> {
-            GameSettingsFragment fragment = new GameSettingsFragment();
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
+        bindButton(R.id.open_game_settings, GameActions.open_game_settings);
         Observer<List<CommandModel>> observer = new Observer<List<CommandModel>>() {
             @Override
             public void onChanged(List<CommandModel> commandModels) {
@@ -61,7 +56,6 @@ public class SetCommandsFragment extends Fragment implements OnDeleteCommandClic
                 }
             }
         };
-
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
         viewModel
                 .getCommands()
@@ -69,6 +63,15 @@ public class SetCommandsFragment extends Fragment implements OnDeleteCommandClic
 
         regulateMinAmount();
         return view;
+    }
+
+    void setCallback(CallbackFragment callback) {
+        fCallback = callback;
+    }
+
+    void bindButton(int id, GameActions action) {
+        Button button = view.findViewById(id);
+        button.setOnClickListener(v -> fCallback.callback(action));
     }
 
     protected void regulateMinAmount() { // Добавление двух команд по умолчанию

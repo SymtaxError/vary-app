@@ -4,6 +4,8 @@ package com.example.vary.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -21,7 +23,7 @@ import com.example.vary.ViewModels.CardsViewModel;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements CallbackFragment {
-
+    public static final String prefs = "settingsPrefs";
     private static final int version = 0;
     private CardsViewModel viewModel;
 
@@ -55,9 +57,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                     .add(R.id.container, fragment)
                     .commit();
         }
-
-        //TODO delete, test DB
         final DbManager manager = DbManager.getInstance(this);
+//
         manager.getCount(countListener);
 
         //TODO delete, test sound
@@ -113,8 +114,42 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
             case open_rules:
                 showRules();
                 break;
+            case open_game_settings:
+                openGameSettings();
+                break;
+            case start_game_process:
+                startGameProcess();
             default:
                 break;
+        }
+    }
+
+    void openGameSettings() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(GameSettingsFragment.class)) {
+            GameSettingsFragment fragment = new GameSettingsFragment();
+            fragment.setCallback(this::callback);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    void startGameProcess() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(OnGameFragment.class)) {
+            OnGameFragment fragment = new OnGameFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 
@@ -132,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
         }
     }
 
-
     void startNewGame() {
         if (viewModel.getSize() != 0) {
             viewModel.removeCommands();
@@ -142,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 .getClass()
                 .equals(SetCommandsFragment.class)) {
             SetCommandsFragment fragment = new SetCommandsFragment();
+            fragment.setCallback(this::callback);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
@@ -173,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 .getClass()
                 .equals(SetCommandsFragment.class)) {
             SettingsFragment fragment = new SettingsFragment();
+            fragment.setSharedPreferences(getSharedPreferences(prefs, MODE_PRIVATE));
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
