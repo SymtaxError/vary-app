@@ -118,17 +118,23 @@ public class CategoriesRepo implements SetDataCallback {
 
     private void addCategories(List<CategoryModel> categories) {
         List<CategoryModel> categoriesCapture = mCategories.getValue();
-        for (CategoryModel category: categories) {
+        if (categoriesCapture == null) {
+            categoriesCapture = new ArrayList<>();
+        }
+        for (CategoryModel category : categories) {
             CategoryModel oldCategory = null;
-            for (CategoryModel existingCategoryIter: categoriesCapture){
-                if (category.getName().equals(existingCategoryIter.getName())) {
-                    oldCategory = existingCategoryIter;
+            if (categoriesCapture.size() > 0) {
+                for (CategoryModel existingCategoryIter : categoriesCapture) {
+                    if (category.getName().equals(existingCategoryIter.getName())) {
+                        oldCategory = existingCategoryIter;
+                    }
                 }
             }
             if (oldCategory == null)
                 categoriesCapture.add(category);
         }
-        updateVersion(categories);
+        mCategories.postValue(categoriesCapture);
+        updateVersion();
     }
 
     private void updateVersion() {
