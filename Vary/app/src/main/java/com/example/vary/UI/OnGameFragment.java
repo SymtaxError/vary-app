@@ -213,6 +213,7 @@ public class OnGameFragment extends Fragment {
 
     private void setPause(boolean newPauseValue) {
         if (newPauseValue) {
+            setPreview(false);
             card.setVisibility(View.INVISIBLE);
             pause.setVisibility(View.VISIBLE);
         }
