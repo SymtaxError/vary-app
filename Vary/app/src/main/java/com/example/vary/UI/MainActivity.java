@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -74,8 +75,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 if (loadStatus.getError() != null) {
                     Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG );
                     toast.show();
-                }
-                else {
+                } else {
 
                     Toast toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG );
                     toast.show();
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 .getClass()
                 .equals(GameSettingsFragment.class)) {
             GameSettingsFragment fragment = new GameSettingsFragment();
-            fragment.setCallback(this::callback);
+            fragment.setCallback(this);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
@@ -143,10 +143,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 .getClass()
                 .equals(OnGameFragment.class)) {
             OnGameFragment fragment = new OnGameFragment();
+            getSupportFragmentManager().popBackStack();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .addToBackStack(null)
+//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .addToBackStack(null)
+//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -185,14 +186,32 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
                 .equals(StartFragment.class)) {
+            super.onBackPressed(); //TODO так не должно быть!
             StartFragment fragment = (StartFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.container);
             fragment.checkContinueButtonVisibility(viewModel.getSize());
+        } else if (Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(OnGameFragment.class)) {
+            OnGameFragment fragment = (OnGameFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.container);
+            if (!fragment.isPaused()) {
+                fragment.toPause();
+            } else {
+//                while (!Objects.requireNonNull(getSupportFragmentManager()
+//                        .findFragmentById(R.id.container))
+//                        .getClass()
+//                        .equals(FragmentActivity.class))
+//                    getSupportFragmentManager().popBackStack();
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -214,4 +233,5 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                     .commit();
         }
     }
+
 }

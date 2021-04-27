@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vary.Models.CardModel;
 import com.example.vary.R;
@@ -38,6 +39,9 @@ public class OnGameFragment extends Fragment {
     private int roundScore;
     private CardsViewModel viewModel;
     private int category;
+    private FrameLayout card;
+    private RelativeLayout pause;
+    private boolean paused = false;
 
     public OnGameFragment() {
         // Required empty public constructor
@@ -73,9 +77,17 @@ public class OnGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
+        pause = view.findViewById(R.id.pause);
+        pause.setVisibility(View.INVISIBLE);
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endPause();
+            }
+        });
         TextView teamName = view.findViewById(R.id.team_name_on_game);
         teamName.setText(viewModel.getCurTeamName(0));
-        FrameLayout card = new FrameLayout(view.getContext());
+        card = new FrameLayout(view.getContext());
         cardText = new TextView(card.getContext());
         ImageView cardMount = new ImageView(card.getContext());
         cardMount.setBackgroundResource(R.drawable.game_shape);
@@ -89,8 +101,7 @@ public class OnGameFragment extends Fragment {
         cardText.setTypeface(Typeface.DEFAULT_BOLD);
         cardText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         card.addView(cardText);
-
-        cardText.setText("START"); //TODO delete
+        cardText.setText(viewModel.getCard());
         RelativeLayout root = view.findViewById(R.id.card_root);
         roundScoreView = view.findViewById(R.id.round_score);
         roundScore = 0;
@@ -103,7 +114,7 @@ public class OnGameFragment extends Fragment {
                 layoutParams.topMargin = (root.getHeight() - layoutParams.height) / 2;
                 card.setLayoutParams(layoutParams);
                 root.addView(card);
-                dropCardValue = dp(100);
+                dropCardValue = dp(150);
             }
         });
         View.OnTouchListener cardSwipeListener = (v, event) -> {
@@ -138,6 +149,33 @@ public class OnGameFragment extends Fragment {
         return view;
     }
 
+    boolean isPaused() {
+        Log.println(Log.DEBUG, "Pause", ""+paused);
+        return paused;
+    }
+
+    public void toPause() {
+        //TODO pause timer service
+        setPause(true);
+    }
+
+    public void endPause() {
+        //TODO resume timer service
+        setPause(false);
+    }
+
+    private void setPause(boolean newPauseValue) {
+        if (newPauseValue) {
+            card.setVisibility(View.INVISIBLE);
+            pause.setVisibility(View.VISIBLE);
+        }
+        else {
+            card.setVisibility(View.VISIBLE);
+            pause.setVisibility(View.INVISIBLE);
+        }
+        paused = newPauseValue;
+    }
+
     protected void setViewModel() {
         Observer<List<CardModel>> observer = new Observer<List<CardModel>>() {
             @Override
@@ -150,5 +188,4 @@ public class OnGameFragment extends Fragment {
                 .getCards()
                 .observe(getViewLifecycleOwner(), observer);
     }
-
 }
