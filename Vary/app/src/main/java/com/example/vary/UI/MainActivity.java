@@ -155,8 +155,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
-                .equals(SetCommandsFragment.class)) {
-            SetCommandsFragment fragment = new SetCommandsFragment();
+                .equals(SetTeamsFragment.class)) {
+            SetTeamsFragment fragment = new SetTeamsFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
@@ -167,13 +167,13 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
 
     void startNewGame() {
         if (viewModel.getSize() != 0) {
-            viewModel.removeCommands();
+            viewModel.removeTeams();
         }
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
-                .equals(SetCommandsFragment.class)) {
-            SetCommandsFragment fragment = new SetCommandsFragment();
+                .equals(SetTeamsFragment.class)) {
+            SetTeamsFragment fragment = new SetTeamsFragment();
             fragment.setCallback(this::callback);
             getSupportFragmentManager()
                     .beginTransaction()
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
-                .equals(SetCommandsFragment.class)) {
+                .equals(SetTeamsFragment.class)) {
             SettingsFragment fragment = new SettingsFragment();
             fragment.setSharedPreferences(getSharedPreferences(prefs, MODE_PRIVATE));
             getSupportFragmentManager()

@@ -20,7 +20,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.vary.Models.CategoryModel;
-import com.example.vary.Models.CommandModel;
+import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 
@@ -34,14 +34,14 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     private SeekBar timeBar;
     private SeekBar amountCardsBar;
     private CardsViewModel viewModel;
-    private ArrayAdapter<String> arrayAdapterCommands;
+    private ArrayAdapter<String> arrayAdapterTeams;
     private ArrayAdapter<String> arrayAdapterCategories;
-    private ArrayList<String> mCommandNames = new ArrayList<>();
+    private ArrayList<String> mTeamsNames = new ArrayList<>();
     private ArrayList<String> mCategoriesNames = new ArrayList<>();
     private FineType fine;
     private int amountOfCards;
     private int roundDuration;
-    private int startCommand;
+    private int startTeam;
     private int startCategory;
     private boolean steal;
     CallbackFragment fCallback;
@@ -88,15 +88,15 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         time.setText(getResources().getText(R.string.time_round)  + "   " + getResources().getInteger(R.integer.default_time));
 
 
-        Spinner commandsSpinner = view.findViewById(R.id.choose_command_spinner);
+        Spinner teamsSpinner = view.findViewById(R.id.choose_team_spinner);
 
-        arrayAdapterCommands = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, mCommandNames);
-        arrayAdapterCommands.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        commandsSpinner.setAdapter(arrayAdapterCommands);
-        commandsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        arrayAdapterTeams = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, mTeamsNames);
+        arrayAdapterTeams.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        teamsSpinner.setAdapter(arrayAdapterTeams);
+        teamsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                startCommand = position;
+                startTeam = position;
             }
 
             @Override
@@ -117,14 +117,14 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     }
 
     protected void setObservers() {
-        Observer<List<CommandModel>> observer = new Observer<List<CommandModel>>() {
+        Observer<List<TeamModel>> observer = new Observer<List<TeamModel>>() {
             @Override
-            public void onChanged(List<CommandModel> commandModels) {
-                if (commandModels != null) {
-                    mCommandNames = viewModel.getCommandNames();
-                    arrayAdapterCommands.clear();
-                    arrayAdapterCommands.addAll(mCommandNames);
-                    arrayAdapterCommands.notifyDataSetChanged();
+            public void onChanged(List<TeamModel> teamModels) {
+                if (teamModels != null) {
+                    mTeamsNames = viewModel.getTeamsNames();
+                    arrayAdapterTeams.clear();
+                    arrayAdapterTeams.addAll(mTeamsNames);
+                    arrayAdapterTeams.notifyDataSetChanged();
                 }
             }
         };
@@ -142,7 +142,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         };
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
         viewModel
-                .getCommands()
+                .getTeams()
                 .observe(getViewLifecycleOwner(), observer);
         viewModel
                 .getCategories()
@@ -207,7 +207,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
     @Override
     public void onDestroyView() {
-        viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startCommand);
+        viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startTeam);
         super.onDestroyView();
     }
 }

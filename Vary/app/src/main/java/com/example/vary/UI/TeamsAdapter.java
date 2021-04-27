@@ -12,28 +12,28 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 
-public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class TeamsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    OnDeleteCommandClickListener deleteListener;
-    OnAddCommandClickListener addListener;
-    OnChangeCommandClickListener renameListener;
+    OnDeleteTeamClickListener deleteListener;
+    OnAddTeamClickListener addListener;
+    OnChangeTeamClickListener renameListener;
     private CardsViewModel mViewModel;
 
-    public final int type_command = 0;
+    public final int type_team = 0;
     public final int type_add_button = 1;
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == type_command) {
+        if (viewType == type_team) {
             View view = LayoutInflater
                     .from(parent.getContext())
-                    .inflate(R.layout.command_item, parent, false);
-            return new CommandsViewHolder(view);
+                    .inflate(R.layout.team_item, parent, false);
+            return new TeamsViewHolder(view);
         } else {
             View view = LayoutInflater
                     .from(parent.getContext())
-                    .inflate(R.layout.add_command_button, parent, false);
+                    .inflate(R.layout.add_team_button, parent, false);
             return new AddButtonViewHolder(view);
         }
     }
@@ -45,11 +45,11 @@ public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final int itemType = getItemViewType(position);
-        if (itemType == type_command) {
-            String command = mViewModel.getCommand(position).getName();
+        if (itemType == type_team) {
+            String team = mViewModel.getTeam(position).getName();
             View.OnClickListener delListener = v -> deleteListener.deleteItem(position);
             View.OnClickListener renListener = v -> renameListener.renameItem(position);
-            ((CommandsViewHolder) holder).bind(command, delListener, renListener);
+            ((TeamsViewHolder) holder).bind(team, delListener, renListener);
         } else if (itemType == type_add_button) {
             View.OnClickListener listener = v -> addListener.addItem();
             ((AddButtonViewHolder) holder).bind(listener);
@@ -61,18 +61,18 @@ public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (position == getItemCount() - 1) {
             return type_add_button;
         }
-        return type_command;
+        return type_team;
     }
 
-    public void setOnDeleteCommandClickListener(OnDeleteCommandClickListener listener) {
+    public void setOnDeleteTeamClickListener(OnDeleteTeamClickListener listener) {
         deleteListener = listener;
     }
 
-    public void setOnAddCommandClickListener(OnAddCommandClickListener listener) {
+    public void setOnAddTeamClickListener(OnAddTeamClickListener listener) {
         addListener = listener;
     }
 
-    public void setOnChangeCommandClickListener(OnChangeCommandClickListener listener) {
+    public void setOnChangeTeamClickListener(OnChangeTeamClickListener listener) {
         renameListener = listener;
     }
 
@@ -80,7 +80,7 @@ public class CommandsAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public int getItemCount() {
         return mViewModel
-                .getCommands()
+                .getTeams()
                 .getValue()
                 .size() + 1;
     }

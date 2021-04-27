@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.ViewGroup.MarginLayoutParams;
 
-import com.example.vary.Models.CommandModel;
+import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 
@@ -62,17 +62,17 @@ public class StartFragment extends Fragment {
                 viewModel.getNewCategories();
             }
         });
-        Observer<List<CommandModel>> observer = new Observer<List<CommandModel>>() {
+        Observer<List<TeamModel>> observer = new Observer<List<TeamModel>>() {
             @Override
-            public void onChanged(List<CommandModel> commandModels) {
-                checkContinueButtonVisibility(commandModels.size());
+            public void onChanged(List<TeamModel> teamModels) {
+                checkContinueButtonVisibility(teamModels.size());
             }
         };
 
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
 
         viewModel
-                .getCommands()
+                .getTeams()
                 .observe(getViewLifecycleOwner(), observer);
 
         return view;

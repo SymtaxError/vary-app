@@ -1,5 +1,5 @@
 package com.example.vary.UI;
 
-public interface OnDeleteCommandClickListener {
+public interface OnDeleteTeamClickListener {
     void deleteItem(int pos);
 }

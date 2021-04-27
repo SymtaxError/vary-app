@@ -1,11 +1,11 @@
 package com.example.vary.Models;
 
-public class CommandModel {
+public class TeamModel {
     String mName;
     int mPoints;
     int mId;
 
-    public CommandModel(String name, int id) {
+    public TeamModel(String name, int id) {
         mName = name;
         mPoints = 0;
         mId = id;

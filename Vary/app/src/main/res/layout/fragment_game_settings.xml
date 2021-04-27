@@ -153,7 +153,7 @@
         app:layout_constraintTop_toBottomOf="@+id/penalty_group" />
 
     <Spinner
-        android:id="@+id/choose_command_spinner"
+        android:id="@+id/choose_team_spinner"
         android:layout_width="296dp"
         android:layout_height="33dp"
         android:layout_marginTop="32dp"
@@ -175,7 +175,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choose_command_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/choose_team_spinner"
         app:layout_constraintVertical_bias="0.707" />
 
     <TextView

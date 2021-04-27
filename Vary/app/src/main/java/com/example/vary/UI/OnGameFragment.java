@@ -31,10 +31,7 @@ import java.util.List;
 public class OnGameFragment extends Fragment {
     //TODO: анимации
     //TODO: динамический размер текста
-    private int _xDelta;
     private int _yDelta;
-    private int layoutSizeY;
-    private int viewSizeY;
     private int dropCardValue;
     TextView roundScoreView;
     TextView cardText;
@@ -76,8 +73,8 @@ public class OnGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
-        TextView commandName = view.findViewById(R.id.team_name);
-        commandName.setText(viewModel.getCurCommandName(0));
+        TextView teamName = view.findViewById(R.id.team_name_on_game);
+        teamName.setText(viewModel.getCurTeamName(0));
         FrameLayout card = new FrameLayout(view.getContext());
         cardText = new TextView(card.getContext());
         ImageView cardMount = new ImageView(card.getContext());

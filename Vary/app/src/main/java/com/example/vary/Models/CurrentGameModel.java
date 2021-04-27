@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CurrentGameModel {
     List<CardModel> mCardModelList;
-    List<CommandModel> mCommands;
+    List<TeamModel> mCommands;
     boolean mSteal;
     FineType mFine;
     int mRoundDuration;
@@ -24,7 +24,7 @@ public class CurrentGameModel {
         mCardModelList = cardModelList;
     }
 
-    public void setCommands(List<CommandModel> commands) {
-        mCommands = commands;
+    public void setCommands(List<TeamModel> teams) {
+        mCommands = teams;
     }
 }

@@ -19,7 +19,7 @@
         android:background="@drawable/game_bot_shape"/>
 
     <TextView
-        android:id="@+id/team_name"
+        android:id="@+id/team_name_on_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ИМЯ КОМАНДЫ"
@@ -44,7 +44,7 @@
         android:id="@+id/card_root"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@+id/team_name"
+        android:layout_below="@+id/team_name_on_game"
         android:layout_above="@+id/round_score">
 <!--        <RelativeLayout-->
 <!--            android:id="@+id/card_wrapper"-->

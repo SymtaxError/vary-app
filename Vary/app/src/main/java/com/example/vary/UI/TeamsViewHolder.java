@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.example.vary.R;
 
-public class CommandsViewHolder extends ViewHolder {
+public class TeamsViewHolder extends ViewHolder {
     private final TextView name;
     private final Button delete;
 
-    public CommandsViewHolder(@NonNull View itemView) {
+    public TeamsViewHolder(@NonNull View itemView) {
         super(itemView);
-        name = itemView.findViewById(R.id.command_name);
-        delete = itemView.findViewById(R.id.command_delete);
+        name = itemView.findViewById(R.id.team_name_item);
+        delete = itemView.findViewById(R.id.team_delete);
     }
 
-    public void bind(String command, View.OnClickListener delListener, View.OnClickListener renameListener) {
-        name.setText(command);
+    public void bind(String team, View.OnClickListener delListener, View.OnClickListener renameListener) {
+        name.setText(team);
         delete.setOnClickListener(delListener);
         name.setOnClickListener(renameListener);
     }

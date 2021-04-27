@@ -1,5 +1,5 @@
 package com.example.vary.UI;
 
-public interface OnAddCommandClickListener {
+public interface OnAddTeamClickListener {
     void addItem();
 }

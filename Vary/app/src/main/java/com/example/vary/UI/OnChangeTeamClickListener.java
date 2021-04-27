@@ -1,5 +1,5 @@
 package com.example.vary.UI;
 
-public interface OnChangeCommandClickListener {
+public interface OnChangeTeamClickListener {
     void renameItem(int pos);
 }

@@ -7,7 +7,7 @@
     android:layout_marginTop="5dp">
 
     <TextView
-        android:id="@+id/command_name"
+        android:id="@+id/team_name_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -22,7 +22,7 @@
         tools:text="@string/app_name"/>
 
     <Button
-        android:id="@+id/command_delete"
+        android:id="@+id/team_delete"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/x_shape"

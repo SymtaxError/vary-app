@@ -9,7 +9,7 @@ import com.example.vary.Database.DbManager;
 import com.example.vary.UI.FineType;
 import com.example.vary.UI.GameMode;
 import com.example.vary.Models.CardModel;
-import com.example.vary.Models.CommandModel;
+import com.example.vary.Models.TeamModel;
 import com.example.vary.Models.CurrentGameModel;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class CurrentGameRepo {
         return gameModel;
     }
 
-    public void saveState(List<CardModel> cards, List<CommandModel> commands) {
+    public void saveState(List<CardModel> cards, List<TeamModel> commands) {
         gameModel.getValue().setCardModelList(cards);
         gameModel.getValue().setCommands(commands);
         //save to db

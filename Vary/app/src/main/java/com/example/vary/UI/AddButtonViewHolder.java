@@ -14,7 +14,7 @@ public class AddButtonViewHolder extends ViewHolder {
 
     public AddButtonViewHolder(@NonNull View itemView) {
         super(itemView);
-        addButton = itemView.findViewById(R.id.add_command);
+        addButton = itemView.findViewById(R.id.add_team);
     }
 
     public void bind(View.OnClickListener listener) {
