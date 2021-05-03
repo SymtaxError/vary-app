@@ -62,6 +62,7 @@ public class OnGameFragment extends Fragment {
 
     @SuppressLint("SetTextI18n") //TODO refactor
     private void swipeDown(View v) {
+        viewModel.declineCard();
         cardText.setText(viewModel.getCard());
         roundScoreView.setText(String.valueOf(--roundScore));
     }

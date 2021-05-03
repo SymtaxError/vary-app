@@ -1,5 +1,7 @@
 package com.example.vary.Repositories;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -18,8 +20,6 @@ public class CardsRepo {
     private DbManager dbManager = null;
     private static CardsRepo sInstance;
 
-    //DB resource?
-
     private final DbManager.CardRepositoryListener cardRepositoryListener = new DbManager.CardRepositoryListener() {
         @Override
         public void onGetCards(List<CardModel> cardsModel) {
@@ -35,6 +35,22 @@ public class CardsRepo {
     };
 
     public CardsRepo() {
+    }
+
+    public void newRoundMix() {
+        List <CardModel> cards = mCards.getValue();
+        List <CardModel> unusedCards = cards.subList(currentPosition, cards.size() - 1);
+        Collections.shuffle(unusedCards);
+        mCards.postValue(cards);
+    }
+
+    public void declineCard() {
+        List<CardModel> cards = mCards.getValue();
+        Log.d("Lalala", "heh " + cards);
+        CardModel curCard = cards.remove(currentPosition);
+        cards.add(curCard);
+        Log.d("Lalala", "heh " + cards);
+        mCards.postValue(cards);
     }
 
     public void fillCards(String categoryName, int amount, int index) {
@@ -55,6 +71,7 @@ public class CardsRepo {
     public String getCard() {
         if (currentPosition == getAmountOfCards()) {
             currentPosition = 0;
+            mixCards();
         }
         CardModel cards = mCards
                 .getValue()

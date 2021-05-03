@@ -87,6 +87,14 @@ public class CategoriesRepo implements SetDataCallback {
         }
     }
 
+    public void declineCard() {
+        mCardsRepo.declineCard();
+    }
+
+    public void newRoundMix() {
+        mCardsRepo.newRoundMix();
+    }
+
     public String getCard() {
         return mCardsRepo.getCard();
     }
