@@ -2,7 +2,9 @@ package com.example.vary.UI;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +31,8 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
     TeamsAdapter adapter = null;
     CallbackFragment fCallback;
     View view;
-
+    LinearLayoutManager layoutManager;
+    int namePostfix = 1;
     private CardsViewModel viewModel;
 
     @Nullable
@@ -43,7 +46,16 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
         adapter.setOnChangeTeamClickListener(this);
         recyclerView = view.findViewById(R.id.commands_list);
         recyclerView.setItemViewCacheSize(10);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+                improveVisibility(dy);
+            }
+        });
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         bindButton(R.id.open_game_settings, GameActions.open_game_settings);
@@ -52,6 +64,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
             public void onChanged(List<TeamModel> commandModels) {
                 if (commandModels != null) {
                     adapter.setViewModel(viewModel);
+
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -76,7 +89,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
 
     protected void regulateMinAmount() { // Добавление двух команд по умолчанию
         int min_amount = getResources().getInteger(R.integer.min_commands_amount);
-        if (viewModel.getSize() < min_amount)
+        if (viewModel.getAmountOfTeams() < min_amount)
         {
             addItem();
             addItem();
@@ -106,8 +119,8 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
 
     public void addItem() { // Добавить элемент
         String command = getResources().getString(R.string.command);
-        int number = viewModel.getSize() + 1;
-        viewModel.addTeams(command + ' ' + number);
+        viewModel.addTeams(command + ' ' + namePostfix);
+        namePostfix++;
     }
 
     public void deleteItem(int pos) { // Удалить элемент
@@ -116,4 +129,27 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
             viewModel.removeTeam(pos);
         }
     }
+
+    private void improveVisibility(int dy) {
+        if (layoutManager != null) {
+            int index = layoutManager.findFirstVisibleItemPosition();
+            if (dy > 0) {
+//                Log.d("HELP", "increase");
+                index += 1;
+            }
+            else {
+                index -= 1;
+//                Log.d("HELP", "decrease");
+            }
+            if (viewModel.getAmountOfTeams() < 10) {
+                index = 0;
+            } else if (viewModel.getAmountOfTeams() - index < 10) {
+//                Log.d("HELP", "Normalize, amount = " + viewModel.getAmountOfTeams() + "index = " + index);
+                index = viewModel.getAmountOfTeams() - 10;
+            }
+//            Log.d("HELP", "erm" + index);
+            layoutManager.scrollToPositionWithOffset(index, 0);
+        }
+    }
+
 }

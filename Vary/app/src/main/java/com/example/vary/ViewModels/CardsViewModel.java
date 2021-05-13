@@ -51,6 +51,13 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         DbManager.getInstance(getApplication());
     }
 
+    public void declineCard() {
+        mCategoriesRepo.declineCard();
+    }
+
+    public void newRoundMix() {
+        mCategoriesRepo.newRoundMix();
+    }
 
     public LiveData<List<TeamModel>> getTeams() {
         return mTeams;
@@ -130,6 +137,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public String getCard() {
         return mCategoriesRepo.getCard();
+    }
+
+    public int getAmountOfTeams() {
+        return mTeamsRepo.getSize();
     }
 
     public int getAmountOfCards() {
