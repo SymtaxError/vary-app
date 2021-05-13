@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
     LinearLayoutManager layoutManager;
     int namePostfix = 1;
     private CardsViewModel viewModel;
+    int amount = 0;
 
     @Nullable
     @Override
@@ -57,7 +60,6 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
         bindButton(R.id.open_game_settings, GameActions.open_game_settings);
         Observer<List<TeamModel>> observer = new Observer<List<TeamModel>>() {
             @Override
@@ -75,6 +77,14 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
                 .observe(getViewLifecycleOwner(), observer);
 
         regulateMinAmount();
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                RelativeLayout root = view.findViewById(R.id.team_layout);
+                int viewHeight = root.getHeight();
+                amount = recyclerView.getHeight() / viewHeight - 1;
+            }
+        });
         return view;
     }
 
@@ -141,9 +151,9 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
                 index -= 1;
 //                Log.d("HELP", "decrease");
             }
-            if (viewModel.getAmountOfTeams() < 10) {
+            if (viewModel.getAmountOfTeams() < amount) {
                 index = 0;
-            } else if (viewModel.getAmountOfTeams() - index < 10) {
+            } else if (viewModel.getAmountOfTeams() - index < amount) {
 //                Log.d("HELP", "Normalize, amount = " + viewModel.getAmountOfTeams() + "index = " + index);
                 index = viewModel.getAmountOfTeams() - 10;
             }
