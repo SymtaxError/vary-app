@@ -26,6 +26,7 @@ import com.example.vary.ViewModels.CardsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener {
@@ -55,7 +56,6 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         Spinner cardDeckSpinner = view.findViewById(R.id.spinner_deck_card);
 //        Button cardDeckButton = view.findViewById(R.id.button_deck_card);
 //        cardDeckButton.setOnClickListener(this::onCardDeckButtonClick);
-
         arrayAdapterCategories = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, mCategoriesNames);
         arrayAdapterCategories.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         cardDeckSpinner.setAdapter(arrayAdapterCategories);
@@ -71,9 +71,10 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
             }
         });
 
+        amountOfCards = 50;
+        roundDuration = 60;
 
-
-        bindButton(R.id.start_game_button, GameActions.start_game_process);
+        bindButton(R.id.start_game_button, GameActions.prepare_game);
 
         amountCards = view.findViewById(R.id.amount_cards);
         amountCards.setText(getResources().getText(R.string.amount_cards) + "   " + getResources().getInteger(R.integer.defalut_amount_card));
@@ -86,7 +87,6 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
         time = view.findViewById(R.id.time_round_text);
         time.setText(getResources().getText(R.string.time_round)  + "   " + getResources().getInteger(R.integer.default_time));
-
 
         Spinner teamsSpinner = view.findViewById(R.id.choose_team_spinner);
 
@@ -123,6 +123,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
                 if (teamModels != null) {
                     mTeamsNames = viewModel.getTeamsNames();
                     arrayAdapterTeams.clear();
+                    arrayAdapterTeams.add("Случайная");
                     arrayAdapterTeams.addAll(mTeamsNames);
                     arrayAdapterTeams.notifyDataSetChanged();
                 }
@@ -152,12 +153,12 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (seekBar.equals(amountCardsBar)) {
+        if (seekBar.equals(amountCardsBar) && progress > 10) {
             progress /= getResources().getInteger(R.integer.card_amount_step);
             progress *= getResources().getInteger(R.integer.card_amount_step);
             amountOfCards = progress;
             amountCards.setText(getResources().getText(R.string.amount_cards) + "   " + progress);
-        } else if (seekBar.equals(timeBar)) {
+        } else if (seekBar.equals(timeBar) && progress > 10) {
             progress /= getResources().getInteger(R.integer.time_step);
             progress *= getResources().getInteger(R.integer.time_step);
             roundDuration = progress;
@@ -201,12 +202,18 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         }
     }
 
-    public void onCardDeckButtonClick(View view) {
-        // TODO нажали на кнопку выбрать деку
-    }
-
+    
     @Override
     public void onDestroyView() {
+
+        // если выбрана случайная команда в спинере
+        if (startTeam == 0) {
+            Random random = new Random();
+            startTeam = random.nextInt(mTeamsNames.size());
+        } else {
+            startTeam--;
+        }
+
         viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startTeam);
         super.onDestroyView();
     }

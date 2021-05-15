@@ -4,6 +4,9 @@ package com.example.vary.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -20,10 +23,14 @@ import com.example.vary.ViewModels.CardsViewModel;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements CallbackFragment {
+public class MainActivity extends AppCompatActivity implements CallbackFragment, CallbackSettings {
     public static final String prefs = "settingsPrefs";
     private static final int version = 0;
     private CardsViewModel viewModel;
+
+    public static final String soundKey = "sound";
+    public static final String checkUpdatesKey = "check_updates";
+    public static final String pushKey = "push";
 
     private final DbManager.CountListener countListener = new DbManager.CountListener() {
         @Override
@@ -115,6 +122,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
             case open_game_settings:
                 openGameSettings();
                 break;
+            case prepare_game:
+                prepareGameProcess();
+                break;
             case start_game_process:
                 startGameProcess();
             default:
@@ -150,6 +160,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                     .commit();
         }
     }
+
+    void prepareGameProcess() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(PrepareGameFragment.class)) {
+            PrepareGameFragment fragment = new PrepareGameFragment();
+            fragment.setCallback(this::callback);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
 
     void continueGame() {
         if (!Objects.requireNonNull(getSupportFragmentManager()
@@ -206,12 +232,46 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 .getClass()
                 .equals(SetTeamsFragment.class)) {
             SettingsFragment fragment = new SettingsFragment();
-            fragment.setSharedPreferences(getSharedPreferences(prefs, MODE_PRIVATE));
+            fragment.setCallback(this::callback);
+
+            SharedPreferences sp = this.getSharedPreferences(prefs, MODE_PRIVATE);
+
+            fragment.setSwitches(sp.getBoolean(soundKey, true),
+                                 sp.getBoolean(pushKey, true),
+                                 sp.getBoolean(checkUpdatesKey, true));
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
                     .addToBackStack(null)
                     .commit();
         }
+    }
+
+    @Override
+    public void callback(SettingActions type, boolean setting) {
+        SharedPreferences.Editor editor = this.getSharedPreferences(prefs, MODE_PRIVATE).edit();
+
+        switch (type) {
+            case sound_setting:
+                editor.putBoolean(soundKey, setting);
+                setSound(setting);
+                break;
+            case push_setting:
+                // TODO push settings
+                editor.putBoolean(pushKey, setting);
+                break;
+            case check_updates_setting:
+                // TODO udpates settings
+                editor.putBoolean(checkUpdatesKey, setting);
+            default:
+                break;
+        }
+        editor.apply();
+    }
+
+    public void setSound(boolean setting) {
+            AudioManager manager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+            manager.setStreamMute(AudioManager.STREAM_NOTIFICATION, !setting);
     }
 }
