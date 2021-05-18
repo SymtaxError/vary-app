@@ -270,6 +270,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
     }
 
     void startLocalService() {
-        mService.runTask();
+        mService.runTask(viewModel.getRoundDuration());
     }
 }
