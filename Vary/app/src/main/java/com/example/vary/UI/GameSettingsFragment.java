@@ -184,7 +184,9 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
     void bindButton(int id, GameActions action) {
         Button button = view.findViewById(id);
-        button.setOnClickListener(v -> fCallback.callback(action));
+        button.setOnClickListener(v -> {
+            fCallback.callback(action);
+        });
     }
 
     public void onPenaltyGroupClicked( RadioGroup group, int checkedId) {

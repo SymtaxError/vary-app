@@ -6,5 +6,7 @@ public enum GameActions {
     open_settings,
     open_rules,
     open_game_settings,
-    start_game_process
+    start_game_process,
+    end_game_process,
+    start_game_timer
 }

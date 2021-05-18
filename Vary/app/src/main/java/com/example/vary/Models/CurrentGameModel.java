@@ -27,4 +27,8 @@ public class CurrentGameModel {
     public void setCommands(List<TeamModel> teams) {
         mCommands = teams;
     }
+
+    public int getRoundDuration() {
+        return mRoundDuration;
+    }
 }

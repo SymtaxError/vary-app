@@ -4,8 +4,13 @@ package com.example.vary.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -16,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.vary.Database.DbManager;
 import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
+import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
 
 import java.util.Objects;
@@ -25,13 +31,16 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
     private static final int version = 0;
     private CardsViewModel viewModel;
 
+    public LocalService mService;
+    boolean mBound = false;
+
     private final DbManager.CountListener countListener = new DbManager.CountListener() {
         @Override
-        public void onGetCount (final int cardCount, final int catCount) {
+        public void onGetCount(final int cardCount, final int catCount) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-    //                    showStringList(allItems);
+                    //                    showStringList(allItems);
                     String countText = "Loaded " + cardCount + " cards in " + catCount + " categories";
                     Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
                 }
@@ -56,8 +65,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                     .commit();
         }
         final DbManager manager = DbManager.getInstance(this);
-//
+
         manager.getCount(countListener);
+
+        // binding service to activity
+        Intent intent = new Intent(this, LocalService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
         //TODO delete, test sound
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep_short_on);
@@ -72,12 +85,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
             @Override
             public void onChanged(LoadStatus loadStatus) {
                 if (loadStatus.getError() != null) {
-                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG );
+                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
                     toast.show();
-                }
-                else {
+                } else {
 
-                    Toast toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG );
+                    Toast toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
@@ -117,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 break;
             case start_game_process:
                 startGameProcess();
+                break;
             default:
                 break;
         }
@@ -213,5 +226,41 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                     .addToBackStack(null)
                     .commit();
         }
+    }
+
+    void openResults() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(ResultTeamFragment.class)) {
+            ResultTeamFragment fragment = new ResultTeamFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    private final ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
+            mService = binder.getService();
+            mService.setViewModel(viewModel);
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        unbindService(connection);
+        mBound = false;
     }
 }

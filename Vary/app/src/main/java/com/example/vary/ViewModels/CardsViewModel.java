@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.Repositories.CategoriesRepo;
 import com.example.vary.Repositories.TeamsRepo;
 import com.example.vary.Repositories.CurrentGameRepo;
@@ -29,6 +30,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     private static CategoriesRepo mCategoriesRepo = CategoriesRepo.getInstance();
     private static LiveData<List<CategoryModel>> mCategories = mCategoriesRepo.getCategories();
     private static CurrentGameRepo gameRepo = CurrentGameRepo.getInstance();
+    private static LiveData<CurrentGameModel> mGameModel = gameRepo.getGameModel();
 
     public void getNewCategories() {
         mCategoriesRepo.getNewCategories(this);
@@ -37,7 +39,6 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public ArrayList<String> getCategoriesNames() {
         return mCategoriesRepo.getCategoriesNames();
     }
-
 
     public CardsViewModel(@NonNull Application application) {
         super(application);
@@ -78,7 +79,6 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public void newRoundMix() {
         mCategoriesRepo.newRoundMix();
     }
-
     public LiveData<List<TeamModel>> getTeams() {
         return mTeams;
     }
@@ -131,6 +131,11 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         return mCategories;
     }
 
+    public LiveData<CurrentGameModel> getGameModel() {
+        mGameModel = gameRepo.getGameModel();
+        return mGameModel;
+    }
+
     public LiveData<LoadStatus> getLoadStatus() {
         return mLoadStatus;
     }
@@ -167,4 +172,28 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         return mCategoriesRepo.getAmountOfCards();
     }
 
+    public String getTeamName(int position) {
+        return mTeamsRepo.getTeamName(position);
+    }
+
+    public int getTeamPoints(int position) {
+        return mTeamsRepo.getTeamPoints(position);
+    }
+
+    public int getRoundDuration() {
+        return gameRepo.getRoundDuration();
+    }
+
+    /*
+    Таймер
+     */
+    private static MutableLiveData<Integer> mTimerCount = new MutableLiveData<>();
+
+    public void setTimerCount(Integer seconds) {
+        mTimerCount.postValue(seconds);
+    }
+
+    public LiveData<Integer> getTimerCount() {
+        return mTimerCount;
+    }
 }
