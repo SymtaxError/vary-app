@@ -52,6 +52,33 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         DbManager.getInstance(getApplication());
     }
 
+    public void declineCard() {
+        mCategoriesRepo.declineCard();
+    }
+
+    public void answerCard() {
+        mCategoriesRepo.answerCard();
+    }
+
+    public LiveData<List<CardModel>> getAnsweredCards() {
+        return mCategoriesRepo.getAnsweredCards();
+    }
+
+    public LiveData<List<CardModel>> getDeclinedCards() {
+        return mCategoriesRepo.getDeclinedCards();
+    }
+
+    public void makeDeclined(int dec_pos) {
+        mCategoriesRepo.makeDeclined(dec_pos);
+    }
+
+    public void makeAnswered(int ans_pos) {
+        mCategoriesRepo.makeAnswered(ans_pos);
+    }
+
+    public void newRoundMix() {
+        mCategoriesRepo.newRoundMix();
+    }
     public LiveData<List<TeamModel>> getTeams() {
         return mTeams;
     }
@@ -135,6 +162,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public String getCard() {
         return mCategoriesRepo.getCard();
+    }
+
+    public int getAmountOfTeams() {
+        return mTeamsRepo.getSize();
     }
 
     public int getAmountOfCards() {

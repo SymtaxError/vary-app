@@ -76,12 +76,8 @@ public class TeamsAdapter extends RecyclerView.Adapter<ViewHolder> {
         renameListener = listener;
     }
 
-
     @Override
     public int getItemCount() {
-        return mViewModel
-                .getTeams()
-                .getValue()
-                .size() + 1;
+        return mViewModel.getAmountOfTeams() + 1;
     }
 }
