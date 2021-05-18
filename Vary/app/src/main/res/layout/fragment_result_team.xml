@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    tools:context=".UI.ResultTeamFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_shape"
+
+            android:backgroundTint="@color/secondary"
+            android:gravity="center"
+            android:text="@string/guessed_words"
+            android:textSize="30sp"
+            tools:targetApi="lollipop" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/result_team_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            tools:listitem="@layout/item_result_team" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/result_ok_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_shape"
+
+            android:backgroundTint="@color/secondary"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textSize="20sp"
+            tools:targetApi="lollipop" />
+    </LinearLayout>
+
+</RelativeLayout>

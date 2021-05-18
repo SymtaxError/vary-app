@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/model_team_result"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/model_team_result"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
     android:background="@color/semi_primary">
 
     <TextView
-        android:id="@+id/word_from_game"
+        android:id="@+id/team_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="start"
         android:layout_marginEnd="50dp"
         android:gravity="center"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
+        android:layout_marginStart="20dp"
+
         android:textColor="@color/white"
         android:textSize="25sp"
+        tools:text="Чемпионы" />
 
-        tools:text="Тетрадь" />
+    <TextView
+        android:id="@+id/team_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-    <Button
-        android:id="@+id/button_change_word_state"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/x_shape"
-        android:backgroundTint="@color/secondary" />
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        tools:text="727" />
 
 </RelativeLayout>

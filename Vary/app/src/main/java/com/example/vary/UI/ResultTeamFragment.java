@@ -15,22 +15,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 
-public class ResultFragment extends Fragment {
+public class ResultTeamFragment extends Fragment {
     View view;
     private CardsViewModel viewModel;
 
-    private static class TeamStatsAdapter extends RecyclerView.Adapter<TeamStatsAdapter.teamStatsViewHolder> {
+    private static class TeamStatsAdapter extends RecyclerView.Adapter<TeamStatsAdapter.TeamStatsViewHolder> {
         CardsViewModel viewModel;
 
         public void setViewModel(CardsViewModel viewModel) {
             this.viewModel = viewModel;
         }
 
-        static class teamStatsViewHolder extends RecyclerView.ViewHolder {
+        static class TeamStatsViewHolder extends RecyclerView.ViewHolder {
             private final TextView teamNameView;
             private final TextView teamPointsView;
 
-            public teamStatsViewHolder(@NonNull View teamView) {
+            public TeamStatsViewHolder(@NonNull View teamView) {
                 super(teamView);
                 this.teamNameView = teamView.findViewById(R.id.team_name);
                 this.teamPointsView = teamView.findViewById(R.id.team_points);
@@ -44,13 +44,13 @@ public class ResultFragment extends Fragment {
 
         @NonNull
         @Override
-        public teamStatsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_result_word, parent, false);
-            return new teamStatsViewHolder(view);
+        public TeamStatsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_result_team, parent, false);
+            return new TeamStatsViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull teamStatsViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull TeamStatsViewHolder holder, int position) {
             String teamName = viewModel.getTeamName(position);
             int teamPoints = viewModel.getTeamPoints(position);
             holder.bind(teamName, teamPoints);
@@ -65,9 +65,9 @@ public class ResultFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_results, container, false);
+        view = inflater.inflate(R.layout.fragment_result_team, container, false);
 
-        RecyclerView teamsStatsList = view.findViewById(R.id.results_list);
+        RecyclerView teamsStatsList = view.findViewById(R.id.result_round_list);
         teamsStatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         TeamStatsAdapter teamStatsAdapter = new TeamStatsAdapter();

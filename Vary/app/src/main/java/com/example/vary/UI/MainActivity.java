@@ -232,8 +232,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
-                .equals(ResultFragment.class)) {
-            ResultFragment fragment = new ResultFragment();
+                .equals(ResultTeamFragment.class)) {
+            ResultTeamFragment fragment = new ResultTeamFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
