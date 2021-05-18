@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
     private static final int version = 0;
     private CardsViewModel viewModel;
 
-    LocalService mService;
+    public LocalService mService;
     boolean mBound = false;
 
     private final DbManager.CountListener countListener = new DbManager.CountListener() {
@@ -129,11 +129,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 break;
             case start_game_process:
                 startGameProcess();
-                break;
-            case end_game_process:
-
-            case start_game_timer:
-                startLocalService();
                 break;
             default:
                 break;
@@ -267,9 +262,5 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
         super.onStop();
 //        unbindService(connection);
         mBound = false;
-    }
-
-    void startLocalService() {
-        mService.runTask(viewModel.getRoundDuration());
     }
 }

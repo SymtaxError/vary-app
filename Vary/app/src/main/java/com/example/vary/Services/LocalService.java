@@ -43,6 +43,10 @@ public class LocalService extends Service {
         timer.schedule(new changeTimerInView(), 0, 1000);
     }
 
+    public void stopTast() {
+        timer.cancel();
+    }
+
     private class changeTimerInView extends TimerTask {
         public void run() {
             localTimer--;

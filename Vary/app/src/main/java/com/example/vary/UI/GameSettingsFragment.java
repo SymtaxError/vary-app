@@ -186,7 +186,6 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         Button button = view.findViewById(id);
         button.setOnClickListener(v -> {
             fCallback.callback(action);
-            fCallback.callback(GameActions.start_game_timer);
         });
     }
 
