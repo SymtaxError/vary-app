@@ -19,6 +19,8 @@ public class CardsRepo {
     private int amountOfCards;
     private DbManager dbManager = null;
     private static CardsRepo sInstance;
+    private MutableLiveData<List<CardModel>> answered = new MutableLiveData<>();
+    private MutableLiveData<List<CardModel>> declined = new MutableLiveData<>();
 
     private final DbManager.CardRepositoryListener cardRepositoryListener = new DbManager.CardRepositoryListener() {
         @Override
@@ -39,8 +41,64 @@ public class CardsRepo {
 
     public void newRoundMix() {
         List <CardModel> cards = mCards.getValue();
+        List <CardModel> answer = answered.getValue();
+        if (answer != null) {
+            cards.addAll(currentPosition, answer);
+            currentPosition += answer.size();
+        }
+        List<CardModel> decline = declined.getValue();
+        if (decline != null) {
+            cards.addAll(decline);
+        }
         List <CardModel> unusedCards = cards.subList(currentPosition, cards.size() - 1);
         Collections.shuffle(unusedCards);
+        answered.postValue(new ArrayList<>());
+        declined.postValue(new ArrayList<>());
+        mCards.postValue(cards);
+    }
+
+    public LiveData<List<CardModel>> getAnsweredCards() {
+        return answered;
+    }
+
+    public LiveData<List<CardModel>> getDeclinedCards() {
+        return declined;
+    }
+
+    public void makeAnswered(int dec_pos) {
+        List<CardModel> decline = declined.getValue();
+        List<CardModel> answer = answered.getValue();
+        if (answer == null) {
+            answer = new ArrayList<>();
+        }
+        answer.add(answer.get(dec_pos));
+        decline.remove(dec_pos);
+        answered.postValue(answer);
+        declined.postValue(decline);
+    }
+
+    public void makeDeclined(int ans_pos) {
+        List<CardModel> decline = declined.getValue();
+        List<CardModel> answer = answered.getValue();
+        if (decline == null)
+        {
+            decline = new ArrayList<>();
+        }
+        decline.add(answer.get(ans_pos));
+        answer.remove(ans_pos);
+        answered.postValue(answer);
+        declined.postValue(decline);
+    }
+
+    public void answerCard() {
+        List<CardModel> cards = mCards.getValue();
+        CardModel curCard = cards.remove(currentPosition);
+        List<CardModel> answer = answered.getValue();
+        if (answer == null) {
+            answer = new ArrayList<>();
+        }
+        answer.add(curCard);
+        answered.postValue(answer);
         mCards.postValue(cards);
     }
 
@@ -48,9 +106,15 @@ public class CardsRepo {
         List<CardModel> cards = mCards.getValue();
         Log.d("Lalala", "heh " + cards);
         CardModel curCard = cards.remove(currentPosition);
-        cards.add(curCard);
+        List<CardModel> decline = declined.getValue();
+        if (decline == null)
+        {
+            decline = new ArrayList<>();
+        }
+        decline.add(curCard);
         Log.d("Lalala", "heh " + cards);
         mCards.postValue(cards);
+        declined.postValue(decline);
     }
 
     public void fillCards(String categoryName, int amount, int index) {
@@ -71,12 +135,11 @@ public class CardsRepo {
     public String getCard() {
         if (currentPosition == getAmountOfCards()) {
             currentPosition = 0;
-            mixCards();
+            newRoundMix();
         }
         CardModel cards = mCards
                 .getValue()
                 .get(currentPosition);
-        currentPosition += 1;
         return cards.getText();
     }
 

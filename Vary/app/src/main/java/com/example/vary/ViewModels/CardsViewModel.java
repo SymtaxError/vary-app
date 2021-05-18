@@ -55,6 +55,26 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mCategoriesRepo.declineCard();
     }
 
+    public void answerCard() {
+        mCategoriesRepo.answerCard();
+    }
+
+    public LiveData<List<CardModel>> getAnsweredCards() {
+        return mCategoriesRepo.getAnsweredCards();
+    }
+
+    public LiveData<List<CardModel>> getDeclinedCards() {
+        return mCategoriesRepo.getDeclinedCards();
+    }
+
+    public void makeDeclined(int dec_pos) {
+        mCategoriesRepo.makeDeclined(dec_pos);
+    }
+
+    public void makeAnswered(int ans_pos) {
+        mCategoriesRepo.makeAnswered(ans_pos);
+    }
+
     public void newRoundMix() {
         mCategoriesRepo.newRoundMix();
     }
