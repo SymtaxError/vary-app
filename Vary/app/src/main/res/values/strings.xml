@@ -31,4 +31,7 @@
     <string name="settings_file">vary_settings</string>
     <string name="error_server_load">Ошибка, не удалось загрузить данные</string>
     <string name="base_url">http://158.255.154.106:33727</string>
+    <string name="next_team">Следующая команда</string>
+    <string name="next_game_mode">Режим раунда</string>
+    <string name="start_next_round_button">Следующий раунд</string>
 </resources>

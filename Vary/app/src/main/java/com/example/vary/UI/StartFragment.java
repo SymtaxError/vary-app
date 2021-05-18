@@ -59,7 +59,6 @@ public class StartFragment extends Fragment {
         infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fCallback.callback(GameActions.start_game_timer);
                 viewModel.getNewCategories();
             }
         });

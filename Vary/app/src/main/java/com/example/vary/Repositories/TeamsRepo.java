@@ -65,6 +65,18 @@ public class TeamsRepo {
                 .get(position);
     }
 
+    public String getTeamName(int position) {
+        return mTeams.getValue()
+                .get(position)
+                .getName();
+    }
+
+    public int getTeamPoints(int position) {
+        return mTeams.getValue()
+                .get(position)
+                .getPoints();
+    }
+
     public void removeTeam(int pos) {
         List<TeamModel> listTeams = mTeams.getValue();
         listTeams.remove(pos);

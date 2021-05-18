@@ -50,4 +50,8 @@ public class CurrentGameRepo {
     protected void restoreState() {
         //load from db
     }
+
+    public int getRoundDuration() {
+        return gameModel.getValue().getRoundDuration();
+    }
 }

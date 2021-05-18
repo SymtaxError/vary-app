@@ -145,10 +145,20 @@ public class OnGameFragment extends Fragment {
             }
         };
 
+        Observer<Integer> observerTimer = new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer timerCount) {
+                Log.d("Timer is ticking...", timerCount.toString());
+            }
+        };
+
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
         viewModel
                 .getCards()
                 .observe(getViewLifecycleOwner(), observer);
+        viewModel
+                .getTimerCount()
+                .observe(getViewLifecycleOwner(), observerTimer);
     }
 
 }

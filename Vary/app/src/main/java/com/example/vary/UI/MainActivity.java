@@ -36,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
 
     private final DbManager.CountListener countListener = new DbManager.CountListener() {
         @Override
-        public void onGetCount (final int cardCount, final int catCount) {
+        public void onGetCount(final int cardCount, final int catCount) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-    //                    showStringList(allItems);
+                    //                    showStringList(allItems);
                     String countText = "Loaded " + cardCount + " cards in " + catCount + " categories";
                     Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
                 }
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
 
         manager.getCount(countListener);
 
-        //        binding service to activity
+        // binding service to activity
         Intent intent = new Intent(this, LocalService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
@@ -85,12 +85,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
             @Override
             public void onChanged(LoadStatus loadStatus) {
                 if (loadStatus.getError() != null) {
-                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG );
+                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
                     toast.show();
-                }
-                else {
+                } else {
 
-                    Toast toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG );
+                    Toast toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
@@ -131,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
             case start_game_process:
                 startGameProcess();
                 break;
+            case end_game_process:
+
             case start_game_timer:
                 startLocalService();
                 break;
@@ -232,11 +233,26 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
         }
     }
 
+    void openResults() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(ResultFragment.class)) {
+            ResultFragment fragment = new ResultFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
-        public void onServiceConnected(ComponentName name,IBinder service) {
+        public void onServiceConnected(ComponentName name, IBinder service) {
             LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
             mService = binder.getService();
+            mService.setViewModel(viewModel);
             mBound = true;
         }
 
@@ -249,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(connection);
+//        unbindService(connection);
         mBound = false;
     }
 
