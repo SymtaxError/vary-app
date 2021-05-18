@@ -43,7 +43,12 @@ public class LocalService extends Service {
         timer.schedule(new changeTimerInView(), 0, 1000);
     }
 
-    public void stopTast() {
+    public void resumeTask() {
+        viewModel.setTimerCount(localTimer);
+        timer.schedule(new changeTimerInView(), 0, 1000);
+    }
+
+    public void stopTask() {
         timer.cancel();
     }
 
