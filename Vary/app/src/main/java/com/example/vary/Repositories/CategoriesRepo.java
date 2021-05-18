@@ -238,4 +238,12 @@ public class CategoriesRepo implements SetDataCallback {
                 .getValue()
                 .size();
     }
+
+    public String getAnsweredCardByPosition(int position) {
+        return mCardsRepo.getAnsweredCardByPosition(position);
+    }
+
+    public String getDeclinedCardByPosition(int position) {
+        return mCardsRepo.getDeclinedCardByPosition(position);
+    }
 }

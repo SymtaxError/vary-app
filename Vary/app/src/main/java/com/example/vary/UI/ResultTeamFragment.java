@@ -4,20 +4,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vary.Models.CardModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
+
+import java.util.List;
 
 public class ResultTeamFragment extends Fragment {
     View view;
     private CardsViewModel viewModel;
+    private CallbackFragment callbackFunctions;
 
     private static class TeamStatsAdapter extends RecyclerView.Adapter<TeamStatsAdapter.TeamStatsViewHolder> {
         CardsViewModel viewModel;
@@ -27,18 +33,15 @@ public class ResultTeamFragment extends Fragment {
         }
 
         static class TeamStatsViewHolder extends RecyclerView.ViewHolder {
-            private final TextView teamNameView;
-            private final TextView teamPointsView;
+            private final TextView wordNameView;
 
             public TeamStatsViewHolder(@NonNull View teamView) {
                 super(teamView);
-                this.teamNameView = teamView.findViewById(R.id.team_name);
-                this.teamPointsView = teamView.findViewById(R.id.team_points);
+                this.wordNameView = teamView.findViewById(R.id.word_from_game);
             }
 
-            public void bind(String teamName, int points) {
-                teamNameView.setText(teamName);
-                teamPointsView.setText(String.valueOf(points));
+            public void bind(String wordName) {
+                wordNameView.setText(wordName);
             }
         }
 
@@ -51,15 +54,22 @@ public class ResultTeamFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TeamStatsViewHolder holder, int position) {
-            String teamName = viewModel.getTeamName(position);
-            int teamPoints = viewModel.getTeamPoints(position);
-            holder.bind(teamName, teamPoints);
+            String wordName = viewModel.getAnsweredCardByPosition(position);
+            holder.bind(wordName);
         }
 
         @Override
         public int getItemCount() {
-            return viewModel.getSize();
+            return viewModel.getAnsweredCards().getValue().size();
         }
+    }
+
+    public void setCallback(CallbackFragment callback) {
+        callbackFunctions = callback;
+    }
+
+    public void setViewModel(CardsViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 
     @Nullable
@@ -67,13 +77,31 @@ public class ResultTeamFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_result_team, container, false);
 
-        RecyclerView teamsStatsList = view.findViewById(R.id.result_round_list);
-        teamsStatsList.setLayoutManager(new LinearLayoutManager(getContext()));
+        RecyclerView teamStatsList = view.findViewById(R.id.result_team_list);
+        teamStatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         TeamStatsAdapter teamStatsAdapter = new TeamStatsAdapter();
         teamStatsAdapter.setViewModel(viewModel);
 
-        teamsStatsList.setAdapter(teamStatsAdapter);
+
+        Observer<List<CardModel>> observerCurrentGame = new Observer<List<CardModel>>() {
+            @Override
+            public void onChanged(List<CardModel> cardModels) {
+                if (cardModels != null) {
+                    teamStatsAdapter.notifyDataSetChanged();
+                }
+            }
+        };
+
+        teamStatsList.setAdapter(teamStatsAdapter);
+
+        Button okButton = view.findViewById(R.id.result_ok_button);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callbackFunctions.callback(GameActions.start_game_process);
+            }
+        });
 
         return view;
     }

@@ -185,6 +185,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     void bindButton(int id, GameActions action) {
         Button button = view.findViewById(id);
         button.setOnClickListener(v -> {
+            viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startTeam);
             fCallback.callback(action);
         });
     }
@@ -209,7 +210,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
     @Override
     public void onDestroyView() {
-        viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startTeam);
+//        viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startTeam);
         super.onDestroyView();
     }
 }

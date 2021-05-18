@@ -184,6 +184,14 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         return gameRepo.getRoundDuration();
     }
 
+    public String getAnsweredCardByPosition(int position) {
+        return mCategoriesRepo.getAnsweredCardByPosition(position);
+    }
+
+    public String getDeclinedCardByPosition(int position) {
+        return mCategoriesRepo.getDeclinedCardByPosition(position);
+    }
+
     /*
     Таймер
      */

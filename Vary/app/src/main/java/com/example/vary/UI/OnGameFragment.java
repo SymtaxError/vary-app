@@ -23,7 +23,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.vary.Models.CardModel;
+import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.R;
+import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
 
 import java.util.List;
@@ -39,6 +41,9 @@ public class OnGameFragment extends Fragment {
     private CardsViewModel viewModel;
     private int category;
 
+    private CallbackFragment callbackFunctions;
+    private LocalService timerService;
+
     public OnGameFragment() {
         // Required empty public constructor
     }
@@ -51,6 +56,14 @@ public class OnGameFragment extends Fragment {
     private int dp(int x) {
         DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
         return Math.round(x * metrics.density);
+    }
+
+    public void setCallbackFunctions(CallbackFragment callbackFunctions) {
+        this.callbackFunctions = callbackFunctions;
+    }
+
+    public void setTimerService(LocalService service) {
+        timerService = service;
     }
 
     @SuppressLint("SetTextI18n") //TODO refactor
@@ -137,6 +150,7 @@ public class OnGameFragment extends Fragment {
             return true;
         };
         card.setOnTouchListener(cardSwipeListener);
+
         return view;
     }
 
@@ -150,7 +164,17 @@ public class OnGameFragment extends Fragment {
         Observer<Integer> observerTimer = new Observer<Integer>() {
             @Override
             public void onChanged(Integer timerCount) {
+                if (timerCount == 0) {
+                    callbackFunctions.callback(GameActions.open_round_result);
+                }
                 Log.d("Timer is ticking...", timerCount.toString());
+            }
+        };
+
+        Observer<CurrentGameModel> observerCurrentGame = new Observer<CurrentGameModel>() {
+            @Override
+            public void onChanged(CurrentGameModel gameModel) {
+                timerService.runTask(gameModel.getRoundDuration());
             }
         };
 
@@ -161,6 +185,9 @@ public class OnGameFragment extends Fragment {
         viewModel
                 .getTimerCount()
                 .observe(getViewLifecycleOwner(), observerTimer);
+        viewModel
+                .getGameModel()
+                .observe(getViewLifecycleOwner(), observerCurrentGame);
     }
 
 }

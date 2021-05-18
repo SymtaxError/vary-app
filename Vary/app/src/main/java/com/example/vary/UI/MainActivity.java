@@ -130,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
             case start_game_process:
                 startGameProcess();
                 break;
+            case open_round_result:
+                openTeamRound();
+                break;
             default:
                 break;
         }
@@ -156,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
                 .getClass()
                 .equals(OnGameFragment.class)) {
             OnGameFragment fragment = new OnGameFragment();
+            fragment.setCallbackFunctions(this);
+            fragment.setTimerService(mService);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
@@ -228,12 +233,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment 
         }
     }
 
-    void openResults() {
+    void openTeamRound() {
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
-                .equals(ResultTeamFragment.class)) {
+                .equals(ResultRoundFragment.class)) {
             ResultTeamFragment fragment = new ResultTeamFragment();
+            fragment.setCallback(this);
+            fragment.setViewModel(viewModel);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)

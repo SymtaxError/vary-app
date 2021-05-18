@@ -166,4 +166,12 @@ public class CardsRepo {
         this.dbManager = dbManager;
         dbManager.setCardRepositoryListener(cardRepositoryListener);
     }
+
+    public String getAnsweredCardByPosition(int position) {
+        return answered.getValue().get(position).getText();
+    }
+
+    public String getDeclinedCardByPosition(int position) {
+        return declined.getValue().get(position).getText();
+    }
 }

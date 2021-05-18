@@ -12,16 +12,18 @@ import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 
+import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.ViewModels.CardsViewModel;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class LocalService extends Service {
     private CardsViewModel viewModel;
     private int localTimer;
-    private final Timer timer = new Timer();
+    private Timer timer;
 
     public void setViewModel(CardsViewModel viewModel) {
         this.viewModel = viewModel;
@@ -38,6 +40,7 @@ public class LocalService extends Service {
 
     public void runTask(int time) {
         System.out.println("task running now");
+        timer = new Timer();
         localTimer = time;
         viewModel.setTimerCount(localTimer);
         timer.schedule(new changeTimerInView(), 0, 1000);
@@ -48,8 +51,9 @@ public class LocalService extends Service {
         timer.schedule(new changeTimerInView(), 0, 1000);
     }
 
-    public void stopTask() {
+    public void pauseTask() {
         timer.cancel();
+        timer = new Timer();
     }
 
     private class changeTimerInView extends TimerTask {
