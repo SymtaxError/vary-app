@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CurrentGameModel;
@@ -40,6 +41,12 @@ public class OnGameFragment extends Fragment {
     private int roundScore;
     private CardsViewModel viewModel;
     private int category;
+    private FrameLayout card;
+    private RelativeLayout pause;
+    private boolean paused = false;
+    private boolean previewed;
+    private RelativeLayout preview;
+    private boolean cardTextSetted = false;
 
     private CallbackFragment callbackFunctions;
     private LocalService timerService;
@@ -90,7 +97,7 @@ public class OnGameFragment extends Fragment {
         setViewModel();
         TextView teamName = view.findViewById(R.id.team_name_on_game);
         teamName.setText(viewModel.getCurTeamName(0));
-        FrameLayout card = new FrameLayout(view.getContext());
+        card = new FrameLayout(view.getContext());
         cardText = new TextView(card.getContext());
         ImageView cardMount = new ImageView(card.getContext());
         cardMount.setBackgroundResource(R.drawable.game_shape);
@@ -104,8 +111,6 @@ public class OnGameFragment extends Fragment {
         cardText.setTypeface(Typeface.DEFAULT_BOLD);
         cardText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         card.addView(cardText);
-
-        cardText.setText("START"); //TODO delete
         RelativeLayout root = view.findViewById(R.id.card_root);
         roundScoreView = view.findViewById(R.id.round_score);
         roundScore = 0;
@@ -118,7 +123,7 @@ public class OnGameFragment extends Fragment {
                 layoutParams.topMargin = (root.getHeight() - layoutParams.height) / 2;
                 card.setLayoutParams(layoutParams);
                 root.addView(card);
-                dropCardValue = dp(100);
+                dropCardValue = dp(150);
             }
         });
         View.OnTouchListener cardSwipeListener = (v, event) -> {
@@ -150,8 +155,88 @@ public class OnGameFragment extends Fragment {
             return true;
         };
         card.setOnTouchListener(cardSwipeListener);
-
+        pause = view.findViewById(R.id.pause);
+        setPause(false);
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endPause();
+            }
+        });
+        preview = view.findViewById(R.id.preview);
+        setPreview(true);
+        preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endPreview();
+            }
+        });
         return view;
+    }
+
+    boolean isPaused() {
+        return paused;
+    }
+
+    public void toPause() {
+        //TODO pause timer service
+        setPause(true);
+    }
+
+    public void endPause() {
+        //TODO resume timer service
+        setPause(false);
+    }
+
+    boolean isPreviewed() {
+        return previewed;
+    }
+
+    public void toPreview() {
+        setPreview(true);
+    }
+
+    public void endPreview() {
+        setPreview(false);
+    }
+
+    private void setPreview(boolean newPreviewValue) {
+        if (newPreviewValue) {
+            card.setVisibility(View.INVISIBLE);
+            preview.setVisibility(View.VISIBLE);
+        }
+        else {
+            if (!cardTextSetted) {
+                try {
+                    cardText.setText(viewModel.getCard());
+                    cardTextSetted = true;
+                    card.setVisibility(View.VISIBLE);
+                    preview.setVisibility(View.INVISIBLE);
+                    previewed = false;
+                } catch (Exception e){
+                    Log.println(Log.ERROR, "Database", "Not loaded");
+                }
+            }
+            else {
+                card.setVisibility(View.VISIBLE);
+                preview.setVisibility(View.INVISIBLE);
+                previewed = false;
+            }
+        }
+    }
+
+
+    private void setPause(boolean newPauseValue) {
+        if (newPauseValue) {
+            setPreview(false);
+            card.setVisibility(View.INVISIBLE);
+            pause.setVisibility(View.VISIBLE);
+        }
+        else {
+            card.setVisibility(View.VISIBLE);
+            pause.setVisibility(View.INVISIBLE);
+        }
+        paused = newPauseValue;
     }
 
     protected void setViewModel() {
@@ -188,6 +273,12 @@ public class OnGameFragment extends Fragment {
         viewModel
                 .getGameModel()
                 .observe(getViewLifecycleOwner(), observerCurrentGame);
+    }
+
+    @Override
+    public void onPause() {
+        setPause(true);
+        super.onPause();
     }
 
 }

@@ -37,4 +37,8 @@
     <string name="results">Результаты</string>
     <string name="guessed_words">Отгаданные</string>
     <string name="ok">Готово</string>
+    <string name="pause_title">Пауза</string>
+    <string name="pause_content">Нажмите на экран, чтобы продолжить</string>
+    <string name="preview_title">Превью</string>
+    <string name="preview_text">Объясни методом указанным снизу.\nЕсли объяснил-свайпай вверх\nНадо сделать нормальную вьюху\nНажми на экран когда будешь готов</string>
 </resources>
