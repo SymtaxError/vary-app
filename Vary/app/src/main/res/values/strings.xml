@@ -41,4 +41,5 @@
     <string name="pause_content">Нажмите на экран, чтобы продолжить</string>
     <string name="preview_title">Превью</string>
     <string name="preview_text">Объясни методом указанным снизу.\nЕсли объяснил-свайпай вверх\nНадо сделать нормальную вьюху\nНажми на экран когда будешь готов</string>
+    <string name="_0">0</string>
 </resources>

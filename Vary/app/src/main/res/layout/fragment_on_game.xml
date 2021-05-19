@@ -68,6 +68,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/game_bot_shape"/>
 
+
     <TextView
         android:id="@+id/team_name_on_game"
         android:layout_width="match_parent"
@@ -80,10 +81,22 @@
         android:layout_gravity="center"/>
 
     <TextView
+        android:id="@+id/time_left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_0"
+        android:textColor="@color/secondary"
+        android:textSize="25sp"
+        android:layout_below="@+id/team_name_on_game"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:padding="5dp"/>
+
+    <TextView
         android:id="@+id/round_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="@string/_0"
         android:textColor="@color/secondary"
         android:textSize="25sp"
         android:layout_alignParentBottom="true"

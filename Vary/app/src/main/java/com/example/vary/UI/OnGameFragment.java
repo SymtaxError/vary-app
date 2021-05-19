@@ -38,6 +38,7 @@ public class OnGameFragment extends Fragment {
     private int dropCardValue;
     TextView roundScoreView;
     TextView cardText;
+    TextView timeLeft;
     private int roundScore;
     private CardsViewModel viewModel;
     private int category;
@@ -47,6 +48,7 @@ public class OnGameFragment extends Fragment {
     private boolean previewed;
     private RelativeLayout preview;
     private boolean cardTextSetted = false;
+
 
     private CallbackFragment callbackFunctions;
     private LocalService timerService;
@@ -96,6 +98,7 @@ public class OnGameFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
         TextView teamName = view.findViewById(R.id.team_name_on_game);
+        timeLeft = view.findViewById(R.id.time_left);
         teamName.setText(viewModel.getCurTeamName(0));
         card = new FrameLayout(view.getContext());
         cardText = new TextView(card.getContext());
@@ -156,7 +159,8 @@ public class OnGameFragment extends Fragment {
         };
         card.setOnTouchListener(cardSwipeListener);
         pause = view.findViewById(R.id.pause);
-        setPause(false);
+//        setPause(false);
+        paused = false;
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,12 +183,10 @@ public class OnGameFragment extends Fragment {
     }
 
     public void toPause() {
-        //TODO pause timer service
         setPause(true);
     }
 
     public void endPause() {
-        //TODO resume timer service
         setPause(false);
     }
 
@@ -198,6 +200,7 @@ public class OnGameFragment extends Fragment {
 
     public void endPreview() {
         setPreview(false);
+        timerService.resumeTask();
     }
 
     private void setPreview(boolean newPreviewValue) {
@@ -228,11 +231,13 @@ public class OnGameFragment extends Fragment {
 
     private void setPause(boolean newPauseValue) {
         if (newPauseValue) {
+            timerService.pauseTask();
             setPreview(false);
             card.setVisibility(View.INVISIBLE);
             pause.setVisibility(View.VISIBLE);
         }
         else {
+            timerService.resumeTask();
             card.setVisibility(View.VISIBLE);
             pause.setVisibility(View.INVISIBLE);
         }
@@ -252,6 +257,7 @@ public class OnGameFragment extends Fragment {
                 if (timerCount == 0) {
                     callbackFunctions.callback(GameActions.open_round_result);
                 }
+                timeLeft.setText(timerCount.toString());
                 Log.d("Timer is ticking...", timerCount.toString());
             }
         };
@@ -260,6 +266,7 @@ public class OnGameFragment extends Fragment {
             @Override
             public void onChanged(CurrentGameModel gameModel) {
                 timerService.runTask(gameModel.getRoundDuration());
+                timerService.pauseTask();
             }
         };
 
