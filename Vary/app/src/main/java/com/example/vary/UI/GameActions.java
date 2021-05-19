@@ -7,5 +7,6 @@ public enum GameActions {
     open_rules,
     open_game_settings,
     start_game_process,
-    open_round_result
+    open_round_result,
+    prepare_game
 }

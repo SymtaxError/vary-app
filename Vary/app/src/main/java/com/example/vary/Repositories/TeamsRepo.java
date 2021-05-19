@@ -27,11 +27,13 @@ public class TeamsRepo {
 
     public void changeOrder(int newStartIndex) {
         List<TeamModel> teams = mTeams.getValue();
+
         if (teams != null) {
             for (int i = 0; i < newStartIndex; i++) {
-                TeamModel team = teams.remove(i);
+                TeamModel team = teams.remove(0);
                 teams.add(team);
             }
+
             mTeams.postValue(teams);
         }
     }
