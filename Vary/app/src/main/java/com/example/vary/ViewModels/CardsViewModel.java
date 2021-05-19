@@ -28,12 +28,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     private static LiveData<List<TeamModel>> mTeams = mTeamsRepo.getTeams();
     private static MutableLiveData<LoadStatus> mLoadStatus = new MutableLiveData<>();
     private static CategoriesRepo mCategoriesRepo = CategoriesRepo.getInstance();
-    private static LiveData<List<CategoryModel>> mCategories = mCategoriesRepo.getCategories();
     private static CurrentGameRepo gameRepo = CurrentGameRepo.getInstance();
-    private static LiveData<CurrentGameModel> mGameModel = gameRepo.getGameModel();
 
     public void getNewCategories() {
-        mCategoriesRepo.getNewCategories(this);
+        mCategoriesRepo.getNewCategories();
     }
 
     public ArrayList<String> getCategoriesNames() {
@@ -44,8 +42,9 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         super(application);
         mTeamsRepo.setDbManager(application);
         mCategoriesRepo.setDbManager(application);
-        mCategoriesRepo.setNetworkService(application);
         gameRepo.setDbManager(application);
+        mCategoriesRepo.setLoadCallback(this);
+        mCategoriesRepo.setNetworkService(application);
     }
 
     public void smth() {
@@ -60,25 +59,42 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mCategoriesRepo.answerCard();
     }
 
-    public LiveData<List<CardModel>> getAnsweredCards() {
-        return mCategoriesRepo.getAnsweredCards();
+    public void changeAnswerState(int pos) {
+        mCategoriesRepo.changeAnswerState(pos);
     }
 
-    public LiveData<List<CardModel>> getDeclinedCards() {
-        return mCategoriesRepo.getDeclinedCards();
+    public boolean getAnswerState(int pos) {
+        return mCategoriesRepo.getAnswerState(pos);
     }
 
-    public void makeDeclined(int dec_pos) {
-        mCategoriesRepo.makeDeclined(dec_pos);
+    public String getUsedCardByPosition(int pos) {
+        return mCategoriesRepo.getUsedCardByPosition(pos);
     }
 
-    public void makeAnswered(int ans_pos) {
-        mCategoriesRepo.makeAnswered(ans_pos);
+    public int getAmountOfUsedCards() {
+        return mCategoriesRepo.getAmountOfUsedCards();
     }
 
     public void newRoundMix() {
         mCategoriesRepo.newRoundMix();
     }
+
+    public void fillCards(int index, int amount) {
+        mCategoriesRepo.fillCards(index, amount);
+    }
+
+    public LiveData<List<CardModel>> getCards() {
+        return mCategoriesRepo.getCards();
+    }
+
+    public void mixCards() {
+        mCategoriesRepo.mixCards();
+    }
+
+    public String getCard() {
+        return mCategoriesRepo.getCard();
+    }
+
     public LiveData<List<TeamModel>> getTeams() {
         return mTeams;
     }
@@ -103,37 +119,43 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         return mTeamsRepo.getTeam(position);
     }
 
-    public void fillCards(int index, int amount) {
-        mCategoriesRepo.fillCards(index, amount);
-    }
-
-    public LiveData<List<CardModel>> getCards() {
-        return mCategoriesRepo.getCards();
-    }
-
-    public void mixCards() {
-        mCategoriesRepo.mixCards();
-    }
-
     public void saveState() {
 
     }
 
-    public void setCurrentGame(int categoryIndex, int amountOfCards, int roundDuration, PenaltyType penalty, boolean steal, GameMode gameMode, int startTeam) {
+    public void setCurrentGame(int categoryIndex, int amountOfCards, int roundDuration, PenaltyType penalty, boolean steal, int startTeam) {
         mCategoriesRepo.fillCards(categoryIndex, amountOfCards);
         mCategoriesRepo.mixCards();
         mTeamsRepo.changeOrder(startTeam);
-        gameRepo.setGameModel(steal, penalty, roundDuration, gameMode);
+        gameRepo.setGameModel(steal, penalty, roundDuration);
+    }
+
+    public boolean nextGameMode() {
+        return gameRepo.nextGameMode();
+    }
+
+    public PenaltyType getPenalty() {
+        return gameRepo.getPenalty();
+    }
+
+    public GameMode getGameMode() {
+        return gameRepo.getGameMode();
+    }
+
+    public boolean getSteal() {
+        return gameRepo.getSteal();
     }
 
     public LiveData<List<CategoryModel>> getCategories() {
-        mCategories = mCategoriesRepo.getCategories();
-        return mCategories;
+        return mCategoriesRepo.getCategories();
+    }
+
+    public void getCount(DbManager.CountListener listener) {
+        mCategoriesRepo.getCount(listener);
     }
 
     public LiveData<CurrentGameModel> getGameModel() {
-        mGameModel = gameRepo.getGameModel();
-        return mGameModel;
+        return gameRepo.getGameModel();
     }
 
     public LiveData<LoadStatus> getLoadStatus() {
@@ -160,10 +182,6 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mLoadStatus.postValue(new LoadStatus(throwable));
     }
 
-    public String getCard() {
-        return mCategoriesRepo.getCard();
-    }
-
     public int getAmountOfTeams() {
         return mTeamsRepo.getSize();
     }
@@ -182,14 +200,6 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public int getRoundDuration() {
         return gameRepo.getRoundDuration();
-    }
-
-    public String getAnsweredCardByPosition(int position) {
-        return mCategoriesRepo.getAnsweredCardByPosition(position);
-    }
-
-    public String getDeclinedCardByPosition(int position) {
-        return mCategoriesRepo.getDeclinedCardByPosition(position);
     }
 
     /*

@@ -43,8 +43,20 @@ public class CurrentGameRepo {
         //save to db
     }
 
-    public void setGameModel(boolean steal, PenaltyType penalty, int roundDuration, GameMode gameMode) {
-        gameModel.postValue(new CurrentGameModel(steal, penalty, roundDuration, gameMode));
+    public void setGameModel(boolean steal, PenaltyType penalty, int roundDuration) {
+        gameModel.postValue(new CurrentGameModel(steal, penalty, roundDuration));
+    }
+
+    /*
+      Возвращает true, если игра продолжается, иначе false
+     */
+    public boolean nextGameMode() {
+        CurrentGameModel game = gameModel.getValue();
+        boolean result = game.nextGameMode();
+        if (result) {
+            gameModel.postValue(game);
+        }
+        return result;
     }
 
     protected void restoreState() {
@@ -53,5 +65,17 @@ public class CurrentGameRepo {
 
     public int getRoundDuration() {
         return gameModel.getValue().getRoundDuration();
+    }
+
+    public PenaltyType getPenalty() {
+        return gameModel.getValue().getPenalty();
+    }
+
+    public GameMode getGameMode() {
+        return gameModel.getValue().getGameMode();
+    }
+
+    public boolean getSteal() {
+        return gameModel.getValue().getSteal();
     }
 }

@@ -24,9 +24,9 @@ public class CategoriesRepo implements SetDataCallback {
     private final static CardsRepo mCardsRepo = CardsRepo.getInstance();
     private static CategoriesRepo sInstance = null;
     private final static MutableLiveData<List<CategoryModel>> mCategories = new MutableLiveData<>();
-    private final static LiveData<List<CardModel>> mCards = mCardsRepo.getCards();
     private DbManager dbManager = null;
     private static int version;
+    LoadDataCallback mCallback;
 
     private final DbManager.CategoryRepositoryListener categoryRepositoryListener = new DbManager.CategoryRepositoryListener() {
         @Override
@@ -36,6 +36,9 @@ public class CategoriesRepo implements SetDataCallback {
         }
     };
 
+    public void setLoadCallback(LoadDataCallback callback) {
+        mCallback = callback;
+    }
 
 //    public CategoryModel getCategory(int index) {
 //        if (index >= mCategories.getValue().size()) {
@@ -66,6 +69,7 @@ public class CategoriesRepo implements SetDataCallback {
 
     public void setNetworkService(Context context) {
         categoriesNetworkService = CategoriesNetworkService.getInstance(context.getResources().getString(R.string.base_url));
+        getNewCategories();
     }
 
     public LiveData<List<CategoryModel>> getCategories() {
@@ -82,9 +86,7 @@ public class CategoriesRepo implements SetDataCallback {
     }
 
     public void mixCards() {
-        if (mCards != null) {
-            mCardsRepo.mixCards();
-        }
+        mCardsRepo.mixCards();
     }
 
     public void declineCard() {
@@ -95,20 +97,20 @@ public class CategoriesRepo implements SetDataCallback {
         mCardsRepo.answerCard();
     }
 
-    public LiveData<List<CardModel>> getAnsweredCards() {
-        return mCardsRepo.getAnsweredCards();
+    public void changeAnswerState(int pos) {
+        mCardsRepo.changeAnswerState(pos);
     }
 
-    public LiveData<List<CardModel>> getDeclinedCards() {
-        return mCardsRepo.getDeclinedCards();
+    public boolean getAnswerState(int pos) {
+        return mCardsRepo.getAnswerState(pos);
     }
 
-    public void makeDeclined(int dec_pos) {
-        mCardsRepo.makeDeclined(dec_pos);
+    public String getUsedCardByPosition(int pos) {
+        return mCardsRepo.getUsedCardByPosition(pos);
     }
 
-    public void makeAnswered(int ans_pos) {
-        mCardsRepo.makeAnswered(ans_pos);
+    public int getAmountOfUsedCards() {
+        return mCardsRepo.getAmountOfUsedCards();
     }
 
     public void newRoundMix() {
@@ -117,6 +119,14 @@ public class CategoriesRepo implements SetDataCallback {
 
     public String getCard() {
         return mCardsRepo.getCard();
+    }
+
+    public int getCurrentPosition() {
+        return mCardsRepo.getCurrentPosition();
+    }
+
+    public void setCurrentPosition(int position) {
+        mCardsRepo.setCurrentPosition(position);
     }
 
     public void saveState() {
@@ -141,6 +151,23 @@ public class CategoriesRepo implements SetDataCallback {
             callback.onLoad(null);
         } else {
             Log.d("Sadddd", "Wrong data back");
+        }
+    }
+
+    public void onLoaded(Integer sVersion) {
+        Log.d("Network", "We've got network ver: " + sVersion);
+        if (version < sVersion) {
+            loadNewCategories();
+        }
+        else {
+            mCallback.onLoad(null);
+        }
+    }
+
+    public void onLoaded(Throwable t) {
+        Log.d("Network", "Version = " + version);
+        if (version == -1) {
+            mCallback.onLoad(t);
         }
     }
 
@@ -177,7 +204,7 @@ public class CategoriesRepo implements SetDataCallback {
             version = -1;
     }
 
-    private void updateVersion(List <CategoryModel> newCategories) {
+    private void updateVersion(List<CategoryModel> newCategories) {
         for (CategoryModel category : newCategories) {
             int categoryVersion = category.getVersion();
             if (categoryVersion > version)
@@ -188,39 +215,26 @@ public class CategoriesRepo implements SetDataCallback {
     private void loadCategoriesFromDatabase() {
         dbManager.getCategoriesNoCards(); //TODO если их нет - грузить с нетворка + обыграть на UI загрузку
         updateVersion();
+        Log.d("Network", "Version ???? " + version);
+    }
+
+    public void getCount(DbManager.CountListener listener) {
+        dbManager.getCount(listener);
     }
 
     public CategoriesAPI getCategoriesAPI() {
         return categoriesNetworkService.getCategoriesAPI();
     }
 
-    public void getNewCategories(LoadDataCallback callback) { //TODO переделать
+    public void getNewCategories() { //TODO переделать
         //откуда брать версию? отсюда же
-        updateVersion();
-        categoriesNetworkService.getNewCategories(version, callback, this);
-//        dbManager.getCategoriesVersion(new DbManager.VersionCallback() {
-//            @Override
-//            public void onVersionGot(int version) {
-//                categoriesNetworkService.getNewCategories(version, callback, this {
-//                    @Override
-//                    public void onLoaded(List<CategoryModel> categories, LoadDataCallback callback) {
-//                        if (categories != null) {
-//                            Log.d("save loaded", "saved " + categories.size());
-//                            mCategories.postValue(categories);
-//                            loadCategoriesToDatabase();
-//                            callback.onLoad(null);
-//                            for (CategoryModel category : categories) {
-//                                int categoryVersion = category.getVersion();
-//                                if (categoryVersion > version)
-//                                    version = categoryVersion;
-//                            }
-//                        } else {
-//                            Log.d("Sadddd", "Wrong data back");
-//                        }
-//                    }
-//                });
-//            }
-//        });
+//        loadCategoriesFromDatabase();
+        Log.d("Network", "Version: " + version);
+        categoriesNetworkService.getVersion(this);
+    }
+
+    private void loadNewCategories() {
+        categoriesNetworkService.getNewCategories(version, mCallback, this);
     }
 
     public int getAmountOfCards() {
@@ -231,19 +245,10 @@ public class CategoriesRepo implements SetDataCallback {
         dbManager.update(categoryModelList);
     }
 
-    ;
 
     public int getCategoriesSize() {
         return mCategories
                 .getValue()
                 .size();
-    }
-
-    public String getAnsweredCardByPosition(int position) {
-        return mCardsRepo.getAnsweredCardByPosition(position);
-    }
-
-    public String getDeclinedCardByPosition(int position) {
-        return mCardsRepo.getDeclinedCardByPosition(position);
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,8 +41,9 @@ public class ResultTeamFragment extends Fragment {
                 this.wordNameView = teamView.findViewById(R.id.word_from_game);
             }
 
-            public void bind(String wordName) {
+            public void bind(String wordName, View.OnClickListener listener) {
                 wordNameView.setText(wordName);
+                wordNameView.setOnClickListener(listener);
             }
         }
 
@@ -54,13 +56,20 @@ public class ResultTeamFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TeamStatsViewHolder holder, int position) {
-            String wordName = viewModel.getAnsweredCardByPosition(position);
-            holder.bind(wordName);
+            String wordName = viewModel.getUsedCardByPosition(position) + " " + viewModel.getAnswerState(position);
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    viewModel.changeAnswerState(position);
+                }
+            };
+            holder.bind(wordName, listener);
         }
 
         @Override
         public int getItemCount() {
-            return viewModel.getAnsweredCards().getValue().size();
+            return viewModel.getAmountOfUsedCards();
         }
     }
 
@@ -93,13 +102,21 @@ public class ResultTeamFragment extends Fragment {
             }
         };
 
+        viewModel
+                .getCards()
+                .observe(getViewLifecycleOwner(), observerCurrentGame);
+
         teamStatsList.setAdapter(teamStatsAdapter);
 
         Button okButton = view.findViewById(R.id.result_ok_button);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callbackFunctions.callback(GameActions.start_game_process);
+                if (!viewModel.nextGameMode()) {
+                    Toast toast = Toast.makeText(getContext(), "Game ended", Toast.LENGTH_LONG);
+                    toast.show();
+                    callbackFunctions.callback(GameActions.start_game_process);
+                }
             }
         });
 

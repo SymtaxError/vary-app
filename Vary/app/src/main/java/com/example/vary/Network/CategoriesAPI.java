@@ -30,4 +30,7 @@ public interface CategoriesAPI {
     @GET("/categories")
     Call<List<CategoryPlain>> getNewCategories(@Query("version") int version);
 
+    @GET("/categories/version")
+    Call<Integer> getVersion();
+
 }

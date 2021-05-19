@@ -18,7 +18,7 @@ public class CardModel {
     public String mCategory;
 
     @Ignore
-    public Boolean mUsed;
+    private boolean mAnswered;
 
     @Ignore
     public String getText() {
@@ -34,5 +34,20 @@ public class CardModel {
 
     public int getVersion() {
         return mVersion;
+    }
+
+    @Ignore
+    public void setAnswerState(boolean ansState) {
+        mAnswered = ansState;
+    }
+
+    @Ignore
+    public void changeAnswerState() {
+        mAnswered = !mAnswered;
+    }
+
+    @Ignore
+    public boolean getAnswerState() {
+        return mAnswered;
     }
 }

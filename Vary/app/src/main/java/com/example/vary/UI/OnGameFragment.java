@@ -78,6 +78,7 @@ public class OnGameFragment extends Fragment {
     @SuppressLint("SetTextI18n") //TODO refactor
     private void swipeUp(View v) {
 //        cardText.setText("CARD "+Math.abs(new Random().nextInt()%100));
+
         viewModel.answerCard();
         cardText.setText(viewModel.getCard());
         roundScoreView.setText(String.valueOf(++roundScore));

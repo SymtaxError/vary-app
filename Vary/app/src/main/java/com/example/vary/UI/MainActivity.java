@@ -22,11 +22,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.vary.Database.DbManager;
+import com.example.vary.Models.CategoryModel;
 import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements CallbackFragment, CallbackSettings {
@@ -71,10 +73,20 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                     .add(R.id.container, fragment)
                     .commit();
         }
-        final DbManager manager = DbManager.getInstance(this);
 
-        manager.getCount(countListener);
-
+        viewModel = new ViewModelProvider(this).get(CardsViewModel.class);
+        Observer<List<CategoryModel>> observer = new Observer<List<CategoryModel>>() {
+            @Override
+            public void onChanged(List<CategoryModel> categoryModels) {
+                if (categoryModels.size() != 0) {
+                    String countText = "Loaded from " + categoryModels.size() + " categories";
+                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+        viewModel.getCategories().observe(this, observer);
+//        final DbManager manager = DbManager.getInstance(this);
+//        manager.getCount(countListener);
         // binding service to activity
         Intent intent = new Intent(this, LocalService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -91,24 +103,21 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         Observer<LoadStatus> observerLoadStatus = new Observer<LoadStatus>() {
             @Override
             public void onChanged(LoadStatus loadStatus) {
+                Toast toast;
                 if (loadStatus.getError() != null) {
-                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
-                    toast.show();
+                    toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
                 }
                 else {
-
-                    Toast toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG);
-                    toast.show();
+                    toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG);
                 }
+                toast.show();
             }
         };
 
-        viewModel = new ViewModelProvider(this).get(CardsViewModel.class);
+//        viewModel = new ViewModelProvider(this).get(CardsViewModel.class);
         viewModel
                 .getLoadStatus()
                 .observe(this, observerLoadStatus);
-
-
     }
 
     public int getWidth() {
@@ -297,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .addToBackStack(null)
+//                    .addToBackStack(null)
                     .commit();
         }
     }

@@ -9,15 +9,15 @@ public class CurrentGameModel {
     List<CardModel> mCardModelList;
     List<TeamModel> mCommands;
     boolean mSteal;
-    PenaltyType mFine;
+    PenaltyType mPenalty;
     int mRoundDuration;
-    GameMode mCurMode;
+    GameMode mCurMode = GameMode.explain_mode;
+    int currentCard = 0;
 
-    public CurrentGameModel(boolean steal, PenaltyType fine, int roundDuration, GameMode curMode) {
+    public CurrentGameModel(boolean steal, PenaltyType penalty, int roundDuration) {
         mSteal = steal;
-        mFine = fine;
+        mPenalty = penalty;
         mRoundDuration = roundDuration;
-        mCurMode = curMode;
     }
 
     public void setCardModelList(List<CardModel> cardModelList) {
@@ -30,5 +30,34 @@ public class CurrentGameModel {
 
     public int getRoundDuration() {
         return mRoundDuration;
+    }
+
+    public boolean nextGameMode() {
+        if (mCurMode == GameMode.explain_mode) {
+            mCurMode = GameMode.gesture_mode;
+        }
+        else if (mCurMode == GameMode.gesture_mode) {
+            mCurMode = GameMode.one_word_mode;
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+
+    public PenaltyType getPenalty() {
+        return mPenalty;
+    }
+
+    public boolean getSteal() {
+        return mSteal;
+    }
+
+    public GameMode getGameMode() {
+        return mCurMode;
+    }
+
+    public void setCurrentCard() {
+
     }
 }

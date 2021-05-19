@@ -72,6 +72,22 @@ public class CategoriesNetworkService {
         });
     }
 
+    public void getVersion(SetDataCallback callbackLoad) {
+        mCategoriesAPI.getVersion().enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callbackLoad.onLoaded(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                callbackLoad.onLoaded(t);
+            }
+        });
+    }
+
     private List<CategoryModel> transformDeck(List<CategoriesAPI.CategoryPlain> body, LoadDataCallback callback) {
         List<CategoryModel> result = new ArrayList<>();
         for (CategoriesAPI.CategoryPlain categoryPlain : body) {

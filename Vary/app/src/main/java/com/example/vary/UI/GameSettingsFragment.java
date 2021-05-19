@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -187,7 +188,8 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     void bindButton(int id, GameActions action) {
         Button button = view.findViewById(id);
         button.setOnClickListener(v -> {
-            viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, penalty, steal, GameMode.explain_mode, startTeam);
+            Log.d("Settings", "round duration: " + roundDuration);
+            viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, penalty, steal, startTeam);
             fCallback.callback(action);
         });
     }
@@ -221,7 +223,6 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
             startTeam--;
         }
 
-        viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, penalty, steal, GameMode.explain_mode, startTeam);
         super.onDestroyView();
     }
 }
