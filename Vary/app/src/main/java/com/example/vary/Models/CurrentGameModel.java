@@ -1,6 +1,6 @@
 package com.example.vary.Models;
 
-import com.example.vary.UI.FineType;
+import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 
 import java.util.List;
@@ -9,11 +9,11 @@ public class CurrentGameModel {
     List<CardModel> mCardModelList;
     List<TeamModel> mCommands;
     boolean mSteal;
-    FineType mFine;
+    PenaltyType mFine;
     int mRoundDuration;
     GameMode mCurMode;
 
-    public CurrentGameModel(boolean steal, FineType fine, int roundDuration, GameMode curMode) {
+    public CurrentGameModel(boolean steal, PenaltyType fine, int roundDuration, GameMode curMode) {
         mSteal = steal;
         mFine = fine;
         mRoundDuration = roundDuration;

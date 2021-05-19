@@ -13,7 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class CardsRepo {
+public class
+CardsRepo {
     private final static MutableLiveData<List<CardModel>> mCards = new MutableLiveData<>();
     private int currentPosition;
     private int amountOfCards;

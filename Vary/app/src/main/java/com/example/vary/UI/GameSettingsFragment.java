@@ -39,7 +39,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     private ArrayAdapter<String> arrayAdapterCategories;
     private ArrayList<String> mTeamsNames = new ArrayList<>();
     private ArrayList<String> mCategoriesNames = new ArrayList<>();
-    private FineType fine;
+    private PenaltyType penalty;
     private int amountOfCards;
     private int roundDuration;
     private int startTeam;
@@ -187,7 +187,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     void bindButton(int id, GameActions action) {
         Button button = view.findViewById(id);
         button.setOnClickListener(v -> {
-            viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startTeam);
+            viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, penalty, steal, GameMode.explain_mode, startTeam);
             fCallback.callback(action);
         });
     }
@@ -195,13 +195,13 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     public void onPenaltyGroupClicked( RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.no_penalty:
-                fine = FineType.no_fine;
+                penalty = PenaltyType.no_penalty;
                 break;
             case  R.id.loss_points_penalty:
-                fine = FineType.lose_points;
+                penalty = PenaltyType.lose_points;
                 break;
             case R.id.players_task_penalty:
-                fine = FineType.players_task;
+                penalty = PenaltyType.players_task;
                 break;
         }
     }
@@ -221,7 +221,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
             startTeam--;
         }
 
-        viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, fine, steal, GameMode.explain_mode, startTeam);
+        viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, penalty, steal, GameMode.explain_mode, startTeam);
         super.onDestroyView();
     }
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.vary.Database.DbManager;
-import com.example.vary.UI.FineType;
+import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.TeamModel;
@@ -43,8 +43,8 @@ public class CurrentGameRepo {
         //save to db
     }
 
-    public void setGameModel(boolean steal, FineType fine, int roundDuration, GameMode gameMode) {
-        gameModel.postValue(new CurrentGameModel(steal, fine, roundDuration, gameMode));
+    public void setGameModel(boolean steal, PenaltyType penalty, int roundDuration, GameMode gameMode) {
+        gameModel.postValue(new CurrentGameModel(steal, penalty, roundDuration, gameMode));
     }
 
     protected void restoreState() {

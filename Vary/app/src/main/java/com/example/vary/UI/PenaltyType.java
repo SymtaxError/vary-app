@@ -1,7 +1,7 @@
 package com.example.vary.UI;
 
-public enum FineType {
-    no_fine,
+public enum PenaltyType {
+    no_penalty,
     lose_points,
     players_task,
 }

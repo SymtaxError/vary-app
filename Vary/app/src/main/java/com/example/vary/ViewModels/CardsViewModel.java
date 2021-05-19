@@ -12,7 +12,7 @@ import com.example.vary.Repositories.CategoriesRepo;
 import com.example.vary.Repositories.TeamsRepo;
 import com.example.vary.Repositories.CurrentGameRepo;
 import com.example.vary.Database.DbManager;
-import com.example.vary.UI.FineType;
+import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 import com.example.vary.UI.LoadDataCallback;
 import com.example.vary.Network.LoadStatus;
@@ -119,11 +119,11 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     }
 
-    public void setCurrentGame(int categoryIndex, int amountOfCards, int roundDuration, FineType fine, boolean steal, GameMode gameMode, int startTeam) {
+    public void setCurrentGame(int categoryIndex, int amountOfCards, int roundDuration, PenaltyType penalty, boolean steal, GameMode gameMode, int startTeam) {
         mCategoriesRepo.fillCards(categoryIndex, amountOfCards);
         mCategoriesRepo.mixCards();
         mTeamsRepo.changeOrder(startTeam);
-        gameRepo.setGameModel(steal, fine, roundDuration, gameMode);
+        gameRepo.setGameModel(steal, penalty, roundDuration, gameMode);
     }
 
     public LiveData<List<CategoryModel>> getCategories() {
