@@ -18,6 +18,9 @@ public class CardModel {
     public String mCategory;
 
     @Ignore
+    public Boolean mUsed;
+
+    @Ignore
     public String getText() {
         return mText;
     }

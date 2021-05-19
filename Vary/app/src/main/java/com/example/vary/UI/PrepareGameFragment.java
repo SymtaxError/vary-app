@@ -18,6 +18,7 @@ import com.example.vary.ViewModels.CardsViewModel;
 
 import java.util.List;
 
+//TODO возможно стоит убрать этот фрагмент?
 
 public class PrepareGameFragment extends Fragment {
     CallbackFragment fCallback;

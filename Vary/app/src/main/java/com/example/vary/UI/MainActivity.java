@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .getClass()
                 .equals(PrepareGameFragment.class)) {
             PrepareGameFragment fragment = new PrepareGameFragment();
-            fragment.setCallback(this::callback);
+            fragment.setCallback(this);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .getClass()
                 .equals(SetTeamsFragment.class)) {
             SetTeamsFragment fragment = new SetTeamsFragment();
-            fragment.setCallback(this::callback);
+            fragment.setCallback(this);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .getClass()
                 .equals(SetTeamsFragment.class)) {
             SettingsFragment fragment = new SettingsFragment();
-            fragment.setCallback(this::callback);
+            fragment.setCallback(this);
 
             SharedPreferences sp = this.getSharedPreferences(prefs, MODE_PRIVATE);
 
