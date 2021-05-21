@@ -115,10 +115,6 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mTeamsRepo.renameTeam(name, pos);
     }
 
-    public TeamModel getTeam(int position) {
-        return mTeamsRepo.getTeam(position);
-    }
-
     public void saveState() {
 
     }
@@ -146,6 +142,14 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         return gameRepo.getSteal();
     }
 
+    public void setCurrentRoundPoints(int points) {
+        gameRepo.setCurrentRoundPoints(points);
+    }
+
+    public void setRoundTimeLeft(int time) {
+        gameRepo.setRoundTimeLeft(time);
+    }
+
     public LiveData<List<CategoryModel>> getCategories() {
         return mCategoriesRepo.getCategories();
     }
@@ -171,7 +175,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public String getCurTeamName(int pos) {
-        return mTeamsRepo.getCurTeamName(pos);
+        return mTeamsRepo.getTeamName(pos);
     }
 
     public void removeTeam(int pos) {

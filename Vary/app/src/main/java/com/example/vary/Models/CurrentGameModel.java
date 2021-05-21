@@ -13,6 +13,8 @@ public class CurrentGameModel {
     int mRoundDuration;
     GameMode mCurMode = GameMode.explain_mode;
     int currentCard = 0;
+    int currentRoundPoints = 0;
+    int roundTimeLeft = 0;
 
     public CurrentGameModel(boolean steal, PenaltyType penalty, int roundDuration) {
         mSteal = steal;
@@ -57,7 +59,29 @@ public class CurrentGameModel {
         return mCurMode;
     }
 
-    public void setCurrentCard() {
-
+    public void setCurrentCard(int curCard) {
+        currentCard = curCard;
     }
+
+    public int getCurrentCard() {
+        return currentCard;
+    }
+
+    public void setCurrentRoundPoints(int currentPoints) {
+        currentRoundPoints = currentPoints;
+    }
+
+    public int getCurrentRoundPoints() {
+        return currentRoundPoints;
+    }
+
+    public void setRoundTimeLeft(int time) {
+        roundTimeLeft = time;
+    }
+
+    public int getRoundTimeLeft() {
+        return roundTimeLeft;
+    }
+
+
 }

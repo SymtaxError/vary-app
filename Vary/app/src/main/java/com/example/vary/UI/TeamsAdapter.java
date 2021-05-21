@@ -46,7 +46,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final int itemType = getItemViewType(position);
         if (itemType == type_team) {
-            String team = mViewModel.getTeam(position).getName();
+            String team = mViewModel.getTeamName(position);
             View.OnClickListener delListener = v -> deleteListener.deleteItem(position);
             View.OnClickListener renListener = v -> renameListener.renameItem(position);
             ((TeamsViewHolder) holder).bind(team, delListener, renListener);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,6 +29,8 @@ import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -289,4 +292,9 @@ public class OnGameFragment extends Fragment {
         super.onPause();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        viewModel.
+        super.onSaveInstanceState(outState);
+    }
 }

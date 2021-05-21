@@ -78,4 +78,34 @@ public class CurrentGameRepo {
     public boolean getSteal() {
         return gameModel.getValue().getSteal();
     }
+
+    public void setCurrentCard(int curCard) {
+        CurrentGameModel model = gameModel.getValue();
+        model.setCurrentCard(curCard);
+        gameModel.postValue(model);
+    }
+
+    public int getCurrentCard() {
+        return gameModel.getValue().getCurrentCard();
+    }
+
+    public void setCurrentRoundPoints(int currentPoints) {
+        CurrentGameModel model = gameModel.getValue();
+        model.setCurrentRoundPoints(currentPoints);
+        gameModel.postValue(model);
+    }
+
+    public int getCurrentRoundPoints() {
+        return gameModel.getValue().getCurrentRoundPoints();
+    }
+
+    public void setRoundTimeLeft(int time) {
+        CurrentGameModel model = gameModel.getValue();
+        model.setRoundTimeLeft(time);
+        gameModel.postValue(model);
+    }
+
+    public int getRoundTimeLeft() {
+        return gameModel.getValue().getRoundTimeLeft();
+    }
 }

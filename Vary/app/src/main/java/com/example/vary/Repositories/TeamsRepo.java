@@ -62,11 +62,6 @@ public class TeamsRepo {
         return sInstance;
     }
 
-    public TeamModel getTeam(int position) {
-        return mTeams.getValue()
-                .get(position);
-    }
-
     public String getTeamName(int position) {
         return mTeams.getValue()
                 .get(position)
@@ -108,12 +103,6 @@ public class TeamsRepo {
                 .size();
     }
 
-    public String getCurTeamName(int pos) {
-        return mTeams
-                .getValue()
-                .get(pos)
-                .getName();
-    }
 
     public ArrayList<String> getTeamsNames() {
         ArrayList<String> names = new ArrayList<>();
