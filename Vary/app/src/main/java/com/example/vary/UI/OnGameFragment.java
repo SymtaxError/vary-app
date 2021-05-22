@@ -294,7 +294,6 @@ public class OnGameFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
-        viewModel.
         super.onSaveInstanceState(outState);
     }
 }

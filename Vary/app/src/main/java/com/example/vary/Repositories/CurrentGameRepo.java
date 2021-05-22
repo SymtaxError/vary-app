@@ -15,7 +15,7 @@ import com.example.vary.Models.CurrentGameModel;
 import java.util.List;
 
 public class CurrentGameRepo {
-    private MutableLiveData<CurrentGameModel> gameModel = new MutableLiveData<>();
+    private final MutableLiveData<CurrentGameModel> gameModel = new MutableLiveData<>();
     private static CurrentGameRepo sInstance = null;
     private DbManager dbManager;
 
@@ -38,8 +38,13 @@ public class CurrentGameRepo {
     }
 
     public void saveState(List<CardModel> cards, List<TeamModel> commands) {
-        gameModel.getValue().setCardModelList(cards);
-        gameModel.getValue().setCommands(commands);
+        CurrentGameModel model = gameModel.getValue();
+        if (model != null) {
+            model.setCommands(commands);
+            model.setCardModelList(cards);
+            gameModel.postValue(model);
+        }
+
         //save to db
     }
 
@@ -52,9 +57,12 @@ public class CurrentGameRepo {
      */
     public boolean nextGameMode() {
         CurrentGameModel game = gameModel.getValue();
-        boolean result = game.nextGameMode();
-        if (result) {
-            gameModel.postValue(game);
+        boolean result = false;
+        if (game != null) {
+            result = game.nextGameMode();
+            if (result) {
+                gameModel.postValue(game);
+            }
         }
         return result;
     }
@@ -64,48 +72,75 @@ public class CurrentGameRepo {
     }
 
     public int getRoundDuration() {
-        return gameModel.getValue().getRoundDuration();
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getRoundDuration();
+        }
+        return 0;
     }
 
     public PenaltyType getPenalty() {
-        return gameModel.getValue().getPenalty();
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getPenalty();
+        }
+        return PenaltyType.no_penalty;
     }
 
     public GameMode getGameMode() {
-        return gameModel.getValue().getGameMode();
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getGameMode();
+        }
+        return GameMode.explain_mode;
     }
 
     public boolean getSteal() {
-        return gameModel.getValue().getSteal();
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getSteal();
+        }
+        return false;
     }
 
-    public void setCurrentCard(int curCard) {
+    public void setCurrentAndStartCard(int curCard, int startCard) {
         CurrentGameModel model = gameModel.getValue();
-        model.setCurrentCard(curCard);
-        gameModel.postValue(model);
+        if (model != null) {
+            model.setCurrentAndStartCard(curCard, startCard);
+            gameModel.postValue(model);
+        }
     }
 
     public int getCurrentCard() {
-        return gameModel.getValue().getCurrentCard();
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getCurrentCard();
+        }
+        return 0;
     }
 
     public void setCurrentRoundPoints(int currentPoints) {
         CurrentGameModel model = gameModel.getValue();
-        model.setCurrentRoundPoints(currentPoints);
-        gameModel.postValue(model);
+        if (model != null) {
+            model.setCurrentRoundPoints(currentPoints);
+            gameModel.postValue(model);
+        }
     }
 
     public int getCurrentRoundPoints() {
-        return gameModel.getValue().getCurrentRoundPoints();
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getCurrentRoundPoints();
+        }
+        return 0;
     }
 
     public void setRoundTimeLeft(int time) {
         CurrentGameModel model = gameModel.getValue();
-        model.setRoundTimeLeft(time);
-        gameModel.postValue(model);
+        if (model != null) {
+            model.setRoundTimeLeft(time);
+            gameModel.postValue(model);
+        }
     }
 
     public int getRoundTimeLeft() {
-        return gameModel.getValue().getRoundTimeLeft();
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getRoundTimeLeft();
+        }
+        return 0;
     }
 }

@@ -13,6 +13,7 @@ public class CurrentGameModel {
     int mRoundDuration;
     GameMode mCurMode = GameMode.explain_mode;
     int currentCard = 0;
+    int startRoundCard = 0;
     int currentRoundPoints = 0;
     int roundTimeLeft = 0;
 
@@ -59,12 +60,17 @@ public class CurrentGameModel {
         return mCurMode;
     }
 
-    public void setCurrentCard(int curCard) {
+    public void setCurrentAndStartCard(int curCard, int startCard) {
         currentCard = curCard;
+        startRoundCard = startCard;
     }
 
     public int getCurrentCard() {
         return currentCard;
+    }
+
+    public int getStartRoundCard() {
+        return startRoundCard;
     }
 
     public void setCurrentRoundPoints(int currentPoints) {

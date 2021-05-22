@@ -41,14 +41,16 @@ public class LocalService extends Service {
     public void runTask(int time) {
         System.out.println("task running now");
         timer = new Timer();
-        localTimer = time;
-        viewModel.setTimerCount(localTimer);
-        timer.schedule(new changeTimerInView(), 0, 1000);
+        localTimer = time * 100;
+        viewModel.setTimerCount(time);
+        timer.schedule(new changeTimerInView(), 0, 10);
     }
 
     public void resumeTask() {
-        viewModel.setTimerCount(localTimer);
-        timer.schedule(new changeTimerInView(), 0, 1000);
+        int timeLeft = (localTimer % 100 > 50) ? (localTimer / 100 + 1) : (localTimer / 100);
+        localTimer = timeLeft * 100;
+        viewModel.setTimerCount(timeLeft);
+        timer.schedule(new changeTimerInView(), 0, 10);
     }
 
     public void pauseTask() {
@@ -59,7 +61,10 @@ public class LocalService extends Service {
     private class changeTimerInView extends TimerTask {
         public void run() {
             localTimer--;
-            viewModel.setTimerCount(localTimer);
+            if (localTimer % 100 == 0)
+            {
+                viewModel.setTimerCount(localTimer / 100);
+            }
             if (localTimer == 0) {
                 timer.cancel();
             }

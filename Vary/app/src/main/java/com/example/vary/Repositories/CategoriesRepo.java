@@ -28,12 +28,9 @@ public class CategoriesRepo implements SetDataCallback {
     private static int version;
     LoadDataCallback mCallback;
 
-    private final DbManager.CategoryRepositoryListener categoryRepositoryListener = new DbManager.CategoryRepositoryListener() {
-        @Override
-        public void onGetCategoriesNoCards(List<CategoryModel> categoryModels) {
-            if (categoryModels.size() > 0)
-                mCategories.postValue(categoryModels); //TODO обработать
-        }
+    private final DbManager.CategoryRepositoryListener categoryRepositoryListener = categoryModels -> {
+        if (categoryModels.size() > 0)
+            mCategories.postValue(categoryModels); //TODO обработать
     };
 
     public void setLoadCallback(LoadDataCallback callback) {
@@ -78,7 +75,7 @@ public class CategoriesRepo implements SetDataCallback {
 
     public void fillCards(int index, int amount) {
         CategoryModel category = Objects.requireNonNull(mCategories.getValue()).get(index);
-        mCardsRepo.fillCards(category.getName(), amount, index);
+        mCardsRepo.fillCards(category.getName(), amount);
     }
 
     public LiveData<List<CardModel>> getCards() {
@@ -247,8 +244,11 @@ public class CategoriesRepo implements SetDataCallback {
 
 
     public int getCategoriesSize() {
-        return mCategories
-                .getValue()
-                .size();
+        if (mCategories.getValue() != null) {
+            return mCategories
+                    .getValue()
+                    .size();
+        }
+        return 0;
     }
 }
