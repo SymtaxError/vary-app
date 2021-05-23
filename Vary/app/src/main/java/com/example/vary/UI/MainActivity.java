@@ -17,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -147,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             case prepare_game:
                 prepareGameProcess();
                 break;
+            case create_game_process:
+                createGameProcess();
             case start_game_process:
                 startGameProcess();
                 break;
@@ -158,11 +161,27 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
     }
 
+    private void createGameProcess() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(OnGameFragment.class)) {
+//            getSupportFragmentManager().popBackStack(); //TODO вернуть
+////            getSupportFragmentManager().popBackStack(); //TODO вернуть
+////            getSupportFragmentManager().popBackStack(); //TODO вернуть
+        }
+    }
+
     void openGameSettings() {
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
                 .equals(GameSettingsFragment.class)) {
+            Fragment old_fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+            if (old_fragment != null) {
+                getSupportFragmentManager().beginTransaction().remove(old_fragment).commit();
+                getSupportFragmentManager().popBackStack();
+            }
             GameSettingsFragment fragment = new GameSettingsFragment();
             fragment.setCallback(this);
             getSupportFragmentManager()
@@ -183,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             fragment.setCallbackFunctions(this);
             fragment.setTimerService(mService);
 //            getSupportFragmentManager().popBackStack(); //TODO вернуть
+//            getSupportFragmentManager().popBackStack(); //TODO вернуть
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
@@ -201,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .addToBackStack(null)
+//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -216,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
+                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -263,6 +283,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 //                        .getClass()
 //                        .equals(FragmentActivity.class))
 //                    getSupportFragmentManager().popBackStack();
+                Fragment old_fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+                getSupportFragmentManager().beginTransaction().remove(old_fragment).commit();
                 super.onBackPressed();
             }
         } else {
