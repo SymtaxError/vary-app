@@ -122,12 +122,16 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public void setCurrentGame(int categoryIndex, int amountOfCards, int roundDuration, PenaltyType penalty, boolean steal, int startTeam) {
         mCategoriesRepo.fillCards(categoryIndex, amountOfCards);
         mCategoriesRepo.mixCards();
-        mTeamsRepo.changeOrder(startTeam);
+        mTeamsRepo.changeOrder(1);
         gameRepo.setGameModel(steal, penalty, roundDuration);
     }
 
-    public boolean nextGameMode() {
-        return gameRepo.nextGameMode();
+    public boolean nextRound() {
+        mTeamsRepo.changeOrder(1);
+        if (mCategoriesRepo.newRoundRequired()) {
+            return gameRepo.nextGameMode();
+        }
+        return true;
     }
 
     public PenaltyType getPenalty() {
