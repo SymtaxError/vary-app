@@ -25,11 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardsViewModel extends AndroidViewModel implements LoadDataCallback {
-    private static TeamsRepo mTeamsRepo = TeamsRepo.getInstance();
-    private static LiveData<List<TeamModel>> mTeams = mTeamsRepo.getTeams();
-    private static MutableLiveData<LoadStatus> mLoadStatus = new MutableLiveData<>();
-    private static CategoriesRepo mCategoriesRepo = CategoriesRepo.getInstance();
-    private static CurrentGameRepo gameRepo = CurrentGameRepo.getInstance();
+    private static final TeamsRepo mTeamsRepo = TeamsRepo.getInstance();
+    private static final LiveData<List<TeamModel>> mTeams = mTeamsRepo.getTeams();
+    private static final MutableLiveData<LoadStatus> mLoadStatus = new MutableLiveData<>();
+    private static final CategoriesRepo mCategoriesRepo = CategoriesRepo.getInstance();
+    private static final CurrentGameRepo gameRepo = CurrentGameRepo.getInstance();
 
     public void getNewCategories() {
         mCategoriesRepo.getNewCategories();
@@ -214,7 +214,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     /*
     Таймер
      */
-    private static MutableLiveData<Integer> mTimerCount = new MutableLiveData<>();
+    private static final MutableLiveData<Integer> mTimerCount = new MutableLiveData<>();
 
     public void setTimerCount(Integer seconds) {
         mTimerCount.postValue(seconds);

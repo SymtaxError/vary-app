@@ -96,17 +96,10 @@ public class OnGameFragment extends Fragment implements CardCallback {
     }
 
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //может сюда закинуть
-        super.onViewCreated(view, savedInstanceState);
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
         TextView teamName = view.findViewById(R.id.team_name_on_game);
@@ -129,7 +122,6 @@ public class OnGameFragment extends Fragment implements CardCallback {
         RelativeLayout root = view.findViewById(R.id.card_root);
         roundScoreView = view.findViewById(R.id.round_score);
         roundScore = 0;
-        dropCardValue = dp(150);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dp(200), dp(200));
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -139,6 +131,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
                 layoutParams.topMargin = (root.getHeight() - layoutParams.height) / 2;
                 card.setLayoutParams(layoutParams);
                 root.addView(card);
+                dropCardValue = dp(150);
             }
         });
         View.OnTouchListener cardSwipeListener = (v, event) -> {
@@ -311,7 +304,6 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @Override
     public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
-//        viewModel.
         super.onSaveInstanceState(outState);
     }
 

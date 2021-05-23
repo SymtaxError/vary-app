@@ -44,12 +44,17 @@ public class TeamsRepo {
 
     public void removeTeams() {
         List<TeamModel> listTeams = mTeams.getValue();
-        listTeams.removeAll(listTeams);
-        mTeams.postValue(listTeams);
+        if (listTeams != null) {
+            listTeams.removeAll(listTeams);
+            mTeams.postValue(listTeams);
+        }
     }
 
     public void addTeam(String teamName) {
         List<TeamModel> listTeams = mTeams.getValue();
+        if (listTeams == null) {
+            listTeams = new ArrayList<>();
+        }
         listTeams.add(new TeamModel(teamName, mTeams.getValue().size()));
         mTeams.postValue(listTeams);
     }
@@ -63,55 +68,69 @@ public class TeamsRepo {
     }
 
     public String getTeamName(int position) {
-        return mTeams.getValue()
-                .get(position)
-                .getName();
+        if (mTeams.getValue() != null) {
+            return mTeams.getValue()
+                    .get(position)
+                    .getName();
+        }
+        return null;
     }
 
     public int getTeamPoints(int position) {
-        return mTeams.getValue()
-                .get(position)
-                .getPoints();
+        if (mTeams.getValue() != null) {
+            return mTeams.getValue()
+                    .get(position)
+                    .getPoints();
+        }
+        return 0;
     }
 
     public void removeTeam(int pos) {
         List<TeamModel> listTeams = mTeams.getValue();
-        listTeams.remove(pos);
-        mTeams.postValue(listTeams);
+        if (listTeams != null) {
+            listTeams.remove(pos);
+            mTeams.postValue(listTeams);
+        }
     }
 
     public void increasePoints(int pos, int newPoints) {
-
         List<TeamModel> listTeams = mTeams.getValue();
-        listTeams
-                .get(pos)
-                .increasePoints(newPoints);
-        mTeams.postValue(listTeams);
+        if (listTeams != null) {
+            listTeams
+                    .get(pos)
+                    .increasePoints(newPoints);
+            mTeams.postValue(listTeams);
+        }
     }
 
     public void renameTeam(String name, int pos) {
-
         List<TeamModel> listTeams = mTeams.getValue();
-        listTeams
-                .get(pos)
-                .setName(name);
-        mTeams.postValue(listTeams);
+        if (listTeams != null) {
+            listTeams
+                    .get(pos)
+                    .setName(name);
+            mTeams.postValue(listTeams);
+        }
     }
 
     public int getSize() {
-        return mTeams.getValue()
-                .size();
+        if (mTeams.getValue() != null) {
+            return mTeams.getValue()
+                    .size();
+        }
+        return 0;
     }
 
 
     public ArrayList<String> getTeamsNames() {
         ArrayList<String> names = new ArrayList<>();
-
-        for (int i = 0; i < getSize(); i++) {
-            names.add(mTeams
-                    .getValue()
-                    .get(i)
-                    .getName());
+        if (mTeams.getValue() != null) {
+            for (int i = 0; i < getSize(); i++) {
+                names.add(mTeams
+                        .getValue()
+                        .get(i)
+                        .getName());
+            }
         }
 
         return names;

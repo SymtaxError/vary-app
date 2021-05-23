@@ -43,50 +43,61 @@ CardsRepo {
 
     public void newRoundMix() {
         List <CardModel> cards = mCards.getValue();
-        int index = startRoundPosition;
-        while (index < currentPosition) {
-            CardModel card = cards.get(index);
-            if (!card.getAnswerState()) {
-                cards.remove(index);
-                currentPosition--;
-                cards.add(card);
+        if (cards != null) {
+            int index = startRoundPosition;
+            while (index < currentPosition) {
+                CardModel card = cards.get(index);
+                if (!card.getAnswerState()) {
+                    cards.remove(index);
+                    currentPosition--;
+                    cards.add(card);
+                }
+                else
+                    index++;
             }
-            else
-                index++;
+            startRoundPosition = currentPosition;
+            List <CardModel> unusedCards = cards.subList(currentPosition, cards.size() - 1);
+            Collections.shuffle(unusedCards);
+            mCards.postValue(cards);
         }
-        startRoundPosition = currentPosition;
-        List <CardModel> unusedCards = cards.subList(currentPosition, cards.size() - 1);
-        Collections.shuffle(unusedCards);
-        mCards.postValue(cards);
     }
 
     public void changeAnswerState(int pos) {
         List<CardModel> cards = mCards.getValue();
-        cards.get((pos + startRoundPosition) % getAmountOfCards()).changeAnswerState();
-        mCards.postValue(cards);
+        if (cards != null) {
+            cards.get(pos + startRoundPosition).changeAnswerState();
+            mCards.postValue(cards);
+        }
     }
 
     public boolean getAnswerState(int pos) {
-        return mCards.getValue()
-                .get(pos + startRoundPosition)
-                .getAnswerState();
+        if (mCards.getValue() != null) {
+            return mCards.getValue()
+                    .get(pos + startRoundPosition)
+                    .getAnswerState();
+        }
+        return false;
     }
 
     public void answerCard() {
         List<CardModel> cards = mCards.getValue();
-        cards.get(currentPosition).setAnswerState(true);
-        mCards.postValue(cards);
-        currentPosition++;
+        if (cards != null) {
+            cards.get(currentPosition).setAnswerState(true);
+            mCards.postValue(cards);
+            currentPosition++;
+        }
     }
 
     public void declineCard() {
         List<CardModel> cards = mCards.getValue();
-        cards.get(currentPosition).setAnswerState(false);
-        mCards.postValue(cards);
-        currentPosition++;
+        if (cards != null) {
+            cards.get(currentPosition).setAnswerState(false);
+            mCards.postValue(cards);
+            currentPosition++;
+        }
     }
 
-    public void fillCards(String categoryName, int amount, int index) {
+    public void fillCards(String categoryName, int amount) {
         //Если количество больше,чем загружено, дозагрузить
         amountOfCards = amount;
 //        mCards.postValue();
@@ -97,19 +108,24 @@ CardsRepo {
 
     public void endCards() {
         boolean answered = true;
-        for (int i = startRoundPosition; i < getAmountOfCards() && answered; i++) {
-            if (!mCards.getValue().get(i).getAnswerState()) {
-                answered = false;
+        List<CardModel> cards = mCards.getValue();
+        if (cards != null) {
+            for (int i = startRoundPosition; i < getAmountOfCards() && answered; i++) {
+                if (! cards
+                        .get(i)
+                        .getAnswerState()) {
+                    answered = false;
+                }
             }
-        }
-        if (!answered) {
-            int oldStartRound = startRoundPosition;
-            newRoundMix();
-            startRoundPosition = oldStartRound;
-        }
-        else {
-            mCallback.callback();
-            currentPosition = 0;
+            if (!answered) {
+                int oldStartRound = startRoundPosition;
+                newRoundMix();
+                startRoundPosition = oldStartRound;
+            }
+            else {
+                mCallback.callback();
+                currentPosition = 0;
+            }
         }
     }
 
@@ -118,6 +134,8 @@ CardsRepo {
             for (CardModel card : mCards.getValue())
                 card.setAnswerState(false);
             Collections.shuffle(mCards.getValue());
+            currentPosition = 0;
+            startRoundPosition = 0;
         }
     }
 
@@ -126,13 +144,15 @@ CardsRepo {
     }
 
     public String getCard() {
-        if (currentPosition == getAmountOfCards()) {
-            endCards();
+        List<CardModel> cards = mCards.getValue();
+        if (cards != null) {
+            if (currentPosition == getAmountOfCards()) {
+                endCards();
+            }
+            CardModel card = cards.get(currentPosition);
+            return card.getText();
         }
-        CardModel cards = mCards
-                .getValue()
-                .get(currentPosition);
-        return cards.getText();
+        return null;
     }
 
     public static synchronized CardsRepo getInstance() {
@@ -147,11 +167,10 @@ CardsRepo {
     } //?
 
     public int getAmountOfCards() {
-        return mCards.getValue().size();
-    }
-
-    public void saveCards() {
-        //saving curr cards to db?
+        if (mCards.getValue() != null) {
+            return mCards.getValue().size();
+        }
+        return 0;
     }
 
     public void setDbManager(DbManager dbManager) {
@@ -160,7 +179,10 @@ CardsRepo {
     }
 
     public String getUsedCardByPosition(int position) {
-        return mCards.getValue().get(position + startRoundPosition).getText();
+        if (mCards.getValue() != null) {
+            return mCards.getValue().get(position + startRoundPosition).getText();
+        }
+        return null;
     }
 
     public int getCurrentPosition() {
