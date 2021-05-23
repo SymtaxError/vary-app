@@ -219,8 +219,17 @@ CardsRepo {
         return currentPosition;
     }
 
+    public int getStartRoundPosition() {
+        return startRoundPosition;
+    }
+
+
     public void setCurrentPosition(int position) {
         currentPosition = position;
+    }
+
+    public void setStartRoundPosition(int position) {
+        startRoundPosition = position;
     }
 
     public int getAmountOfUsedCards() {

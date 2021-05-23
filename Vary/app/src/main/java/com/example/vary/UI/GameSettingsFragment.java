@@ -156,14 +156,16 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (seekBar.equals(amountCardsBar) && progress > 10) {
+        if (seekBar.equals(amountCardsBar)) {
             progress /= getResources().getInteger(R.integer.card_amount_step);
             progress *= getResources().getInteger(R.integer.card_amount_step);
+            progress += 10;
             amountOfCards = progress;
             amountCards.setText(getResources().getText(R.string.amount_cards) + "   " + progress);
-        } else if (seekBar.equals(timeBar) && progress > 10) {
+        } else if (seekBar.equals(timeBar)) {
             progress /= getResources().getInteger(R.integer.time_step);
             progress *= getResources().getInteger(R.integer.time_step);
+            progress += 10;
             roundDuration = progress;
             time.setText(getResources().getText(R.string.time_round) + "   " +  progress);
         }

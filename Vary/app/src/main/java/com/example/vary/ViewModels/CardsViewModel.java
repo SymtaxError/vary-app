@@ -1,6 +1,7 @@
 package com.example.vary.ViewModels;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.example.vary.Network.LoadStatus;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CategoryModel;
 import com.example.vary.Models.TeamModel;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,13 +124,31 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mTeamsRepo.renameTeam(name, pos);
     }
 
+    public void saveState(SharedPreferences.Editor editor) {
+        List<CardModel> mCardModels = CardsRepo.getInstance().getCards().getValue();
+        if (mCardModels == null) {
+            return;
+        }
+        // TODO очки команды ???
+        gameRepo.saveState(mCardModels,
+                            mTeamsRepo.getTeams().getValue(),
+                            editor,
+                            0,
+                            CardsRepo.getInstance().getCurrentPosition(),
+                            CardsRepo.getInstance().getStartRoundPosition(),
+                            getTimerCount().getValue()
+        );
+    }
+
     public void sortTeamsByPoints() {
         mTeamsRepo.sortTeamsByPoints();
     }
 
-    public void saveState() {
 
+    public void restoreState(SharedPreferences sp) {
+        gameRepo.restoreState(sp);
     }
+
 
     public void setCurrentGame(int categoryIndex, int amountOfCards, int roundDuration, PenaltyType penalty, boolean steal, int startTeam) {
         mCategoriesRepo.fillCards(categoryIndex, amountOfCards);
@@ -244,5 +264,4 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public LiveData<Integer> getTimerCount() {
         return mTimerCount;
     }
-
 }

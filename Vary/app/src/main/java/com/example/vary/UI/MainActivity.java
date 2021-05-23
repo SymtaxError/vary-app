@@ -2,6 +2,7 @@ package com.example.vary.UI;
 
 // TODO: дохимичить с полноэкранным режимом
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -17,10 +18,12 @@ import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -29,10 +32,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.vary.Database.DbManager;
 import com.example.vary.Models.CategoryModel;
+import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
+import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public static final String soundKey = "sound";
     public static final String checkUpdatesKey = "check_updates";
     public static final String pushKey = "push";
+
+    public final String TAG = "MyLogger";
+    SharedPreferences mPrefs;
+    SharedPreferences.Editor editor;
 
     private final DbManager.CountListener countListener = new DbManager.CountListener() {
         @Override
@@ -100,6 +109,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         //TODO delete, test sound
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep_short_on);
         mp.start();
+
+        mPrefs = getPreferences(MODE_PRIVATE);
+        editor = mPrefs.edit();
+
+        readModel();
     }
 
 
@@ -142,6 +156,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .getLoadStatus()
                 .observe(this, observerLoadStatus);
     }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        saveModel();
+        super.onSaveInstanceState(outState);
+    }
+
+    private void saveModel() {
+        viewModel.saveState(editor);
+        Log.v(TAG, "saved");
+    }
+
+    private void readModel() {
+        viewModel.restoreState(mPrefs);
+    }
+
 
     public int getWidth() {
         DisplayMetrics displayMetrics = getApplicationContext()
