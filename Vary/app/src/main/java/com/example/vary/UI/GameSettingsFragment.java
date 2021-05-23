@@ -222,7 +222,6 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         } else {
             startTeam--;
         }
-
         super.onDestroyView();
     }
 }
