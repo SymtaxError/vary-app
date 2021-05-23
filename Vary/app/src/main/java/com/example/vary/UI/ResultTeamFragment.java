@@ -112,7 +112,7 @@ public class ResultTeamFragment extends Fragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!viewModel.nextGameMode()) {
+                if (!viewModel.nextRound()) {
                     Toast.makeText(getContext(), "Game ended", Toast.LENGTH_LONG).show();
                     //TODO
                 } else {

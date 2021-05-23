@@ -23,6 +23,7 @@ CardsRepo {
     private DbManager dbManager = null;
     private static CardsRepo sInstance;
     private CardCallback mCallback;
+    private boolean ended = false;
 
     private final DbManager.CardRepositoryListener cardRepositoryListener = new DbManager.CardRepositoryListener() {
         @Override
@@ -134,11 +135,15 @@ CardsRepo {
                 }
             }
             if (!answered) {
+                ended = true;
+                Log.d("Cards", "Mixed");
                 int oldStartRound = startRoundPosition;
                 newRoundMix();
                 startRoundPosition = oldStartRound;
+                Log.d("Cards", "new cur pos = " + currentPosition);
             }
             else {
+                Log.d("Callback", "called");
                 mCallback.callback();
             }
         }
@@ -164,8 +169,11 @@ CardsRepo {
             if (currentPosition == getAmountOfCards()) {
                 endCards();
             }
-            CardModel card = cards.get(currentPosition);
-            return card.getText();
+            if (currentPosition != getAmountOfCards()) {
+                CardModel card = cards.get(currentPosition);
+                return card.getText();
+            }
+
         }
         return null;
     }
@@ -209,8 +217,8 @@ CardsRepo {
     }
 
     public int getAmountOfUsedCards() {
-        if (currentPosition < startRoundPosition) {
-            return getAmountOfCards() - startRoundPosition + currentPosition;
+        if (ended) {
+            return getAmountOfCards() - startRoundPosition;
         }
         return currentPosition - startRoundPosition;
     }
