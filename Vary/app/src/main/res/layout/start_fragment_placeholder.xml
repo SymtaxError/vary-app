@@ -14,13 +14,13 @@
             android:id="@+id/name_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="190dp"
+            android:fontFamily="cursive"
+            android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@color/text_bright"
-            android:fontFamily="cursive"
-            android:textStyle="italic"
             android:textSize="40sp"
-            android:gravity="center"
-            android:layout_marginTop="190dp">
+            android:textStyle="italic">
 
         </TextView>
     </LinearLayout>
@@ -29,8 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
+
         <Button
             android:id="@+id/continue_game"
             android:layout_width="match_parent"
@@ -38,13 +39,12 @@
             android:layout_margin="10dp"
             android:background="@drawable/button_shape"
             android:backgroundTint="@color/primary"
-            android:visibility="visible"
+            android:fontFamily="cursive"
             android:gravity="center"
             android:text="@string/continue_game"
             android:textColor="@color/text_bright"
             android:textSize="23sp"
-            android:fontFamily="cursive"
-            >
+            android:visibility="visible">
 
         </Button>
 
@@ -54,15 +54,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
 
-            android:background="@drawable/button_shape"
             android:layout_marginTop="15dp"
-            android:text="@string/new_game"
+            android:background="@drawable/button_shape"
             android:backgroundTint="@color/primary"
-            android:textColor="@color/text_bright"
-            android:textSize="23sp"
             android:fontFamily="cursive"
             android:gravity="center"
-            >
+            android:text="@string/new_game"
+            android:textColor="@color/text_bright"
+            android:textSize="23sp">
 
         </Button>
 
@@ -71,31 +70,32 @@
 
     <Button
         android:id="@+id/rules"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:layout_alignParentEnd="true"
-        android:backgroundTint="#A5C05B"
-        android:text="?"
-        android:textColor="#232122"
-        android:textSize="30sp"
+        android:background="@drawable/ic_baseline_error_24"
+        android:backgroundTint="@color/primary"
         android:fontFamily="cursive"
         android:gravity="center"
-        >
+        android:textColor="#232122"
+        android:textSize="30sp"
+        android:layout_margin="10dp">
 
     </Button>
 
-<!--    <View-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@drawable/ic_settings_black_24dp"/>-->
+    <!--    <View-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@drawable/ic_settings_black_24dp"/>-->
 
-    <ImageButton
+    <Button
         android:id="@+id/settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/settings"
-        android:background="@drawable/settings"
-        android:contentDescription="@string/settings">
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/ic_baseline_settings_24"
+        android:backgroundTint="@color/primary">
+    </Button>
 
-    </ImageButton>
+
 </RelativeLayout>

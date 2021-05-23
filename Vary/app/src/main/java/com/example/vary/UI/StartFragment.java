@@ -53,7 +53,7 @@ public class StartFragment extends Fragment {
         new_game.setLayoutParams(params);
 
         bindButton(R.id.rules, GameActions.open_rules);
-        bindImageButton(R.id.settings, GameActions.open_settings);
+        bindButton(R.id.settings, GameActions.open_settings);
 
         Button infobtn = view.findViewById(R.id.rules);
         infobtn.setOnClickListener(new View.OnClickListener() {
