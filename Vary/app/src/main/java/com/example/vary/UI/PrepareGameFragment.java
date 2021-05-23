@@ -26,6 +26,7 @@ public class PrepareGameFragment extends Fragment {
     private CardsViewModel viewModel;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

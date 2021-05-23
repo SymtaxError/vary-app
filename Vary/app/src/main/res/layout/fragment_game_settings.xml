@@ -36,7 +36,7 @@
             android:layout_marginTop="16dp"
 
             android:text="@string/amount_cards"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/primary"
             android:textSize="@dimen/game_text_size" />
 
         <!--        количество карточек двигается-->
@@ -49,6 +49,8 @@
             android:layout_below="@id/amount_cards"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
+            android:progressTint="@color/secondary"
+            android:thumbTint="@color/secondary"
 
             android:max="100"
             android:progress="50" />
@@ -65,7 +67,7 @@
             android:layout_marginTop="8dp"
 
             android:text="@string/time_round"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/primary"
             android:textSize="@dimen/settings_text_size" />
 
         <!--        Время двигается-->
@@ -77,6 +79,9 @@
             android:layout_below="@id/time_round_text"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
+
+            android:progressTint="@color/secondary"
+            android:thumbTint="@color/secondary"
 
             android:max="100"
             android:progress="60" />
@@ -93,7 +98,7 @@
             android:layout_marginTop="16dp"
 
             android:text="@string/penalty"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/primary"
             android:textSize="@dimen/game_text_size" />
 
         <RadioGroup
@@ -112,6 +117,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
+                android:buttonTint="@color/secondary"
+
                 android:checked="true"
                 android:text="@string/no"
                 android:textColor="@color/text_bright" />
@@ -122,6 +129,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
+                android:buttonTint="@color/secondary"
+
                 android:text="@string/loss_of_points"
                 android:textColor="@color/text_bright" />
 
@@ -130,6 +139,8 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:buttonTint="@color/secondary"
 
                 android:text="@string/players_task"
                 android:textColor="@color/text_bright" />
@@ -146,8 +157,11 @@
             android:layout_marginTop="16dp"
 
             android:text="@string/theft_right"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/primary"
             android:textSize="@dimen/game_text_size"
+
+            android:buttonTint="@color/secondary"
+            android:thumbTint="@color/secondary"
 
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -162,7 +176,7 @@
             android:layout_marginTop="16dp"
 
             android:text="@string/start_command"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/primary"
             android:textSize="@dimen/game_text_size" />
 
         <Spinner
@@ -173,7 +187,12 @@
 
             android:layout_below="@id/choose_command_text"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+
+            android:backgroundTint="@color/surface_color"
+            android:foregroundTint="@color/secondary"
+
+            />
 
 
         <TextView
@@ -186,7 +205,7 @@
             android:layout_marginTop="16dp"
 
             android:text="@string/choose_deck_text"
-            android:textColor="@color/text_bright"
+            android:textColor="@color/primary"
             android:textSize="@dimen/game_text_size" />
 
         <!--        Походу спиннер колод-->
@@ -198,7 +217,13 @@
 
             android:layout_below="@id/choose_deck_text"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+
+            android:backgroundTint="@color/surface_color"
+            android:foregroundTint="@color/secondary"
+
+
+            />
 
     </RelativeLayout>
 

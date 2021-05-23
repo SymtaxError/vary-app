@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class ResultRoundFragment extends Fragment {
     View view;
+    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
     private CardsViewModel viewModel;
     private CallbackFragment callbackFunctions;
 
@@ -111,6 +113,7 @@ public class ResultRoundFragment extends Fragment {
         }
 
         nextRoundButton.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
             viewModel.setRoundTimeLeft(viewModel.getRoundDuration());
             if (!viewModel.nextRound()) {
                 callbackFunctions.callback(GameActions.open_menu);

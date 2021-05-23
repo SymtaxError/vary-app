@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -37,6 +38,7 @@ import java.util.List;
 public class OnGameFragment extends Fragment implements CardCallback {
     //TODO: анимации
     //TODO: динамический размер текста
+    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
     private int _yDelta;
     private int dropCardValue;
     TextView roundScoreView;
@@ -185,6 +187,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(buttonClick);
                 endPause();
             }
         });
@@ -193,6 +196,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(buttonClick);
                 endPreview();
             }
         });

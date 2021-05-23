@@ -4,6 +4,7 @@ package com.example.vary.UI;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.example.vary.ViewModels.CardsViewModel;
 
 public class TeamsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
+    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
     OnDeleteTeamClickListener deleteListener;
     OnAddTeamClickListener addListener;
     OnChangeTeamClickListener renameListener;
@@ -47,11 +49,29 @@ public class TeamsAdapter extends RecyclerView.Adapter<ViewHolder> {
         final int itemType = getItemViewType(position);
         if (itemType == type_team) {
             String team = mViewModel.getTeamName(position);
-            View.OnClickListener delListener = v -> deleteListener.deleteItem(position);
-            View.OnClickListener renListener = v -> renameListener.renameItem(position);
+            View.OnClickListener delListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.startAnimation(buttonClick);
+                    deleteListener.deleteItem(position);
+                }
+            };
+            View.OnClickListener renListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.startAnimation(buttonClick);
+                    renameListener.renameItem(position);
+                }
+            };
             ((TeamsViewHolder) holder).bind(team, delListener, renListener);
         } else if (itemType == type_add_button) {
-            View.OnClickListener listener = v -> addListener.addItem();
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.startAnimation(buttonClick);
+                    addListener.addItem();
+                }
+            };
             ((AddButtonViewHolder) holder).bind(listener);
         }
     }

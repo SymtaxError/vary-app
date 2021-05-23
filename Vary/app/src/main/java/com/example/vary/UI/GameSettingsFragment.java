@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import java.util.Random;
 
 
 public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener {
+    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
     private TextView amountCards;
     private TextView time;
     private SeekBar timeBar;
@@ -191,6 +193,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     void bindButton(int id, GameActions action) {
         Button button = view.findViewById(id);
         button.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
             Log.d("Settings", "round duration: " + roundDuration);
             if (startTeam == 0) {
                 Random random = new Random();

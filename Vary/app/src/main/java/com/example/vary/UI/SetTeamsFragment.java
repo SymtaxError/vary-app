@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -26,6 +27,7 @@ import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 
 public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListener, OnAddTeamClickListener, OnChangeTeamClickListener {
+    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
     RecyclerView recyclerView;
     TeamsAdapter adapter = null;
     CallbackFragment fCallback;
@@ -91,7 +93,13 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
 
     void bindButton(int id, GameActions action) {
         Button button = view.findViewById(id);
-        button.setOnClickListener(v -> fCallback.callback(action));
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(buttonClick);
+                fCallback.callback(action);
+            }
+        });
     }
 
     protected void regulateMinAmount() { // Добавление двух команд по умолчанию

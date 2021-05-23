@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -29,9 +31,11 @@ public class ResultTeamFragment extends Fragment {
     private CardsViewModel viewModel;
     private CallbackFragment callbackFunctions;
     boolean saved = false;
+    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
 
     private static class TeamStatsAdapter extends RecyclerView.Adapter<TeamStatsAdapter.TeamStatsViewHolder> {
         CardsViewModel viewModel;
+        private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
 
         public void setViewModel(CardsViewModel viewModel) {
             this.viewModel = viewModel;
@@ -71,6 +75,7 @@ public class ResultTeamFragment extends Fragment {
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    v.startAnimation(buttonClick);
                     viewModel.changeAnswerState(position);
                 }
             };
@@ -137,6 +142,7 @@ public class ResultTeamFragment extends Fragment {
 
         Button okButton = view.findViewById(R.id.team_result_bottom_text);
         okButton.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
             viewModel.changeTeamPoints();
             viewModel.setCurrentRoundPoints(0);
             callbackFunctions.callback(GameActions.open_round_or_game_result);

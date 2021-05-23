@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -28,10 +29,14 @@ public class StartFragment extends Fragment {
     View view;
     int width;
     private CardsViewModel viewModel;
+    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
 
     public StartFragment() {
         // Required empty public constructor
     }
+
+
+// some code
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,13 @@ public class StartFragment extends Fragment {
         params.setMarginStart(margin);
         continue_game.setLayoutParams(params);
         Button new_game = view.findViewById(R.id.new_game);
-        new_game.setOnClickListener(v -> fCallback.callback(GameActions.new_game_action));
+        new_game.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(buttonClick);
+                fCallback.callback(GameActions.new_game_action);
+            }
+        });
         new_game.setLayoutParams(params);
 
         bindButton(R.id.rules, GameActions.open_rules);
@@ -61,6 +72,7 @@ public class StartFragment extends Fragment {
         infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(buttonClick);
                 viewModel.getNewCategories();
             }
         });
@@ -95,13 +107,15 @@ public class StartFragment extends Fragment {
 
     void bindButton(int id, GameActions action) {
         Button button = view.findViewById(id);
-        button.setOnClickListener(v -> fCallback.callback(action));
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(buttonClick);
+                fCallback.callback(action);
+            }
+        });
     }
 
-    void bindImageButton(int id, GameActions action) {
-        ImageButton button = view.findViewById(id);
-        button.setOnClickListener(v -> fCallback.callback(action));
-    }
 
     void setCallback(CallbackFragment callback) {
         fCallback = callback;
