@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -34,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class OnGameFragment extends Fragment {
+public class OnGameFragment extends Fragment implements CardCallback {
     //TODO: анимации
     //TODO: динамический размер текста
     private int _yDelta;
@@ -258,7 +259,10 @@ public class OnGameFragment extends Fragment {
         Observer<Integer> observerTimer = new Observer<Integer>() {
             @Override
             public void onChanged(Integer timerCount) {
+                if (timerCount == -1)
+                    return; //TODO убрать костыль
                 if (timerCount == 0) {
+                    viewModel.setTimerCount(-1);
                     callbackFunctions.callback(GameActions.open_round_result);
                 }
                 timeLeft.setText(timerCount.toString());
@@ -284,6 +288,7 @@ public class OnGameFragment extends Fragment {
         viewModel
                 .getGameModel()
                 .observe(getViewLifecycleOwner(), observerCurrentGame);
+        viewModel.setCardsCallback(this);
     }
 
     @Override
@@ -293,7 +298,18 @@ public class OnGameFragment extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void callback() {
+        Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
+        //TODO переход
     }
 }

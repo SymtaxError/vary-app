@@ -12,6 +12,7 @@ import com.example.vary.Repositories.CategoriesRepo;
 import com.example.vary.Repositories.TeamsRepo;
 import com.example.vary.Repositories.CurrentGameRepo;
 import com.example.vary.Database.DbManager;
+import com.example.vary.UI.CardCallback;
 import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 import com.example.vary.UI.LoadDataCallback;
@@ -69,6 +70,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public String getUsedCardByPosition(int pos) {
         return mCategoriesRepo.getUsedCardByPosition(pos);
+    }
+
+    public void setCardsCallback(CardCallback callback) {
+        mCategoriesRepo.setCardsCallback(callback);
     }
 
     public int getAmountOfUsedCards() {
