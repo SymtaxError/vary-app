@@ -189,6 +189,12 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         Button button = view.findViewById(id);
         button.setOnClickListener(v -> {
             Log.d("Settings", "round duration: " + roundDuration);
+            if (startTeam == 0) {
+                Random random = new Random();
+                startTeam = random.nextInt(mTeamsNames.size());
+            } else {
+                startTeam--;
+            }
             viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, penalty, steal, startTeam);
             fCallback.callback(action);
         });
@@ -216,12 +222,6 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     public void onDestroyView() {
 
         // если выбрана случайная команда в спинере
-        if (startTeam == 0) {
-            Random random = new Random();
-            startTeam = random.nextInt(mTeamsNames.size());
-        } else {
-            startTeam--;
-        }
 
         super.onDestroyView();
     }

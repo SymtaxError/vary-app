@@ -1,6 +1,7 @@
 package com.example.vary.ViewModels;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -135,8 +136,17 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         gameRepo.setGameModel(steal, penalty, roundDuration);
     }
 
-    public boolean nextGameMode() {
-        return gameRepo.nextGameMode();
+    public boolean nextRound() {
+        mTeamsRepo.changeOrder(1);
+        if (mCategoriesRepo.newRoundRequired()) {
+            Log.d("Cards", "In mix required");
+            mCategoriesRepo.mixCards();
+            return gameRepo.nextGameMode();
+        }
+        else {
+            newRoundMix();
+        }
+        return true;
     }
 
     public PenaltyType getPenalty() {

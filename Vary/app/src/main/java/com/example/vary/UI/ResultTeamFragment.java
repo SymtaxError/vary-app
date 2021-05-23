@@ -106,19 +106,7 @@ public class ResultTeamFragment extends Fragment {
         teamStatsList.setAdapter(teamStatsAdapter);
 
         Button okButton = view.findViewById(R.id.result_ok_button);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!viewModel.nextGameMode()) {
-                    Toast.makeText(getContext(), "Game ended", Toast.LENGTH_LONG).show();
-                    callbackFunctions.callback(GameActions.open_round_or_game_result);
-                } else {
-                    Toast.makeText(getContext(), "Game not ended", Toast.LENGTH_SHORT).show();
-                    callbackFunctions.callback(GameActions.start_game_process);
-                }
-
-            }
-        });
+        okButton.setOnClickListener(v -> callbackFunctions.callback(GameActions.open_round_or_game_result));
 
         return view;
     }

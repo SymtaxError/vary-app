@@ -42,4 +42,7 @@
     <string name="preview_title">Превью</string>
     <string name="preview_text">Объясни методом указанным снизу.\nЕсли объяснил-свайпай вверх\nНадо сделать нормальную вьюху\nНажми на экран когда будешь готов</string>
     <string name="_0">0</string>
+    <string name="explain_mode_str">Объясни словами</string>
+    <string name="gesture_mode_str">Покажи жестами</string>
+    <string name="one_word_mode_str">Объясни одним словом</string>
 </resources>

@@ -51,6 +51,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private boolean previewed;
     private RelativeLayout preview;
     private boolean cardTextSetted = false;
+    GameMode gameMode;
 
 
     private CallbackFragment callbackFunctions;
@@ -95,12 +96,27 @@ public class OnGameFragment extends Fragment implements CardCallback {
     }
 
 
+    private String getGameModeStr()
+    {
+        String out;
+        if (gameMode == GameMode.explain_mode)
+            out = getContext().getResources().getString(R.string.explain_mode_str);
+        else if (gameMode == GameMode.gesture_mode)
+            out = getContext().getResources().getString(R.string.gesture_mode_str);
+        else
+            out = getContext().getResources().getString(R.string.one_word_mode_str);
+        return out;
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
+        gameMode = viewModel.getGameMode();
+        TextView gameModeView = view.findViewById(R.id.game_mode);
+        gameModeView.setText(getGameModeStr());
         TextView teamName = view.findViewById(R.id.team_name_on_game);
         timeLeft = view.findViewById(R.id.time_left);
         teamName.setText(viewModel.getCurTeamName(0));
@@ -274,6 +290,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
             public void onChanged(CurrentGameModel gameModel) {
                 timerService.runTask(gameModel.getRoundDuration());
                 timerService.pauseTask();
+                //TODO вписать изменение gamemodel
             }
         };
 
@@ -309,6 +326,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     @Override
     public void callback() {
         Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
+        callbackFunctions.callback(GameActions.open_round_or_game_result);
         //TODO переход
     }
 }

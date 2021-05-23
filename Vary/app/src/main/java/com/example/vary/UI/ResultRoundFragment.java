@@ -104,19 +104,17 @@ public class ResultRoundFragment extends Fragment {
         roundStatsList.setAdapter(roundStatsAdapter);
 
         Button nextRoundButton = view.findViewById(R.id.next_round_button);
-        if (!viewModel.nextGameMode()) {
+        GameActions tempCallback;
+        if (!viewModel.nextRound()) {
             viewModel.sortTeamsByPoints();
             nextRoundButton.setText("Закончить игру");
+            tempCallback = GameActions.new_game_action;
+        }
+        else {
+            tempCallback = GameActions.start_game_process;
         }
 
-        nextRoundButton.setOnClickListener(v -> {
-            if (viewModel.nextGameMode()) {
-                callbackFunctions.callback(GameActions.start_game_process);
-            } else {
-                Toast.makeText(getContext(), "Game ended", Toast.LENGTH_LONG).show();
-                callbackFunctions.callback(GameActions.new_game_action);
-            }
-        });
+        nextRoundButton.setOnClickListener(v -> callbackFunctions.callback(tempCallback));
 
         return view;
     }

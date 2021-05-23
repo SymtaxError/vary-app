@@ -4,6 +4,7 @@ import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 
 import java.util.List;
+import java.util.Locale;
 
 public class CurrentGameModel {
     List<CardModel> mCardModelList;

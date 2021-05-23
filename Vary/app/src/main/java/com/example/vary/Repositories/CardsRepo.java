@@ -23,6 +23,7 @@ CardsRepo {
     private DbManager dbManager = null;
     private static CardsRepo sInstance;
     private CardCallback mCallback;
+    private boolean ended = false;
 
     private final DbManager.CardRepositoryListener cardRepositoryListener = new DbManager.CardRepositoryListener() {
         @Override
@@ -44,6 +45,17 @@ CardsRepo {
     public void newRoundMix() {
         List <CardModel> cards = mCards.getValue();
         if (cards != null) {
+            cards = sortCards();
+            startRoundPosition = currentPosition;
+            List <CardModel> unusedCards = cards.subList(currentPosition, cards.size() - 1);
+            Collections.shuffle(unusedCards);
+            mCards.postValue(cards);
+        }
+    }
+
+    private List<CardModel> sortCards() {
+        List <CardModel> cards = mCards.getValue();
+        if (cards != null) {
             int index = startRoundPosition;
             while (index < currentPosition) {
                 CardModel card = cards.get(index);
@@ -51,15 +63,11 @@ CardsRepo {
                     cards.remove(index);
                     currentPosition--;
                     cards.add(card);
-                }
-                else
+                } else
                     index++;
             }
-            startRoundPosition = currentPosition;
-            List <CardModel> unusedCards = cards.subList(currentPosition, cards.size() - 1);
-            Collections.shuffle(unusedCards);
-            mCards.postValue(cards);
         }
+        return cards;
     }
 
     public void changeAnswerState(int pos) {
@@ -106,6 +114,15 @@ CardsRepo {
         currentPosition = 0;
     }
 
+    public boolean newRoundRequired() {
+
+        if (currentPosition == getAmountOfCards()) {
+            mixCards();
+            return true;
+        }
+        return false;
+    }
+
     public void endCards() {
         boolean answered = true;
         List<CardModel> cards = mCards.getValue();
@@ -118,13 +135,16 @@ CardsRepo {
                 }
             }
             if (!answered) {
+                ended = true;
+                Log.d("Cards", "Mixed");
                 int oldStartRound = startRoundPosition;
                 newRoundMix();
                 startRoundPosition = oldStartRound;
+                Log.d("Cards", "new cur pos = " + currentPosition);
             }
             else {
+                Log.d("Callback", "called");
                 mCallback.callback();
-                currentPosition = 0;
             }
         }
     }
@@ -149,8 +169,11 @@ CardsRepo {
             if (currentPosition == getAmountOfCards()) {
                 endCards();
             }
-            CardModel card = cards.get(currentPosition);
-            return card.getText();
+            if (currentPosition != getAmountOfCards()) {
+                CardModel card = cards.get(currentPosition);
+                return card.getText();
+            }
+
         }
         return null;
     }
@@ -194,8 +217,8 @@ CardsRepo {
     }
 
     public int getAmountOfUsedCards() {
-        if (currentPosition < startRoundPosition) {
-            return getAmountOfCards() - startRoundPosition + currentPosition;
+        if (ended) {
+            return getAmountOfCards() - startRoundPosition;
         }
         return currentPosition - startRoundPosition;
     }
