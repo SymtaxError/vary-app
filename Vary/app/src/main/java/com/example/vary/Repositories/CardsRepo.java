@@ -115,9 +115,8 @@ CardsRepo {
     }
 
     public boolean newRoundRequired() {
-
+        sortCards();
         if (currentPosition == getAmountOfCards()) {
-            mixCards();
             return true;
         }
         return false;
@@ -127,25 +126,25 @@ CardsRepo {
         boolean answered = true;
         List<CardModel> cards = mCards.getValue();
         if (cards != null) {
-            for (int i = startRoundPosition; i < getAmountOfCards() && answered; i++) {
-                if (! cards
-                        .get(i)
-                        .getAnswerState()) {
-                    answered = false;
-                }
-            }
-            if (!answered) {
-                ended = true;
-                Log.d("Cards", "Mixed");
-                int oldStartRound = startRoundPosition;
-                newRoundMix();
-                startRoundPosition = oldStartRound;
-                Log.d("Cards", "new cur pos = " + currentPosition);
-            }
-            else {
-                Log.d("Callback", "called");
-                mCallback.callback();
-            }
+//            for (int i = startRoundPosition; i < getAmountOfCards() && answered; i++) {
+//                if (! cards
+//                        .get(i)
+//                        .getAnswerState()) {
+//                    answered = false;
+//                }
+//            }
+//            if (!answered) {
+//                ended = true;
+//                Log.d("Cards", "Mixed");
+//                int oldStartRound = startRoundPosition;
+//                newRoundMix();
+//                startRoundPosition = oldStartRound;
+//                Log.d("Cards", "new cur pos = " + currentPosition);
+//            }
+//            else {
+            Log.d("Callback", "called");
+            mCallback.callback();
+//            }
         }
     }
 
@@ -194,6 +193,14 @@ CardsRepo {
             return mCards.getValue().size();
         }
         return 0;
+    }
+
+    public int countPoints() {
+        int points = 0;
+        for (int index = startRoundPosition; index < currentPosition; index++) {
+            points = (getAnswerState(index - startRoundPosition) == true) ? points + 1 : points - 1;
+        }
+        return points;
     }
 
     public void setDbManager(DbManager dbManager) {

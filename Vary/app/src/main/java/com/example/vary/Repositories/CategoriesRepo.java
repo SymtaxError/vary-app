@@ -239,6 +239,10 @@ public class CategoriesRepo implements SetDataCallback {
         categoriesNetworkService.getNewCategories(version, mCallback, this);
     }
 
+    public int countPoints() {
+        return mCardsRepo.countPoints();
+    }
+
     public int getAmountOfCards() {
         return mCardsRepo.getAmountOfCards();
     }

@@ -10,5 +10,6 @@ public enum GameActions {
     start_game_process,
     open_team_result,
     open_round_or_game_result,
-    prepare_game
+    prepare_game,
+    open_menu
 }

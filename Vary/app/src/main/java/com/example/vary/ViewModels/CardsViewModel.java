@@ -113,8 +113,9 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mTeamsRepo.addTeam(team_name);
     }
 
-    public void increasePoints(int pos, int newPoints) {
-        mTeamsRepo.increasePoints(pos, newPoints);
+    public void changeTeamPoints() {
+        int points = mCategoriesRepo.countPoints();
+        mTeamsRepo.increasePoints(points);
     }
 
     public void renameTeam(String name, int pos) {
@@ -134,6 +135,12 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mCategoriesRepo.mixCards();
         mTeamsRepo.changeOrder(startTeam);
         gameRepo.setGameModel(steal, penalty, roundDuration);
+    }
+
+    public boolean endGame() {
+        if (mCategoriesRepo.newRoundRequired() && gameRepo.getGameMode() == GameMode.one_word_mode)
+            return true;
+        return false;
     }
 
     public boolean nextRound() {

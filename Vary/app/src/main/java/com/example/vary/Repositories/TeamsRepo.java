@@ -95,11 +95,11 @@ public class TeamsRepo {
         }
     }
 
-    public void increasePoints(int pos, int newPoints) {
+    public void increasePoints(int newPoints) {
         List<TeamModel> listTeams = mTeams.getValue();
         if (listTeams != null) {
             listTeams
-                    .get(pos)
+                    .get(0)
                     .increasePoints(newPoints);
             mTeams.postValue(listTeams);
         }

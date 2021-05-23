@@ -106,7 +106,10 @@ public class ResultTeamFragment extends Fragment {
         teamStatsList.setAdapter(teamStatsAdapter);
 
         Button okButton = view.findViewById(R.id.result_ok_button);
-        okButton.setOnClickListener(v -> callbackFunctions.callback(GameActions.open_round_or_game_result));
+        okButton.setOnClickListener(v -> {
+            viewModel.changeTeamPoints();
+            callbackFunctions.callback(GameActions.open_round_or_game_result);
+        });
 
         return view;
     }

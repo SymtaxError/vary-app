@@ -326,7 +326,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     @Override
     public void callback() {
         Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
-        callbackFunctions.callback(GameActions.open_round_or_game_result);
+        callbackFunctions.callback(GameActions.open_team_result);
         //TODO переход
     }
 }

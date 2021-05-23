@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -159,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             case open_round_or_game_result:
                 openRoundOrGameResult();
                 break;
+            case open_menu:
+                startMainFragment();
+                break;
             default:
                 break;
         }
@@ -258,6 +262,26 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                     .beginTransaction()
                     .replace(R.id.container, fragment)
                     .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    public void startMainFragment() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(StartFragment.class)) {
+            StartFragment fragment = new StartFragment();
+            fragment.setCallback(this);
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager.getBackStackEntryCount() > 0) {
+                FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
+                manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+            manager
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+//                    .addToBackStack(null)
                     .commit();
         }
     }
