@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.vary.Database.DbManager;
+import com.example.vary.UI.CardCallback;
 import com.example.vary.UI.LoadDataCallback;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CategoryModel;
@@ -243,6 +244,10 @@ public class CategoriesRepo implements SetDataCallback {
 
     private void loadCategoriesToDatabase(List<CategoryModel> categoryModelList) {
         dbManager.update(categoryModelList);
+    }
+
+    public void setCardsCallback(CardCallback callback){
+        mCardsRepo.setCardCallback(callback);
     }
 
 

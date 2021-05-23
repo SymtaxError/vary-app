@@ -113,8 +113,10 @@ public class ResultTeamFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!viewModel.nextGameMode()) {
-                    Toast toast = Toast.makeText(getContext(), "Game ended", Toast.LENGTH_LONG);
-                    toast.show();
+                    Toast.makeText(getContext(), "Game ended", Toast.LENGTH_LONG).show();
+                    //TODO
+                } else {
+                    Toast.makeText(getContext(), "Game not ended", Toast.LENGTH_SHORT).show();
                     callbackFunctions.callback(GameActions.start_game_process);
                 }
             }
@@ -122,4 +124,10 @@ public class ResultTeamFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
 }

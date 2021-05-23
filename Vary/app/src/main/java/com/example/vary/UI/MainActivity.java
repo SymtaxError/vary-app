@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     void startGameProcess() {
+
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             OnGameFragment fragment = new OnGameFragment();
             fragment.setCallbackFunctions(this);
             fragment.setTimerService(mService);
-            getSupportFragmentManager().popBackStack();
+//            getSupportFragmentManager().popBackStack(); //TODO вернуть
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
@@ -299,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
-                .equals(ResultRoundFragment.class)) {
+                .equals(ResultTeamFragment.class)) {
             ResultTeamFragment fragment = new ResultTeamFragment();
             fragment.setCallback(this);
             fragment.setViewModel(viewModel);
@@ -360,4 +361,5 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         AudioManager manager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         manager.setStreamMute(AudioManager.STREAM_NOTIFICATION, !setting);
     }
+
 }
