@@ -1,6 +1,7 @@
 package com.example.vary.Repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -61,6 +62,7 @@ public class CurrentGameRepo {
         if (game != null) {
             result = game.nextGameMode();
             if (result) {
+                Log.d("GameMode", "changed");
                 gameModel.postValue(game);
             }
         }
