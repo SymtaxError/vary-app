@@ -287,11 +287,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
     void continueGame() {
         viewModel.continueOldGame();
-        if (viewModel.getRoundTimeLeft() > 0) {
-            startGameProcess();
-        } else {
-            openRoundOrGameResult();
-        }
+        startGameProcess();
     }
 
     void startNewGame() {

@@ -1,6 +1,7 @@
 package com.example.vary.UI;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class ResultTeamFragment extends Fragment {
     View view;
     private CardsViewModel viewModel;
     private CallbackFragment callbackFunctions;
+    boolean saved = false;
 
     private static class TeamStatsAdapter extends RecyclerView.Adapter<TeamStatsAdapter.TeamStatsViewHolder> {
         CardsViewModel viewModel;
@@ -78,6 +80,11 @@ public class ResultTeamFragment extends Fragment {
         callbackFunctions = callback;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     public void setViewModel(CardsViewModel viewModel) {
         this.viewModel = viewModel;
     }
@@ -110,6 +117,7 @@ public class ResultTeamFragment extends Fragment {
         Button okButton = view.findViewById(R.id.result_ok_button);
         okButton.setOnClickListener(v -> {
             viewModel.changeTeamPoints();
+            viewModel.setCurrentRoundPoints(0);
             callbackFunctions.callback(GameActions.open_round_or_game_result);
         });
 

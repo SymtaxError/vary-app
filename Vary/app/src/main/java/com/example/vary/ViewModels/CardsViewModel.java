@@ -133,8 +133,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         if (getTimerCount().getValue() != null) {
             timer = getTimerCount().getValue();
         }
-        if (timer == 0)
-            changeTeamPoints();
+
 
         gameRepo.saveState(mCardModels,
                             mTeamsRepo.getTeams().getValue(),
