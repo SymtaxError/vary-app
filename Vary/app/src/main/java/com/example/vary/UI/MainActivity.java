@@ -4,6 +4,7 @@ package com.example.vary.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,10 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -106,13 +110,30 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             @Override
             public void onChanged(LoadStatus loadStatus) {
                 Toast toast;
-                if (loadStatus.getError() != null) {
-                    toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
-                }
-                else {
+//                if (loadStatus.getError() != null && loadStatus.getNotification()) {
+//                    toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
+//                    toast.show();
+//                }
+                if (loadStatus.getError() != null && loadStatus.getNotification()) {
+                    LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+                    View promView = inflater.inflate(R.layout.load_confirm, null);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                    alertDialogBuilder.setView(promView);
+
+                    String add = getResources().getString(R.string.yes);
+                    String cancel = getResources().getString(R.string.no);
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton(add, (dialog, which) -> {
+                                viewModel.getNewCategories();
+                            });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
                     toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG);
+                    toast.show();
                 }
-                toast.show();
             }
         };
 

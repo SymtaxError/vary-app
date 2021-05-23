@@ -52,22 +52,22 @@ public class CategoriesNetworkService {
     }
 
 
-    public void getNewCategories(int version, LoadDataCallback callback, SetDataCallback callbackLoad) {
+    public void getNewCategories(int version, SetDataCallback callbackLoad) {
         mCategoriesAPI.getNewCategories(version).enqueue(new Callback<List<CategoriesAPI.CategoryPlain>>() {
             @Override
             public void onResponse(Call<List<CategoriesAPI.CategoryPlain>> call,
                                    Response<List<CategoriesAPI.CategoryPlain>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    mCategories = transformDeck(response.body(), callback);
+                    mCategories = transformDeck(response.body(), callbackLoad);
                     Log.d(TAG, "Categories size " + mCategories.size());
-                    callbackLoad.onLoaded(mCategories, callback);
+                    callbackLoad.onLoaded(mCategories);
                 }
             }
 
             @Override
             public void onFailure(Call<List<CategoriesAPI.CategoryPlain>> call, Throwable t) {
                 Log.d(TAG, "Failed to load decks ", t);
-                callback.onLoad(t);
+                callbackLoad.onLoaded(t);
             }
         });
     }
@@ -88,7 +88,7 @@ public class CategoriesNetworkService {
         });
     }
 
-    private List<CategoryModel> transformDeck(List<CategoriesAPI.CategoryPlain> body, LoadDataCallback callback) {
+    private List<CategoryModel> transformDeck(List<CategoriesAPI.CategoryPlain> body, SetDataCallback callback) {
         List<CategoryModel> result = new ArrayList<>();
         for (CategoriesAPI.CategoryPlain categoryPlain : body) {
             try {
@@ -96,15 +96,14 @@ public class CategoriesNetworkService {
                 result.add(deck);
                 Log.d(TAG, "Loaded deck " + deck.getName());
             } catch (ParseException e) {
-                callback.onLoad(null);
-                e.printStackTrace();
+                callback.onLoaded(e);
             }
         }
         Log.d(TAG, "Loaded " + result.size() + " elems");
         return result;
     }
 
-    private static CategoryModel map(CategoriesAPI.CategoryPlain categoryPlain, LoadDataCallback callback) throws ParseException {
+    private static CategoryModel map(CategoriesAPI.CategoryPlain categoryPlain, SetDataCallback callback) throws ParseException {
         CategoryModel categoryModel = new CategoryModel(
                 categoryPlain.name,
                 categoryPlain.version,
@@ -123,7 +122,7 @@ public class CategoriesNetworkService {
         );
     }
 
-    private static List<CardModel> transformCard(String categoryId, List<CategoriesAPI.CardPlain> cardPlains, LoadDataCallback callback) {
+    private static List<CardModel> transformCard(String categoryId, List<CategoriesAPI.CardPlain> cardPlains, SetDataCallback callback) {
         List<CardModel> result = new ArrayList<>();
         for (CategoriesAPI.CardPlain cardPlain : cardPlains) {
             try {
@@ -131,8 +130,7 @@ public class CategoriesNetworkService {
                 result.add(card);
                 Log.d(TAG, "Loaded card " + card.getText() + " size " + result.size());
             } catch (ParseException e) {
-                callback.onLoad(e);
-                e.printStackTrace();
+                callback.onLoaded(e);
 //            } catch (NullPointerException e) {
 //                Log.d(TAG, "NULL loaded card, error");
             } catch (Exception e) {

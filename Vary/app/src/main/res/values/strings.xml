@@ -45,4 +45,5 @@
     <string name="explain_mode_str">Объясни словами</string>
     <string name="gesture_mode_str">Покажи жестами</string>
     <string name="one_word_mode_str">Объясни одним словом</string>
+    <string name="load_notification_text">Не удалось загрузить данные. Повторить попытку?</string>
 </resources>

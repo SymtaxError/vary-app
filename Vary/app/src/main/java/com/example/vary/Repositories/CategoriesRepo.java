@@ -27,11 +27,19 @@ public class CategoriesRepo implements SetDataCallback {
     private final static MutableLiveData<List<CategoryModel>> mCategories = new MutableLiveData<>();
     private DbManager dbManager = null;
     private static int version;
+
     LoadDataCallback mCallback;
 
     private final DbManager.CategoryRepositoryListener categoryRepositoryListener = categoryModels -> {
-        if (categoryModels.size() > 0)
+        if (categoryModels.size() > 0) {
             mCategories.postValue(categoryModels); //TODO обработать
+            updateVersion(categoryModels);
+//            Log.d("DB", "version")
+        }
+        else {
+            version = -1;
+        }
+        categoriesNetworkService.getVersion(this);
     };
 
     public void setLoadCallback(LoadDataCallback callback) {
@@ -67,7 +75,7 @@ public class CategoriesRepo implements SetDataCallback {
 
     public void setNetworkService(Context context) {
         categoriesNetworkService = CategoriesNetworkService.getInstance(context.getResources().getString(R.string.base_url));
-        getNewCategories();
+//        getNewCategories();
     }
 
     public LiveData<List<CategoryModel>> getCategories() {
@@ -145,12 +153,12 @@ public class CategoriesRepo implements SetDataCallback {
         return sInstance;
     }
 
-    public void onLoaded(List<CategoryModel> categories, LoadDataCallback callback) { //TODO вернуть из getNewCategories
+    public void onLoaded(List<CategoryModel> categories) { //TODO вернуть из getNewCategories
         if (categories != null) {
             Log.d("network", "add " + categories.size());
             loadCategoriesToDatabase(categories);
             addCategories(categories);
-            callback.onLoad(null);
+            mCallback.onLoad(null, false);
         } else {
             Log.d("Sadddd", "Wrong data back");
         }
@@ -159,17 +167,15 @@ public class CategoriesRepo implements SetDataCallback {
     public void onLoaded(Integer sVersion) {
         Log.d("Network", "We've got network ver: " + sVersion);
         if (version < sVersion) {
-            loadNewCategories();
+            getNewCategories();
         }
-        else {
-            mCallback.onLoad(null);
-        }
+        mCallback.onLoad(null, false);
     }
 
     public void onLoaded(Throwable t) {
         Log.d("Network", "Version = " + version);
         if (version == -1) {
-            mCallback.onLoad(t);
+            mCallback.onLoad(t, true);
         }
     }
 
@@ -216,7 +222,6 @@ public class CategoriesRepo implements SetDataCallback {
 
     private void loadCategoriesFromDatabase() {
         dbManager.getCategoriesNoCards(); //TODO если их нет - грузить с нетворка + обыграть на UI загрузку
-        updateVersion();
         Log.d("Network", "Version ???? " + version);
     }
 
@@ -231,12 +236,7 @@ public class CategoriesRepo implements SetDataCallback {
     public void getNewCategories() { //TODO переделать
         //откуда брать версию? отсюда же
 //        loadCategoriesFromDatabase();
-        Log.d("Network", "Version: " + version);
-        categoriesNetworkService.getVersion(this);
-    }
-
-    private void loadNewCategories() {
-        categoriesNetworkService.getNewCategories(version, mCallback, this);
+        categoriesNetworkService.getNewCategories(version, this);
     }
 
     public int countPoints() {
@@ -264,4 +264,5 @@ public class CategoriesRepo implements SetDataCallback {
         }
         return 0;
     }
+
 }

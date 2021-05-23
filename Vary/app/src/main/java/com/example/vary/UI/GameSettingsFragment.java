@@ -151,6 +151,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
                 .getCategories()
                 .observe(getViewLifecycleOwner(), observerCategories);
 
+
     }
 
     @Override

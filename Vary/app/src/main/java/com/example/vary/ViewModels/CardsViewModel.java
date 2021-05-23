@@ -43,10 +43,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public CardsViewModel(@NonNull Application application) {
         super(application);
         mTeamsRepo.setDbManager(application);
+        mCategoriesRepo.setNetworkService(application);
         mCategoriesRepo.setDbManager(application);
         gameRepo.setDbManager(application);
         mCategoriesRepo.setLoadCallback(this);
-        mCategoriesRepo.setNetworkService(application);
     }
 
     public void smth() {
@@ -208,8 +208,8 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mTeamsRepo.removeTeam(pos);
     }
 
-    public void onLoad(Throwable throwable) {
-        mLoadStatus.postValue(new LoadStatus(throwable));
+    public void onLoad(Throwable throwable, boolean notify) {
+        mLoadStatus.postValue(new LoadStatus(throwable, notify));
     }
 
     public int getAmountOfTeams() {
@@ -244,4 +244,5 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public LiveData<Integer> getTimerCount() {
         return mTimerCount;
     }
+
 }
