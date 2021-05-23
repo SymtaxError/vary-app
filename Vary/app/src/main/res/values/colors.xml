@@ -9,6 +9,9 @@
     <color name="secondary">#599EEF</color>
     <color name="secondary_additional">#3E5CCA</color>
 
+    <color name="text_wrong_card">#C50007</color>
+    <color name="text_correct_card">#1BB400</color>
+
     <color name="text_bright">#EDEDED</color>
     <color name="text_dark">#4A4A4A</color>
 

@@ -1,5 +1,6 @@
 package com.example.vary.UI;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,15 @@ public class ResultTeamFragment extends Fragment {
                 this.wordNameView = teamView.findViewById(R.id.word_from_game);
             }
 
-            public void bind(String wordName, View.OnClickListener listener) {
+            public void bind(String wordName, boolean answerState, View.OnClickListener listener) {
                 wordNameView.setText(wordName);
+                if (answerState) {
+                    wordNameView.setTextColor(Color.parseColor("#1BB400"));
+                }
+                else {
+                    wordNameView.setTextColor(Color.parseColor("#C50007"));
+                }
+
                 wordNameView.setOnClickListener(listener);
             }
         }
@@ -55,14 +63,15 @@ public class ResultTeamFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TeamStatsViewHolder holder, int position) {
-            String wordName = viewModel.getUsedCardByPosition(position) + " " + viewModel.getAnswerState(position);
+            String wordName = viewModel.getUsedCardByPosition(position);
+            boolean answerState = viewModel.getAnswerState(position);
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     viewModel.changeAnswerState(position);
                 }
             };
-            holder.bind(wordName, listener);
+            holder.bind(wordName, answerState, listener);
         }
 
         @Override
