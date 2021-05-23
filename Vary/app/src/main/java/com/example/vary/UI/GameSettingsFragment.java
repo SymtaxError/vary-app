@@ -76,7 +76,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         amountOfCards = 50;
         roundDuration = 60;
 
-        bindButton(R.id.start_game_button, GameActions.prepare_game);
+        bindButton(R.id.start_game_button, GameActions.start_game_process);
 
         amountCards = view.findViewById(R.id.amount_cards);
         amountCards.setText(getResources().getText(R.string.amount_cards) + "   " + getResources().getInteger(R.integer.defalut_amount_card));

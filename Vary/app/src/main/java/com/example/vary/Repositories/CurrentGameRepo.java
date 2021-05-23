@@ -13,7 +13,6 @@ import com.example.vary.UI.GameMode;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.TeamModel;
 import com.example.vary.Models.CurrentGameModel;
-import com.example.vary.ViewModels.CardsViewModel;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -48,7 +47,7 @@ public class CurrentGameRepo {
             return;
         }
 
-        model.setCommands(commands);
+        model.setTeams(commands);
         model.setCardModelList(cards);
         model.setCurrentRoundPoints(currentRoundPoints);
         model.setCurrentAndStartCard(currentCard, startCard);
@@ -140,7 +139,7 @@ public class CurrentGameRepo {
 
     public List<TeamModel> getTeams() {
         if (gameModel.getValue() != null) {
-            return gameModel.getValue().getCommands();
+            return gameModel.getValue().getTeams();
         }
         return null;
     }

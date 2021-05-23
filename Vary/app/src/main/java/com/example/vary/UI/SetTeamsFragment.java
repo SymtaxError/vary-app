@@ -2,16 +2,13 @@ package com.example.vary.UI;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -98,7 +95,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
     }
 
     protected void regulateMinAmount() { // Добавление двух команд по умолчанию
-        int min_amount = getResources().getInteger(R.integer.min_commands_amount);
+        int min_amount = getResources().getInteger(R.integer.min_teams_amount);
         if (viewModel.getAmountOfTeams() < min_amount)
         {
             addItem();
@@ -128,13 +125,13 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
     }
 
     public void addItem() { // Добавить элемент
-        String command = getResources().getString(R.string.command);
+        String command = getResources().getString(R.string.team);
         viewModel.addTeams(command + ' ' + namePostfix);
         namePostfix++;
     }
 
     public void deleteItem(int pos) { // Удалить элемент
-        int amount = getResources().getInteger(R.integer.min_commands_amount);
+        int amount = getResources().getInteger(R.integer.min_teams_amount);
         if (adapter != null && adapter.getItemCount() > amount + 1) {
             viewModel.removeTeam(pos);
         }

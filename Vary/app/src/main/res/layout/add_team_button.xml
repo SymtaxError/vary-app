@@ -8,7 +8,7 @@
         android:id="@+id/add_team"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_command"
+        android:text="@string/add_team"
         android:layout_margin="10dp"
         android:background="@drawable/button_shape"
         android:backgroundTint="@color/secondary"

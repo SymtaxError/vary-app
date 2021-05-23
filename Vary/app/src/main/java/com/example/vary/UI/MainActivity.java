@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 break;
             case create_game_process:
                 createGameProcess();
+                break;
             case start_game_process:
                 startGameProcess();
                 break;
@@ -224,9 +225,16 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .findFragmentById(R.id.container))
                 .getClass()
                 .equals(OnGameFragment.class)) {
+            OnGameFragment fragment = new OnGameFragment();
+            fragment.setCallbackFunctions(this);
+            fragment.setTimerService(mService);
 //            getSupportFragmentManager().popBackStack(); //TODO вернуть
-////            getSupportFragmentManager().popBackStack(); //TODO вернуть
-////            getSupportFragmentManager().popBackStack(); //TODO вернуть
+//            getSupportFragmentManager().popBackStack(); //TODO вернуть
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 
@@ -288,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     void continueGame() {
         viewModel.continueOldGame();
         if (viewModel.getRoundTimeLeft() > 0) {
-            startGameProcess();
+            createGameProcess();
         } else {
             openRoundOrGameResult();
         }
@@ -358,6 +366,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 //                    getSupportFragmentManager().popBackStack();
                 Fragment old_fragment = getSupportFragmentManager().findFragmentById(R.id.container);
                 getSupportFragmentManager().beginTransaction().remove(old_fragment).commit();
+                saveModel();
                 super.onBackPressed();
             }
         } else {

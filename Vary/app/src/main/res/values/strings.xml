@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Vary</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="add_command">+</string>
+    <string name="add_team">+</string>
     <string name="next">Далее</string>
     <string name="insert_command_name">Название:</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
-    <string name="command">Команда</string>
+    <string name="team">Команда</string>
     <string name="settings">Настройки</string>
     <string name="continue_game">Продолжить</string>
     <string name="new_game">Новая игра</string>

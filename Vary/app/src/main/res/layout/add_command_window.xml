@@ -24,7 +24,7 @@
         android:singleLine="true"
         android:maxLength="@integer/max_command_name_len"
         android:inputType="text"
-        android:autofillHints="@string/command"
+        android:autofillHints="@string/team"
         android:hint="@string/insert_command_name"
         >
         <requestFocus/>

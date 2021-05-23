@@ -4,11 +4,10 @@ import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 
 import java.util.List;
-import java.util.Locale;
 
 public class CurrentGameModel {
     List<CardModel> mCardModelList;
-    List<TeamModel> mCommands;
+    List<TeamModel> mTeams;
     boolean mSteal;
     PenaltyType mPenalty;
     int mRoundDuration;
@@ -42,16 +41,16 @@ public class CurrentGameModel {
         mCardModelList = cardModelList;
     }
 
-    public void setCommands(List<TeamModel> teams) {
-        mCommands = teams;
+    public void setTeams(List<TeamModel> teams) {
+        mTeams = teams;
     }
 
     public int getRoundDuration() {
         return mRoundDuration;
     }
 
-    public List<TeamModel> getCommands() {
-        return mCommands;
+    public List<TeamModel> getTeams() {
+        return mTeams;
     }
 
     public List<CardModel> getCardModelList() {
