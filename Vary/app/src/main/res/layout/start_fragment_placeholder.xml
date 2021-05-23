@@ -14,13 +14,13 @@
             android:id="@+id/name_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="190dp"
-            android:fontFamily="cursive"
-            android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@color/text_bright"
+            android:fontFamily="cursive"
+            android:textStyle="italic"
             android:textSize="40sp"
-            android:textStyle="italic">
+            android:gravity="center"
+            android:layout_marginTop="190dp">
 
         </TextView>
     </LinearLayout>
@@ -29,9 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:layout_marginBottom="50dp">
         <Button
             android:id="@+id/continue_game"
             android:layout_width="match_parent"
@@ -39,12 +38,13 @@
             android:layout_margin="10dp"
             android:background="@drawable/button_shape"
             android:backgroundTint="@color/primary"
-            android:fontFamily="cursive"
+            android:visibility="visible"
             android:gravity="center"
             android:text="@string/continue_game"
             android:textColor="@color/text_bright"
-            android:textSize="23sp"
-            android:visibility="visible">
+            android:textSize="@dimen/menu_button_text_size"
+            android:fontFamily="cursive"
+            >
 
         </Button>
 
@@ -54,14 +54,15 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
 
-            android:layout_marginTop="15dp"
             android:background="@drawable/button_shape"
+            android:layout_marginTop="15dp"
+            android:text="@string/new_game"
             android:backgroundTint="@color/primary"
+            android:textColor="@color/text_bright"
+            android:textSize="@dimen/menu_button_text_size"
             android:fontFamily="cursive"
             android:gravity="center"
-            android:text="@string/new_game"
-            android:textColor="@color/text_bright"
-            android:textSize="23sp">
+            >
 
         </Button>
 
@@ -82,11 +83,6 @@
         android:layout_margin="10dp">
 
     </Button>
-
-    <!--    <View-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="@drawable/ic_settings_black_24dp"/>-->
 
     <Button
         android:id="@+id/settings"

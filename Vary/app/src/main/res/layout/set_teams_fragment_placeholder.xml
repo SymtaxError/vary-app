@@ -25,7 +25,7 @@
         android:background="@drawable/menu_bottom_shape"
         android:gravity="center"
         android:text="@string/next"
-        android:textSize="20sp" />
+        android:textSize="@dimen/menu_bottom_text_size" />
 
 
 </RelativeLayout>

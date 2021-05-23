@@ -31,7 +31,7 @@
         android:backgroundTint="@color/primary"
 
         android:text="Начать"
-        android:textSize="20sp"
+        android:textSize="@dimen/menu_button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

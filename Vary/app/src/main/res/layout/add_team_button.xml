@@ -13,6 +13,6 @@
         android:background="@drawable/button_shape"
         android:backgroundTint="@color/primary"
         android:textStyle="bold"
-        android:textSize="32sp"
+        android:textSize="@dimen/menu_button_text_size"
         tools:targetApi="lollipop" />
 </LinearLayout>

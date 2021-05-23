@@ -17,7 +17,7 @@
 
         android:text="@string/guessed_words"
         android:textColor="@color/text_bright"
-        android:textSize="30sp" />
+        android:textSize="@dimen/menu_top_text_size" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/result_team_list"
@@ -43,6 +43,6 @@
         android:gravity="center"
 
         android:text="@string/ok"
-        android:textSize="24sp" />
+        android:textSize="@dimen/menu_bottom_text_size" />
 
 </RelativeLayout>
