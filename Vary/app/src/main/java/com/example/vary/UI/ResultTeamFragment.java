@@ -1,12 +1,12 @@
 package com.example.vary.UI;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,8 +43,14 @@ public class ResultTeamFragment extends Fragment {
                 this.wordNameView = teamView.findViewById(R.id.word_from_game);
             }
 
-            public void bind(String wordName, View.OnClickListener listener) {
+            public void bind(String wordName, boolean answerState, View.OnClickListener listener) {
                 wordNameView.setText(wordName);
+                if (answerState) {
+                    wordNameView.setTextColor(Color.parseColor("#1BB400"));
+                } else {
+                    wordNameView.setTextColor(Color.parseColor("#C50007"));
+                }
+
                 wordNameView.setOnClickListener(listener);
             }
         }
@@ -58,14 +64,15 @@ public class ResultTeamFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TeamStatsViewHolder holder, int position) {
-            String wordName = viewModel.getUsedCardByPosition(position) + " " + viewModel.getAnswerState(position);
+            String wordName = viewModel.getUsedCardByPosition(position);
+            boolean answerState = viewModel.getAnswerState(position);
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     viewModel.changeAnswerState(position);
                 }
             };
-            holder.bind(wordName, listener);
+            holder.bind(wordName, answerState, listener);
         }
 
         @Override
@@ -106,6 +113,20 @@ public class ResultTeamFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), observerCurrentGame);
 
         teamStatsList.setAdapter(teamStatsAdapter);
+
+        /* viewmodels
+                Button okButton = view.findViewById(R.id.result_ok_button);
+        okButton.setOnClickListener(v -> {
+            viewModel.changeTeamPoints();
+            callbackFunctions.callback(GameActions.open_round_or_game_result);
+        });
+         */
+        /* redesign
+                Button okButton = view.findViewById(R.id.team_result_bottom_text);
+        okButton.setOnClickListener(v -> callbackFunctions.callback(GameActions.open_round_or_game_result));
+         */
+
+        //оставил с viewmodels
 
         Button okButton = view.findViewById(R.id.result_ok_button);
         okButton.setOnClickListener(v -> {

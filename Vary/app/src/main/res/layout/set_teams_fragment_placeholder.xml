@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface_color"
+    tools:ignore="Overdraw">
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/commands_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/open_game_settings"
+        android:layout_alignParentTop="true" />
+
+    <Button
+        android:id="@+id/open_game_settings"
+
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+
+        android:layout_alignParentBottom="true"
+
+        android:background="@drawable/menu_bottom_shape"
+        android:gravity="center"
+        android:text="@string/next"
+        android:textSize="@dimen/menu_bottom_text_size" />
+
+
+</RelativeLayout>

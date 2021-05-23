@@ -38,7 +38,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.set_commands_fragment_placeholder, container, false);
+        view = inflater.inflate(R.layout.set_teams_fragment_placeholder, container, false);
 
         adapter = new TeamsAdapter();
         adapter.setOnDeleteTeamClickListener(this);

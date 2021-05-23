@@ -28,7 +28,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (viewType == type_team) {
             View view = LayoutInflater
                     .from(parent.getContext())
-                    .inflate(R.layout.team_item, parent, false);
+                    .inflate(R.layout.item_team, parent, false);
             return new TeamsViewHolder(view);
         } else {
             View view = LayoutInflater
