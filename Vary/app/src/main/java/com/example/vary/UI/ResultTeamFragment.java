@@ -128,7 +128,7 @@ public class ResultTeamFragment extends Fragment {
 
         //оставил с viewmodels
 
-        Button okButton = view.findViewById(R.id.result_ok_button);
+        Button okButton = view.findViewById(R.id.team_result_bottom_text);
         okButton.setOnClickListener(v -> {
             viewModel.changeTeamPoints();
             callbackFunctions.callback(GameActions.open_round_or_game_result);
