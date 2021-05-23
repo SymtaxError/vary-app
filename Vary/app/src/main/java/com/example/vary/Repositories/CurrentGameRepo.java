@@ -35,9 +35,9 @@ public class CurrentGameRepo {
     }
 
     public LiveData<CurrentGameModel> getGameModel() {
-        if (gameModel.getValue() == null) {
-//            restoreState(); ??
-        }
+//        if (gameModel.getValue() == null) {
+//            restoreState();
+//        }
         return gameModel;
     }
 
@@ -53,7 +53,7 @@ public class CurrentGameRepo {
         model.setCurrentRoundPoints(currentRoundPoints);
         model.setCurrentAndStartCard(currentCard, startCard);
         model.setRoundTimeLeft(roundTimeLeft);
-        gameModel.postValue(model);
+//        gameModel.postValue(model);
 
         Gson gson = new Gson();
         String json = gson.toJson(model);
@@ -63,31 +63,22 @@ public class CurrentGameRepo {
     }
 
 
-    public void restoreState(SharedPreferences sp) {
+    public CurrentGameModel restoreState(SharedPreferences sp) {
         Gson gson = new Gson();
         String json = sp.getString("current_game_model", "");
         CurrentGameModel modelRestore = gson.fromJson(json, CurrentGameModel.class);
 
         if (modelRestore == null) {
-            return;
+            return null;
         }
 
-        CurrentGameModel model = gameModel.getValue();
-        model.setCommands(modelRestore.getCommands());
-        model.setCardModelList(modelRestore.getCardModelList());
-        model.setRoundTimeLeft(modelRestore.getRoundTimeLeft());
-        model.setCurrentAndStartCard(modelRestore.getCurrentCard(), modelRestore.getStartRoundCard());
-        model.setCurrentRoundPoints(modelRestore.getCurrentRoundPoints());
-        model.setRoundDuration(modelRestore.getRoundDuration());
-        model.setSteal(modelRestore.getSteal());
-        model.setPenalty(modelRestore.getPenalty());
-        gameModel.postValue(model);
-
+        gameModel.postValue(modelRestore);
+        return modelRestore;
         // load from db
     }
 
-    public boolean isFreeModel() {
-        return gameModel.getValue().getCommands() == null;
+    public boolean gameIsVoid() {
+        return gameModel.getValue().isVoid();
     }
 
 
@@ -140,12 +131,39 @@ public class CurrentGameRepo {
         return false;
     }
 
+    public List<CardModel> getCards() {
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getCardModelList();
+        }
+        return null;
+    }
+
+    public List<TeamModel> getTeams() {
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getCommands();
+        }
+        return null;
+    }
+
     public void setCurrentAndStartCard(int curCard, int startCard) {
         CurrentGameModel model = gameModel.getValue();
         if (model != null) {
             model.setCurrentAndStartCard(curCard, startCard);
             gameModel.postValue(model);
         }
+    }
+
+    public void setNewGame(SharedPreferences.Editor editor) {
+        editor.clear();
+        editor.commit();
+        gameModel.postValue(new CurrentGameModel(false, PenaltyType.no_penalty, 0));
+    }
+
+    public int getStartRoundCard() {
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().getStartRoundCard();
+        }
+        return 0;
     }
 
     public int getCurrentCard() {

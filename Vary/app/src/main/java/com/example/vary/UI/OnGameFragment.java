@@ -136,7 +136,8 @@ public class OnGameFragment extends Fragment implements CardCallback {
         card.addView(cardText);
         RelativeLayout root = view.findViewById(R.id.card_root);
         roundScoreView = view.findViewById(R.id.round_score);
-        roundScore = 0;
+        roundScore = viewModel.getRoundPoints();
+        roundScoreView.setText(String.valueOf(roundScore));
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dp(200), dp(200));
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -288,7 +289,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         Observer<CurrentGameModel> observerCurrentGame = new Observer<CurrentGameModel>() {
             @Override
             public void onChanged(CurrentGameModel gameModel) {
-                timerService.runTask(gameModel.getRoundDuration());
+                timerService.runTask(gameModel.getRoundTimeLeft());
                 timerService.pauseTask();
                 //TODO вписать изменение gamemodel
             }
@@ -326,6 +327,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     @Override
     public void callback() {
         Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
+        viewModel.setRoundTimeLeft(0);
         callbackFunctions.callback(GameActions.open_team_result);
         //TODO переход
     }

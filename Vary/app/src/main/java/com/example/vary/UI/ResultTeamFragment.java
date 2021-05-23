@@ -19,6 +19,8 @@ import com.example.vary.Models.CardModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class ResultTeamFragment extends Fragment {

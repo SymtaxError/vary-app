@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.Toast;
 
+import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
@@ -62,18 +64,26 @@ public class StartFragment extends Fragment {
                 viewModel.getNewCategories();
             }
         });
-        Observer<List<TeamModel>> observer = new Observer<List<TeamModel>>() {
+        checkContinueButtonVisibility(false);
+        Observer<CurrentGameModel> observerGameModel = new Observer<CurrentGameModel>() {
             @Override
-            public void onChanged(List<TeamModel> teamModels) {
-                checkContinueButtonVisibility(teamModels.size());
+            public void onChanged(CurrentGameModel currentGameModel) {
+                if (!currentGameModel.isVoid()) {
+                    Toast toast = Toast.makeText(getContext(), "Model isn't void, info : " + currentGameModel.getCardModelList().size(), Toast.LENGTH_LONG);
+                    toast.show();
+                    checkContinueButtonVisibility(true);
+                }
+                else {
+                    checkContinueButtonVisibility(false);
+                }
             }
         };
 
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
 
         viewModel
-                .getTeams()
-                .observe(getViewLifecycleOwner(), observer);
+                .getGameModel()
+                .observe(getViewLifecycleOwner(), observerGameModel);
 
         return view;
     }
@@ -97,12 +107,11 @@ public class StartFragment extends Fragment {
         fCallback = callback;
     }
 
-    void checkContinueButtonVisibility(int size) { //Настройка прозрачности кнопки "продолжить" в зависимости от наличия сохраненного состояния
-        int amount = getResources().getInteger(R.integer.min_commands_amount);
-        if (size <= amount) {
-            continue_game.setVisibility(View.GONE);
-        } else {
+    void checkContinueButtonVisibility(boolean visible) { //Настройка прозрачности кнопки "продолжить" в зависимости от наличия сохраненного состояния
+        if (visible) {
             continue_game.setVisibility(View.VISIBLE);
+        } else {
+            continue_game.setVisibility(View.GONE);
         }
     }
 }

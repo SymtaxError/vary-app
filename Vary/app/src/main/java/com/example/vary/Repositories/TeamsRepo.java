@@ -44,6 +44,10 @@ public class TeamsRepo {
         return mTeams;
     }
 
+    public void setTeams(List<TeamModel> teams) {
+        mTeams.postValue(teams);
+    }
+
     public void removeTeams() {
         List<TeamModel> listTeams = mTeams.getValue();
         if (listTeams != null) {

@@ -286,23 +286,18 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
 
     void continueGame() {
-        if (!Objects.requireNonNull(getSupportFragmentManager()
-                .findFragmentById(R.id.container))
-                .getClass()
-                .equals(SetTeamsFragment.class)) {
-            SetTeamsFragment fragment = new SetTeamsFragment();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit();
+        viewModel.continueOldGame();
+        if (viewModel.getRoundTimeLeft() > 0) {
+            startGameProcess();
+        } else {
+            openRoundOrGameResult();
         }
     }
 
     void startNewGame() {
-        if (viewModel.getSize() != 0) {
+        if (viewModel.getAmountOfTeams() != 0)
             viewModel.removeTeams();
-        }
+        viewModel.setNewGame(editor);
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
@@ -318,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     public void startMainFragment() {
+        viewModel.setNewGame(editor);
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
@@ -346,7 +342,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             super.onBackPressed(); //TODO так не должно быть! вообще может перенести во фрагмент?
             StartFragment fragment = (StartFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.container);
-            fragment.checkContinueButtonVisibility(viewModel.getSize());
         } else if (Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()

@@ -111,6 +111,7 @@ public class ResultRoundFragment extends Fragment {
         }
 
         nextRoundButton.setOnClickListener(v -> {
+            viewModel.setRoundTimeLeft(viewModel.getRoundDuration());
             if (!viewModel.nextRound()) {
                 callbackFunctions.callback(GameActions.open_menu);
             }

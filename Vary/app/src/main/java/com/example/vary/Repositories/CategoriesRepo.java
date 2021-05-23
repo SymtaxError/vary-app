@@ -95,6 +95,10 @@ public class CategoriesRepo implements SetDataCallback {
         mCardsRepo.mixCards();
     }
 
+    public void setCards(List<CardModel> cards) {
+        mCardsRepo.setCards(cards);
+    }
+
     public void declineCard() {
         mCardsRepo.declineCard();
     }
@@ -137,6 +141,14 @@ public class CategoriesRepo implements SetDataCallback {
 
     public void setCurrentPosition(int position) {
         mCardsRepo.setCurrentPosition(position);
+    }
+
+    public int getStartRoundPosition() {
+        return mCardsRepo.getStartRoundPosition();
+    }
+
+    public void setStartRoundPosition(int position) {
+        mCardsRepo.setStartRoundPosition(position);
     }
 
     public void saveState() {

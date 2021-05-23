@@ -22,6 +22,7 @@ public class CurrentGameModel {
         mSteal = steal;
         mPenalty = penalty;
         mRoundDuration = roundDuration;
+        roundTimeLeft = roundDuration;
     }
 
     public void setRoundDuration(int roundDuration) {
@@ -109,6 +110,10 @@ public class CurrentGameModel {
 
     public int getRoundTimeLeft() {
         return roundTimeLeft;
+    }
+
+    public boolean isVoid() {
+        return mCardModelList == null;
     }
 
 

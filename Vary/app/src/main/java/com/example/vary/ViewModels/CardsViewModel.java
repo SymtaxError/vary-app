@@ -125,19 +125,29 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public void saveState(SharedPreferences.Editor editor) {
-        List<CardModel> mCardModels = CardsRepo.getInstance().getCards().getValue();
+        List<CardModel> mCardModels = mCategoriesRepo.getCards().getValue();
         if (mCardModels == null) {
             return;
         }
-        // TODO очки команды ???
+        int timer = 0;
+        if (getTimerCount().getValue() != null) {
+            timer = getTimerCount().getValue();
+        }
+        if (timer == 0)
+            changeTeamPoints();
+
         gameRepo.saveState(mCardModels,
                             mTeamsRepo.getTeams().getValue(),
                             editor,
-                            0,
-                            CardsRepo.getInstance().getCurrentPosition(),
-                            CardsRepo.getInstance().getStartRoundPosition(),
-                            getTimerCount().getValue()
+                            mCategoriesRepo.countPoints(),
+                            mCategoriesRepo.getCurrentPosition(),
+                            mCategoriesRepo.getStartRoundPosition(),
+                            timer
         );
+    }
+
+    public int getRoundTimeLeft() {
+        return gameRepo.getRoundTimeLeft();
     }
 
     public void sortTeamsByPoints() {
@@ -146,7 +156,25 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
 
     public void restoreState(SharedPreferences sp) {
-        gameRepo.restoreState(sp);
+        CurrentGameModel model = gameRepo.restoreState(sp);
+    }
+
+    public void continueOldGame() {
+        if (!gameRepo.gameIsVoid()) {
+            mCategoriesRepo.setCards(gameRepo.getCards());
+            mTeamsRepo.setTeams(gameRepo.getTeams());
+            mCategoriesRepo.setCurrentPosition(gameRepo.getCurrentCard());
+            mCategoriesRepo.setStartRoundPosition(gameRepo.getStartRoundCard());
+            mTimerCount.postValue(gameRepo.getRoundTimeLeft());
+        }
+    }
+
+    public int getRoundPoints() {
+        return gameRepo.getCurrentRoundPoints();
+    }
+
+    public void setNewGame(SharedPreferences.Editor editor) {
+        gameRepo.setNewGame(editor);
     }
 
 

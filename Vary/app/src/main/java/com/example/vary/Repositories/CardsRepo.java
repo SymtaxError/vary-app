@@ -14,8 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class
-CardsRepo {
+public class CardsRepo {
     private final static MutableLiveData<List<CardModel>> mCards = new MutableLiveData<>();
     private int startRoundPosition = 0;
     private int currentPosition = 0;
@@ -112,6 +111,10 @@ CardsRepo {
         // scan from db?
         dbManager.getCards(categoryName);
         currentPosition = 0;
+    }
+
+    public void setCards(List<CardModel> cards) {
+        mCards.postValue(cards);
     }
 
     public boolean newRoundRequired() {
