@@ -17,7 +17,6 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -150,8 +149,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             case start_game_process:
                 startGameProcess();
                 break;
-            case open_round_result:
-                openTeamRound();
+            case open_team_result:
+                openTeamResult();
+                break;
+            case open_round_or_game_result:
+                openRoundOrGameResult();
                 break;
             default:
                 break;
@@ -296,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
     }
 
-    void openTeamRound() {
+    void openTeamResult() {
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
@@ -307,7 +309,21 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    void openRoundOrGameResult() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(ResultRoundFragment.class)) {
+            ResultRoundFragment fragment = new ResultRoundFragment();
+            fragment.setCallback(this);
+            fragment.setViewModel(viewModel);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
                     .commit();
         }
     }

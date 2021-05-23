@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -263,7 +262,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
                     return; //TODO убрать костыль
                 if (timerCount == 0) {
                     viewModel.setTimerCount(-1);
-                    callbackFunctions.callback(GameActions.open_round_result);
+                    callbackFunctions.callback(GameActions.open_team_result);
                 }
                 timeLeft.setText(timerCount.toString());
                 Log.d("Timer is ticking...", timerCount.toString());

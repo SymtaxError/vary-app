@@ -60,7 +60,6 @@ public class ResultTeamFragment extends Fragment {
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     viewModel.changeAnswerState(position);
                 }
             };
@@ -92,7 +91,6 @@ public class ResultTeamFragment extends Fragment {
         TeamStatsAdapter teamStatsAdapter = new TeamStatsAdapter();
         teamStatsAdapter.setViewModel(viewModel);
 
-
         Observer<List<CardModel>> observerCurrentGame = new Observer<List<CardModel>>() {
             @Override
             public void onChanged(List<CardModel> cardModels) {
@@ -101,7 +99,6 @@ public class ResultTeamFragment extends Fragment {
                 }
             }
         };
-
         viewModel
                 .getCards()
                 .observe(getViewLifecycleOwner(), observerCurrentGame);
@@ -114,20 +111,15 @@ public class ResultTeamFragment extends Fragment {
             public void onClick(View v) {
                 if (!viewModel.nextGameMode()) {
                     Toast.makeText(getContext(), "Game ended", Toast.LENGTH_LONG).show();
-                    //TODO
+                    callbackFunctions.callback(GameActions.open_round_or_game_result);
                 } else {
                     Toast.makeText(getContext(), "Game not ended", Toast.LENGTH_SHORT).show();
                     callbackFunctions.callback(GameActions.start_game_process);
                 }
+
             }
         });
 
         return view;
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
 }

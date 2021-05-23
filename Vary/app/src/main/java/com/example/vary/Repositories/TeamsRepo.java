@@ -1,7 +1,9 @@
 package com.example.vary.Repositories;
 
 import android.content.Context;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -121,7 +123,6 @@ public class TeamsRepo {
         return 0;
     }
 
-
     public ArrayList<String> getTeamsNames() {
         ArrayList<String> names = new ArrayList<>();
         if (mTeams.getValue() != null) {
@@ -136,4 +137,26 @@ public class TeamsRepo {
         return names;
     }
 
+    /*
+    Используется в конце игры, чтобы отобразить команды в порядке от победителя к проигравшему
+     */
+    public void sortTeamsByPoints() {
+        List<TeamModel> teams = mTeams.getValue();
+        if (teams == null) {
+            return;
+        }
+
+        // Сортировка пузырьком :(
+        for (int i = 0; i < teams.size(); i++) {
+            for (int j = i; j < teams.size() - 1; j++) {
+                if (teams.get(j).getPoints() < teams.get(j+1).getPoints()) {
+                    TeamModel temp = teams.get(j + 1);
+                    teams.set(j + 1, teams.get(j));
+                    teams.set(j, temp);
+                }
+            }
+        }
+
+        mTeams.postValue(teams);
+    }
 }

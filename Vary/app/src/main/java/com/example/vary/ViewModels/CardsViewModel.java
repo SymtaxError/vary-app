@@ -120,6 +120,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mTeamsRepo.renameTeam(name, pos);
     }
 
+    public void sortTeamsByPoints() {
+        mTeamsRepo.sortTeamsByPoints();
+    }
+
     public void saveState() {
 
     }
