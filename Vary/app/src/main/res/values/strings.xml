@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="add_command">+</string>
     <string name="next">Далее</string>
-    <string name="insert_command_name">Название:</string>
+    <string name="insert_command_name">Ваша классная команда</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
     <string name="command">Команда</string>
@@ -45,4 +45,6 @@
     <string name="explain_mode_str">Объясни словами</string>
     <string name="gesture_mode_str">Покажи жестами</string>
     <string name="one_word_mode_str">Объясни одним словом</string>
+    <string name="choose_deck_text">Выбрать колоду</string>
+    <string name="team_add_text">Название</string>
 </resources>

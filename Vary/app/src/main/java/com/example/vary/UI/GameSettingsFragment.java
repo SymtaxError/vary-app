@@ -84,7 +84,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         amountCardsBar = view.findViewById(R.id.bar_amount_cards);
         amountCardsBar.setOnSeekBarChangeListener(this);
 
-        timeBar = view.findViewById(R.id.time_round);
+        timeBar = view.findViewById(R.id.bar_round_time);
         timeBar.setOnSeekBarChangeListener(this);
 
         time = view.findViewById(R.id.time_round_text);

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -105,7 +104,7 @@ public class ResultTeamFragment extends Fragment {
 
         teamStatsList.setAdapter(teamStatsAdapter);
 
-        Button okButton = view.findViewById(R.id.result_ok_button);
+        Button okButton = view.findViewById(R.id.team_result_bottom_text);
         okButton.setOnClickListener(v -> callbackFunctions.callback(GameActions.open_round_or_game_result));
 
         return view;

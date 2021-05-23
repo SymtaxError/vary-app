@@ -15,8 +15,8 @@ public class TeamsViewHolder extends ViewHolder {
 
     public TeamsViewHolder(@NonNull View itemView) {
         super(itemView);
-        name = itemView.findViewById(R.id.team_name_item);
-        delete = itemView.findViewById(R.id.team_delete);
+        name = itemView.findViewById(R.id.item_team_name);
+        delete = itemView.findViewById(R.id.item_team_delete);
     }
 
     public void bind(String team, View.OnClickListener delListener, View.OnClickListener renameListener) {

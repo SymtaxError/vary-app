@@ -2,16 +2,13 @@ package com.example.vary.UI;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +38,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.set_commands_fragment_placeholder, container, false);
+        view = inflater.inflate(R.layout.set_teams_fragment_placeholder, container, false);
 
         adapter = new TeamsAdapter();
         adapter.setOnDeleteTeamClickListener(this);

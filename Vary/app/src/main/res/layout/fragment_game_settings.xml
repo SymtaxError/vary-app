@@ -1,196 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
+    android:background="@color/surface_color"
     tools:context=".UI.GameSettingsFragment">
 
-
-    <TextView
-        android:id="@+id/time_round_text"
-        android:layout_width="238dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/time_round"
-        android:textColor="@color/black"
-        android:textSize="@dimen/settings_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bar_amount_cards" />
-
-    <SeekBar
-        android:id="@+id/time_round"
-        android:layout_width="280dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="12dp"
-        android:max="100"
-        android:progress="60"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_round_text" />
-
-    <Spinner
-        android:id="@+id/spinner_deck_card"
-        android:layout_width="283dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_game" />
-
-    <!--    <Button-->
-<!--        android:id="@+id/button_deck_card"-->
-<!--        android:layout_width="283dp"-->
-<!--        android:layout_height="33dp"-->
-<!--        android:layout_marginTop="12dp"-->
-<!--        android:background="@drawable/button_shape"-->
-<!--        android:backgroundTint="@color/secondary"-->
-<!--        android:text="@string/deck_of_cards"-->
-<!--        android:textSize="@dimen/game_text_size"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.476"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/settings_game" />-->
-
-    <TextView
-        android:id="@+id/amount_cards"
-        android:layout_width="234dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="@string/amount_cards"
-        android:textColor="@color/black"
-        android:textSize="@dimen/game_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_deck_card" />
-
-    <SeekBar
-        android:id="@+id/bar_amount_cards"
-        android:layout_width="281dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="8dp"
-        android:max="100"
-        android:progress="50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount_cards" />
-
+    <!--    Верхняя штука-->
     <TextView
         android:id="@+id/settings_game"
-        android:layout_width="285dp"
-        android:layout_height="47dp"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/menu_top_shape"
         android:gravity="center"
         android:text="@string/settings_game"
-        android:textColor="@color/black"
-        android:textSize="@dimen/settings_header_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/text_bright"
+        android:textSize="@dimen/settings_header_size" />
 
-    <TextView
-        android:id="@+id/penalty"
-        android:layout_width="219dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/penalty"
-        android:textColor="@color/black"
-        android:textSize="@dimen/game_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_round" />
+    <RelativeLayout
+        android:id="@+id/setting_game_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/start_game_button"
+        android:layout_below="@id/settings_game">
 
-    <RadioGroup
-        android:id="@+id/penalty_group"
-        android:layout_width="191dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/penalty">
+        <!--        Количество карточек текст-->
+        <TextView
+            android:id="@+id/amount_cards"
 
-        <RadioButton
-            android:id="@+id/no_penalty"
-            android:layout_width="185dp"
-            android:layout_height="20dp"
-            android:text="@string/no"
-            android:checked="true"
-            android:textColor="@color/black" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        <RadioButton
-            android:id="@+id/loss_points_penalty"
-            android:layout_width="185dp"
-            android:layout_height="22dp"
-            android:text="@string/loss_of_points"
-            android:textColor="@color/black" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
 
-        <RadioButton
-            android:id="@+id/players_task_penalty"
-            android:layout_width="185dp"
-            android:layout_height="22dp"
-            android:text="@string/players_task"
-            android:textColor="@color/black" />
-    </RadioGroup>
+            android:text="@string/amount_cards"
+            android:textColor="@color/text_bright"
+            android:textSize="@dimen/game_text_size" />
 
-    <Switch
-        android:id="@+id/theft_right"
-        android:layout_width="260dp"
-        android:layout_height="31dp"
-        android:layout_marginLeft="34dp"
-        android:layout_marginTop="28dp"
-        android:text="@string/theft_right"
-        android:textColor="@color/black"
-        android:textSize="@dimen/game_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/penalty_group" />
+        <!--        количество карточек двигается-->
+        <SeekBar
+            android:id="@+id/bar_amount_cards"
 
-    <Spinner
-        android:id="@+id/choose_team_spinner"
-        android:layout_width="296dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choose_command_text" />
+            android:layout_width="@dimen/seek_bar_width"
+            android:layout_height="wrap_content"
 
+            android:layout_below="@id/amount_cards"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+
+            android:max="100"
+            android:progress="50" />
+
+        <!--        Время текст-->
+        <TextView
+            android:id="@+id/time_round_text"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/bar_amount_cards"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+
+            android:text="@string/time_round"
+            android:textColor="@color/text_bright"
+            android:textSize="@dimen/settings_text_size" />
+
+        <!--        Время двигается-->
+        <SeekBar
+            android:id="@+id/bar_round_time"
+            android:layout_width="@dimen/seek_bar_width"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/time_round_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+
+            android:max="100"
+            android:progress="60" />
+
+        <!--        Штраф-->
+        <TextView
+            android:id="@+id/penalty"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/bar_round_time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+
+            android:text="@string/penalty"
+            android:textColor="@color/text_bright"
+            android:textSize="@dimen/game_text_size" />
+
+        <RadioGroup
+            android:id="@+id/penalty_group"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/penalty"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/no_penalty"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:checked="true"
+                android:text="@string/no"
+                android:textColor="@color/text_bright" />
+
+            <RadioButton
+                android:id="@+id/loss_points_penalty"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="@string/loss_of_points"
+                android:textColor="@color/text_bright" />
+
+            <RadioButton
+                android:id="@+id/players_task_penalty"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="@string/players_task"
+                android:textColor="@color/text_bright" />
+        </RadioGroup>
+
+        <Switch
+            android:id="@+id/theft_right"
+
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/penalty_group"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+
+            android:text="@string/theft_right"
+            android:textColor="@color/text_bright"
+            android:textSize="@dimen/game_text_size"
+
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+
+        <TextView
+            android:id="@+id/choose_command_text"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/theft_right"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+
+            android:text="@string/start_command"
+            android:textColor="@color/text_bright"
+            android:textSize="@dimen/game_text_size" />
+
+        <Spinner
+            android:id="@+id/choose_team_spinner"
+
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/choose_command_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp" />
+
+
+        <TextView
+            android:id="@+id/choose_deck_text"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/choose_team_spinner"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+
+            android:text="@string/choose_deck_text"
+            android:textColor="@color/text_bright"
+            android:textSize="@dimen/game_text_size" />
+
+        <!--        Походу спиннер колод-->
+        <Spinner
+            android:id="@+id/spinner_deck_card"
+
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/choose_deck_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp" />
+
+    </RelativeLayout>
+
+    <!--    Нижняя штука-->
     <Button
         android:id="@+id/start_game_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/button_shape"
-        android:backgroundTint="@color/secondary"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/menu_bottom_shape"
         android:text="@string/next"
-        android:layout_margin="10dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choose_team_spinner"
-        app:layout_constraintVertical_bias="0.707" />
+        android:textSize="@dimen/settings_header_size" />
 
-    <TextView
-        android:id="@+id/choose_command_text"
-        android:layout_width="245dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="44dp"
-        android:gravity="center"
-        android:text="@string/start_command"
-        android:textColor="@color/black"
-        android:textSize="@dimen/game_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/theft_right" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/primary"
+    android:background="@color/surface_color"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +11,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="156dp"
         android:text="@string/available_settings"
-        android:textColor="@color/black"
+        android:textColor="@color/text_bright"
         android:textSize="@dimen/settings_header_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.673"
@@ -41,7 +41,7 @@
         android:layout_marginTop="28dp"
         android:switchPadding="@dimen/settings_switch_padding"
         android:text="@string/sound_on"
-        android:textColor="@color/black"
+        android:textColor="@color/text_bright"
         android:textSize="@dimen/settings_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vk_button" />
@@ -54,7 +54,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/push_on"
         android:textSize="@dimen/settings_text_size"
-        android:textColor="@color/black"
+        android:textColor="@color/text_bright"
         android:switchPadding="@dimen/settings_switch_padding"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch_sound" />
@@ -67,7 +67,7 @@
         android:layout_marginTop="12dp"
         android:switchPadding="@dimen/settings_switch_padding"
         android:text="@string/check_updates"
-        android:textColor="@color/black"
+        android:textColor="@color/text_bright"
         android:textSize="@dimen/settings_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

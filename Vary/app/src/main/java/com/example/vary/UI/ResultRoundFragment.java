@@ -103,7 +103,7 @@ public class ResultRoundFragment extends Fragment {
 
         roundStatsList.setAdapter(roundStatsAdapter);
 
-        Button nextRoundButton = view.findViewById(R.id.next_round_button);
+        Button nextRoundButton = view.findViewById(R.id.next_round_bottom_text);
         GameActions tempCallback;
         if (!viewModel.nextRound()) {
             viewModel.sortTeamsByPoints();
