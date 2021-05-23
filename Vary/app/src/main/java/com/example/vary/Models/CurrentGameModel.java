@@ -24,6 +24,19 @@ public class CurrentGameModel {
         mRoundDuration = roundDuration;
     }
 
+    public void setRoundDuration(int roundDuration) {
+        mRoundDuration = roundDuration;
+    }
+
+    public void setPenalty(PenaltyType penalty) {
+        mPenalty = penalty;
+    }
+
+    public void setSteal(boolean steal) {
+        mSteal = steal;
+    }
+
+
     public void setCardModelList(List<CardModel> cardModelList) {
         mCardModelList = cardModelList;
     }
@@ -34,6 +47,14 @@ public class CurrentGameModel {
 
     public int getRoundDuration() {
         return mRoundDuration;
+    }
+
+    public List<TeamModel> getCommands() {
+        return mCommands;
+    }
+
+    public List<CardModel> getCardModelList() {
+        return mCardModelList;
     }
 
     public boolean nextGameMode() {

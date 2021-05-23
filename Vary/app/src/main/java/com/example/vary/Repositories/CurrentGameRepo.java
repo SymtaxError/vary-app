@@ -1,6 +1,7 @@
 package com.example.vary.Repositories;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -12,6 +13,8 @@ import com.example.vary.UI.GameMode;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.TeamModel;
 import com.example.vary.Models.CurrentGameModel;
+import com.example.vary.ViewModels.CardsViewModel;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -33,21 +36,60 @@ public class CurrentGameRepo {
 
     public LiveData<CurrentGameModel> getGameModel() {
         if (gameModel.getValue() == null) {
-            restoreState();
+//            restoreState(); ??
         }
         return gameModel;
     }
 
-    public void saveState(List<CardModel> cards, List<TeamModel> commands) {
+    public void saveState(List<CardModel> cards, List<TeamModel> commands, SharedPreferences.Editor editor,
+                          int currentRoundPoints, int currentCard, int startCard, int roundTimeLeft) {
         CurrentGameModel model = gameModel.getValue();
-        if (model != null) {
-            model.setCommands(commands);
-            model.setCardModelList(cards);
-            gameModel.postValue(model);
+        if (model == null) {
+            return;
         }
 
+        model.setCommands(commands);
+        model.setCardModelList(cards);
+        model.setCurrentRoundPoints(currentRoundPoints);
+        model.setCurrentAndStartCard(currentCard, startCard);
+        model.setRoundTimeLeft(roundTimeLeft);
+        gameModel.postValue(model);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(model);
+        editor.putString("current_game_model", json);
+        editor.commit();
         //save to db
     }
+
+
+    public void restoreState(SharedPreferences sp) {
+        Gson gson = new Gson();
+        String json = sp.getString("current_game_model", "");
+        CurrentGameModel modelRestore = gson.fromJson(json, CurrentGameModel.class);
+
+        if (modelRestore == null) {
+            return;
+        }
+
+        CurrentGameModel model = gameModel.getValue();
+        model.setCommands(modelRestore.getCommands());
+        model.setCardModelList(modelRestore.getCardModelList());
+        model.setRoundTimeLeft(modelRestore.getRoundTimeLeft());
+        model.setCurrentAndStartCard(modelRestore.getCurrentCard(), modelRestore.getStartRoundCard());
+        model.setCurrentRoundPoints(modelRestore.getCurrentRoundPoints());
+        model.setRoundDuration(modelRestore.getRoundDuration());
+        model.setSteal(modelRestore.getSteal());
+        model.setPenalty(modelRestore.getPenalty());
+        gameModel.postValue(model);
+
+        // load from db
+    }
+
+    public boolean isFreeModel() {
+        return gameModel.getValue().getCommands() == null;
+    }
+
 
     public void setGameModel(boolean steal, PenaltyType penalty, int roundDuration) {
         gameModel.postValue(new CurrentGameModel(steal, penalty, roundDuration));
@@ -69,9 +111,6 @@ public class CurrentGameRepo {
         return result;
     }
 
-    protected void restoreState() {
-        //load from db
-    }
 
     public int getRoundDuration() {
         if (gameModel.getValue() != null) {
