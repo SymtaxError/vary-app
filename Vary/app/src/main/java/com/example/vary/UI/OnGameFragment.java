@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,6 +40,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     //TODO: анимации
     //TODO: динамический размер текста
     private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
+    private AlphaAnimation swiped = new AlphaAnimation(1F, 0.6F);
     private int _yDelta;
     private int dropCardValue;
     TextView roundScoreView;
@@ -53,7 +55,13 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private boolean previewed;
     private RelativeLayout preview;
     private boolean cardTextSetted = false;
-    GameMode gameMode;
+    private float dY;
+    private float startY;
+    private Boolean swipeable = true;
+    private SpringAnimation yAnimation;
+    private GameMode gameMode;
+    private View topView, botView;
+
 
 
     private CallbackFragment callbackFunctions;
@@ -84,10 +92,11 @@ public class OnGameFragment extends Fragment implements CardCallback {
     @SuppressLint("SetTextI18n") //TODO refactor
     private void swipeUp(View v) {
 //        cardText.setText("CARD "+Math.abs(new Random().nextInt()%100));
-
         viewModel.answerCard();
         cardText.setText(viewModel.getCard());
         roundScoreView.setText(String.valueOf(++roundScore));
+        swipeable = false;
+        topView.startAnimation(swiped);
     }
 
     @SuppressLint("SetTextI18n") //TODO refactor
@@ -95,6 +104,8 @@ public class OnGameFragment extends Fragment implements CardCallback {
         viewModel.declineCard();
         cardText.setText(viewModel.getCard());
         roundScoreView.setText(String.valueOf(--roundScore));
+        botView.startAnimation(swiped);
+        swipeable = false;
     }
 
 
@@ -116,6 +127,10 @@ public class OnGameFragment extends Fragment implements CardCallback {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
+        swiped.setRepeatCount(2);
+        swiped.setDuration(100);
+        topView = view.findViewById(R.id.game_button_limit_top);
+        botView = view.findViewById(R.id.game_button_limit_bot);
         gameMode = viewModel.getGameMode();
         TextView gameModeView = view.findViewById(R.id.game_mode);
         gameModeView.setText(getGameModeStr());
@@ -136,11 +151,11 @@ public class OnGameFragment extends Fragment implements CardCallback {
         cardText.setTypeface(Typeface.DEFAULT_BOLD);
         cardText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         card.addView(cardText);
-        RelativeLayout root = view.findViewById(R.id.card_root);
+        FrameLayout root = view.findViewById(R.id.card_root);
         roundScoreView = view.findViewById(R.id.round_score);
         roundScore = viewModel.getRoundPoints();
         roundScoreView.setText(String.valueOf(roundScore));
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dp(200), dp(200));
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(dp(200), dp(200));
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -149,40 +164,43 @@ public class OnGameFragment extends Fragment implements CardCallback {
                 layoutParams.topMargin = (root.getHeight() - layoutParams.height) / 2;
                 card.setLayoutParams(layoutParams);
                 root.addView(card);
-                dropCardValue = dp(150);
+                dropCardValue = root.getHeight()/4;
+                yAnimation = new SpringAnimation(card, SpringAnimation.Y, root.getY()+layoutParams.height/2);
             }
         });
-        View.OnTouchListener cardSwipeListener = (v, event) -> {
-            final int Y = (int) event.getRawY();
-            Log.println(Log.DEBUG, "TopMargin", "" + layoutParams.topMargin + " " + dropCardValue);
-            switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_DOWN:
-                    RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-                    _yDelta = Y - lParams.topMargin;
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if (layoutParams.topMargin < dropCardValue) {
-                        swipeUp(v);
-                    } else if (layoutParams.topMargin + v.getHeight() / 2 > root.getHeight() - dropCardValue) {
-                        swipeDown(v);
-                    }
-                    layoutParams.leftMargin = (root.getWidth() - layoutParams.width) / 2;
-                    layoutParams.topMargin = (root.getHeight() - layoutParams.height) / 2;
-                    card.setLayoutParams(layoutParams);
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    RelativeLayout.LayoutParams layoutParams1 = (RelativeLayout.LayoutParams) v.getLayoutParams();
-                    layoutParams1.topMargin = Y - _yDelta;
-                    if (layoutParams1.topMargin > 0 & layoutParams1.topMargin + v.getHeight() < root.getHeight())
-                        v.setLayoutParams(layoutParams1);
-                    break;
-            }
-            root.invalidate();
-            return true;
-        };
-        card.setOnTouchListener(cardSwipeListener);
+
+        card.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        dY = v.getY() - event.getRawY();
+                        startY = event.getRawY();
+                        yAnimation.cancel();
+                        swipeable = true;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (!swipeable)
+                            return true;
+                        if (event.getRawY()-startY < -dropCardValue) {
+                            swipeUp(v);
+                        } else if (event.getRawY()-startY > dropCardValue) {
+                            swipeDown(v);
+                        } else {
+                            card.animate()
+                                    .y(event.getRawY() + dY)
+                                    .setDuration(0)
+                                    .start();
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        yAnimation.start();
+                        break;
+                }
+                ;
+                root.invalidate();
+                return true; }});
         pause = view.findViewById(R.id.pause);
-//        setPause(false);
         paused = false;
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
