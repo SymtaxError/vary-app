@@ -65,7 +65,7 @@
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_overlay"
+        android:background="@color/surface_color"
         android:visibility="invisible">
 
         <TextView
@@ -91,7 +91,7 @@
     <View
         android:id="@+id/game_button_limit_top"
         android:layout_width="wrap_content"
-        android:layout_height="72dp"
+        android:layout_height="90dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/game_top_shape" />
 

@@ -77,6 +77,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
         amountOfCards = 50;
         roundDuration = 60;
+        penalty = PenaltyType.lose_points;
 
         bindButton(R.id.start_game_button, GameActions.start_game_process);
 

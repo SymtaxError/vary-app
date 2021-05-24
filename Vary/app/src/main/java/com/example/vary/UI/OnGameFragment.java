@@ -56,6 +56,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private boolean paused = false;
     private boolean previewed;
     private boolean cardTextSetted = false;
+    private boolean isLastCard = false;
     private float dY;
     private float startY;
     private Boolean swipeable = true;
@@ -98,6 +99,8 @@ public class OnGameFragment extends Fragment implements CardCallback {
         roundScoreView.setText(String.valueOf(++roundScore));
         swipeable = false;
         topView.startAnimation(swiped);
+        if (isLastCard)
+            endFragment(); //TODO
     }
 
     @SuppressLint("SetTextI18n") //TODO refactor
@@ -111,6 +114,8 @@ public class OnGameFragment extends Fragment implements CardCallback {
             setPlayersTask(true);
         botView.startAnimation(swiped);
         swipeable = false;
+        if (isLastCard)
+            endFragment(); //TODO
     }
 
 
@@ -293,7 +298,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private void setPlayersTask(boolean newPlayersTaskValue) {
         if (newPlayersTaskValue) {
             timerService.pauseTask();
-            setPreview(false);
+//            setPreview(false);
             card.setVisibility(View.INVISIBLE);
             pause.setVisibility(View.INVISIBLE);
             playersTask.setVisibility(View.VISIBLE);
@@ -308,8 +313,8 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     private void setPause(boolean newPauseValue) {
         if (newPauseValue) {
+            setPreview(false);
             timerService.pauseTask();
-//            setPreview(false);
 //            setPlayersTask(false);
             pause.setVisibility(View.VISIBLE);
             card.setVisibility(View.INVISIBLE);
@@ -398,6 +403,14 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     private void timeEnded() {
         viewModel.setTimerCount(-1);
+        if (viewModel.getSteal()) {
+            isLastCard = true;
+            timerService.stopTask();
+        } else
+            endFragment();
+    }
+
+    private void endFragment() {
         callbackFunctions.callback(GameActions.open_team_result);
     }
 }

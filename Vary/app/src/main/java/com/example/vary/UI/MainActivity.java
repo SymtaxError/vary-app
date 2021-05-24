@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         StartFragment fragment = (StartFragment) getSupportFragmentManager().findFragmentById(R.id.container);
         if (fragment == null) {

@@ -127,7 +127,7 @@ public class CurrentGameRepo {
         if (gameModel.getValue() != null) {
             return gameModel.getValue().getPenalty();
         }
-        return PenaltyType.no_penalty;
+        return PenaltyType.lose_points;
     }
 
     public GameMode getGameMode() {
@@ -170,7 +170,7 @@ public class CurrentGameRepo {
         editor.clear();
         editor.commit();
 //        CurrentGameModel model = new CurrentGameModel(false, PenaltyType.no_penalty, )
-        gameModel.postValue(new CurrentGameModel(false, PenaltyType.no_penalty, 0));
+        gameModel.postValue(new CurrentGameModel(true, PenaltyType.lose_points, 0));
     }
 
     public int getStartRoundCard() {

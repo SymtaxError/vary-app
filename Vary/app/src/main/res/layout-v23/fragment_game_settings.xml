@@ -129,6 +129,7 @@
                 android:layout_height="wrap_content"
 
                 android:buttonTint="@color/secondary"
+
                 android:checked="true"
 
                 android:text="@string/loss_of_points"
@@ -163,8 +164,8 @@
             android:buttonTint="@color/secondary"
             android:thumbTint="@color/secondary"
             android:trackTint="@color/secondary_additional"
-            android:checked="true"
 
+            android:checked="true"
 
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
