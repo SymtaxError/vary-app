@@ -104,9 +104,11 @@ public class ResultRoundFragment extends Fragment {
         viewModel
                 .getTeams()
                 .observe(getViewLifecycleOwner(), observerCurrentGame);
-
-        viewModel.changeTeamPoints();
-        viewModel.setCurrentRoundPoints(0);
+        if (viewModel.getGameAction() != GameActions.open_round_or_game_result) {
+            viewModel.changeTeamPoints();
+            viewModel.setCurrentRoundPoints(0);
+        }
+        viewModel.setGameAction(GameActions.open_round_or_game_result);
         roundStatsList.setAdapter(roundStatsAdapter);
 
         Observer<CurrentGameModel> currentGameModelObserver = new Observer<CurrentGameModel>() {

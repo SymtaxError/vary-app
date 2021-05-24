@@ -311,11 +311,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
     void continueGame() {
         viewModel.continueOldGame();
-        if (viewModel.getRoundTimeLeft() > 0) {
-            createGameProcess();
-        } else {
-            openRoundOrGameResult();
-        }
+        callback(viewModel.getGameAction());
+//        if (viewModel.getRoundTimeLeft() > 0) {
+//            createGameProcess();
+//        } else {
+//            openRoundOrGameResult();
+//        }
     }
 
     void startNewGame() {

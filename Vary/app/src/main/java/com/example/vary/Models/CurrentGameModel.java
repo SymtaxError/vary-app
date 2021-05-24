@@ -1,5 +1,6 @@
 package com.example.vary.Models;
 
+import com.example.vary.UI.GameActions;
 import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 
@@ -16,6 +17,7 @@ public class CurrentGameModel {
     int startRoundCard = 0;
     int currentRoundPoints = 0;
     int roundTimeLeft = 0;
+    GameActions currentGameAction;
 
     public CurrentGameModel(boolean steal, PenaltyType penalty, int roundDuration) {
         mSteal = steal;
@@ -23,6 +25,14 @@ public class CurrentGameModel {
         mRoundDuration = roundDuration;
         mCardModelList = null;
         mTeams = null;
+    }
+
+    public void setCurrentGameAction(GameActions gameAction) {
+        currentGameAction = gameAction;
+    }
+
+    public GameActions getCurrentGameAction() {
+        return currentGameAction;
     }
 
     public void setRoundDuration(int roundDuration) {

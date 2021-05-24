@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.vary.Database.DbManager;
+import com.example.vary.UI.GameActions;
 import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 import com.example.vary.Models.CardModel;
@@ -207,5 +208,21 @@ public class CurrentGameRepo {
             return gameModel.getValue().getRoundTimeLeft();
         }
         return 0;
+    }
+
+    public void setCurrentGameAction(GameActions gameAction) {
+        CurrentGameModel model = gameModel.getValue();
+        if (model != null) {
+            model.setCurrentGameAction(gameAction);
+            gameModel.postValue(model);
+        }
+    }
+
+    public GameActions getCurrentGameAction() {
+        CurrentGameModel value = gameModel.getValue();
+        if (value != null) {
+            return value.getCurrentGameAction();
+        }
+        return null;
     }
 }

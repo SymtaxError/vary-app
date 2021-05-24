@@ -111,7 +111,7 @@ public class ResultTeamFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_result_team, container, false);
-
+        viewModel.setGameAction(GameActions.open_team_result);
         RecyclerView teamStatsList = view.findViewById(R.id.result_team_list);
         teamStatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 

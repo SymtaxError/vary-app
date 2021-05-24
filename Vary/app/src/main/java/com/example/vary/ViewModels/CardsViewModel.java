@@ -15,6 +15,7 @@ import com.example.vary.Repositories.TeamsRepo;
 import com.example.vary.Repositories.CurrentGameRepo;
 import com.example.vary.Database.DbManager;
 import com.example.vary.UI.CardCallback;
+import com.example.vary.UI.GameActions;
 import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
 import com.example.vary.UI.LoadDataCallback;
@@ -147,11 +148,11 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
 
         gameRepo.saveState(mCardModels,
-                            mTeamsRepo.getTeams().getValue(),
-                            editor,
-                            mCategoriesRepo.getCurrentPosition(),
-                            mCategoriesRepo.getStartRoundPosition(),
-                            timer
+                mTeamsRepo.getTeams().getValue(),
+                editor,
+                mCategoriesRepo.getCurrentPosition(),
+                mCategoriesRepo.getStartRoundPosition(),
+                timer
         );
     }
 
@@ -207,8 +208,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
             Log.d("Cards", "In mix required");
             mCategoriesRepo.mixCards();
             return gameRepo.nextGameMode();
-        }
-        else {
+        } else {
             newRoundMix();
         }
         setRoundTimeLeft(getRoundDuration());
@@ -234,6 +234,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public void setRoundTimeLeft(int time) {
         gameRepo.setRoundTimeLeft(time);
     }
+
     public void setRoundDuration(int time) {
         gameRepo.setDuration(time);
     }
@@ -295,6 +296,17 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     /*
+    GameActions
+     */
+    public void setGameAction(GameActions gameAction) {
+        gameRepo.setCurrentGameAction(gameAction);
+    }
+
+    public GameActions getGameAction() {
+        return gameRepo.getCurrentGameAction();
+    }
+
+    /*
     Таймер
      */
     private static final MutableLiveData<Integer> mTimerCount = new MutableLiveData<>();
@@ -306,4 +318,5 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public LiveData<Integer> getTimerCount() {
         return mTimerCount;
     }
+
 }
