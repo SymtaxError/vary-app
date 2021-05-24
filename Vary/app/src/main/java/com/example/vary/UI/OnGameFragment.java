@@ -297,8 +297,10 @@ public class OnGameFragment extends Fragment implements CardCallback {
         Observer<Integer> observerTimer = new Observer<Integer>() {
             @Override
             public void onChanged(Integer timerCount) {
-                if (timerCount == -1)
+                if (timerCount == -1) {
+                    viewModel.setRoundTimeLeft(viewModel.getRoundDuration());
                     return; //TODO убрать костыль
+                }
                 if (timerCount == 0) {
                     viewModel.setTimerCount(-1);
                     callbackFunctions.callback(GameActions.open_team_result);
@@ -313,6 +315,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
             public void onChanged(CurrentGameModel gameModel) {
                 timerService.runTask(gameModel.getRoundTimeLeft());
                 timerService.pauseTask();
+                Log.d("OnGame", "duration = "+gameModel.getRoundDuration() + ", time left = "+gameModel.getRoundTimeLeft());
                 //TODO вписать изменение gamemodel
             }
         };
@@ -351,7 +354,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     @Override
     public void callback() {
         Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
-        viewModel.setRoundTimeLeft(0);
+//        viewModel.setRoundTimeLeft(0);
         callbackFunctions.callback(GameActions.open_team_result);
         //TODO переход
     }

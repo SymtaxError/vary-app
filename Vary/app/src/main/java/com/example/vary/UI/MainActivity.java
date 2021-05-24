@@ -107,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         };
         viewModel.getTimerCount().observe(this, currentGameModelObserver);
 
+        Observer<CurrentGameModel> o2 = new Observer<CurrentGameModel>() {
+            @Override
+            public void onChanged(CurrentGameModel currentGameModel) {
+                Log.d("Model", "Changed, duration time = " + currentGameModel.getRoundDuration());
+            }
+        };
+        viewModel.getGameModel().observe(this, o2);
+
         viewModel.getCategories().observe(this, observer);
 //        final DbManager manager = DbManager.getInstance(this);
 //        manager.getCount(countListener);

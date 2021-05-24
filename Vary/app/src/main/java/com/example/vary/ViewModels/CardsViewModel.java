@@ -211,6 +211,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         else {
             newRoundMix();
         }
+        setRoundTimeLeft(getRoundDuration());
         return true;
     }
 
@@ -232,6 +233,9 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public void setRoundTimeLeft(int time) {
         gameRepo.setRoundTimeLeft(time);
+    }
+    public void setRoundDuration(int time) {
+        gameRepo.setDuration(time);
     }
 
     public LiveData<List<CategoryModel>> getCategories() {

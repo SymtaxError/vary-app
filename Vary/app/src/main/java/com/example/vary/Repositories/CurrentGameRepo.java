@@ -84,6 +84,12 @@ public class CurrentGameRepo {
         gameModel.postValue(new CurrentGameModel(steal, penalty, roundDuration));
     }
 
+    public void setDuration(int duration) {
+        CurrentGameModel model = gameModel.getValue();
+        model.setRoundDuration(duration);
+        gameModel.postValue(model);
+    }
+
     /*
       Возвращает true, если игра продолжается, иначе false
      */
@@ -94,6 +100,7 @@ public class CurrentGameRepo {
             result = game.nextGameMode();
             if (result) {
                 Log.d("GameMode", "changed");
+                game.setRoundTimeLeft(game.getRoundDuration());
                 gameModel.postValue(game);
             }
         }

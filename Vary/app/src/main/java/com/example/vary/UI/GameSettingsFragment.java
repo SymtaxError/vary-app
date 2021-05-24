@@ -203,6 +203,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
             }
             viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, penalty, steal, startTeam);
             viewModel.setRoundTimeLeft(roundDuration);
+            viewModel.setRoundDuration(roundDuration);
             fCallback.callback(action);
         });
     }
