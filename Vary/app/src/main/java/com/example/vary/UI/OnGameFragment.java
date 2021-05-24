@@ -51,9 +51,10 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private int category;
     private FrameLayout card;
     private RelativeLayout pause;
+    private RelativeLayout preview;
+    private RelativeLayout playersTask;
     private boolean paused = false;
     private boolean previewed;
-    private RelativeLayout preview;
     private boolean cardTextSetted = false;
     private float dY;
     private float startY;
@@ -103,7 +104,11 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private void swipeDown(View v) {
         viewModel.declineCard();
         cardText.setText(viewModel.getCard());
-        roundScoreView.setText(String.valueOf(--roundScore));
+        PenaltyType penalty = viewModel.getPenalty();
+        if (penalty == PenaltyType.lose_points)
+            roundScoreView.setText(String.valueOf(--roundScore));
+        else if (penalty == PenaltyType.players_task)
+            setPlayersTask(true);
         botView.startAnimation(swiped);
         swipeable = false;
     }
@@ -127,7 +132,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
-        viewModel.setGameAction(GameActions.create_game_process);
+        viewModel.setGameAction(GameActions.start_game_process_add_to_backstack);
         swiped.setRepeatCount(2);
         swiped.setDuration(100);
         topView = view.findViewById(R.id.game_button_limit_top);
@@ -210,6 +215,14 @@ public class OnGameFragment extends Fragment implements CardCallback {
                 endPause();
             }
         });
+        playersTask = view.findViewById(R.id.players_task);
+        playersTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(buttonClick);
+                setPlayersTask(false);
+            }
+        });
         preview = view.findViewById(R.id.preview);
         setPreview(true);
         preview.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +232,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
                 endPreview();
             }
         });
+
         return view;
     }
 
@@ -250,6 +264,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private void setPreview(boolean newPreviewValue) {
         if (newPreviewValue) {
             card.setVisibility(View.INVISIBLE);
+            playersTask.setVisibility(View.INVISIBLE);
             preview.setVisibility(View.VISIBLE);
         }
         else {
@@ -258,6 +273,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
                     cardText.setText(viewModel.getCard());
                     cardTextSetted = true;
                     card.setVisibility(View.VISIBLE);
+                    playersTask.setVisibility(View.INVISIBLE);
                     preview.setVisibility(View.INVISIBLE);
                     previewed = false;
                 } catch (Exception e){
@@ -267,23 +283,43 @@ public class OnGameFragment extends Fragment implements CardCallback {
             else {
                 card.setVisibility(View.VISIBLE);
                 preview.setVisibility(View.INVISIBLE);
+                playersTask.setVisibility(View.INVISIBLE);
                 previewed = false;
             }
         }
     }
 
 
-    private void setPause(boolean newPauseValue) {
-        if (newPauseValue) {
+    private void setPlayersTask(boolean newPlayersTaskValue) {
+        if (newPlayersTaskValue) {
             timerService.pauseTask();
             setPreview(false);
             card.setVisibility(View.INVISIBLE);
-            pause.setVisibility(View.VISIBLE);
+            pause.setVisibility(View.INVISIBLE);
+            playersTask.setVisibility(View.VISIBLE);
         }
         else {
             timerService.resumeTask();
             card.setVisibility(View.VISIBLE);
             pause.setVisibility(View.INVISIBLE);
+            playersTask.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setPause(boolean newPauseValue) {
+        if (newPauseValue) {
+            timerService.pauseTask();
+//            setPreview(false);
+//            setPlayersTask(false);
+            pause.setVisibility(View.VISIBLE);
+            card.setVisibility(View.INVISIBLE);
+            playersTask.setVisibility(View.INVISIBLE);
+        }
+        else {
+            timerService.resumeTask();
+            card.setVisibility(View.VISIBLE);
+            pause.setVisibility(View.INVISIBLE);
+            playersTask.setVisibility(View.INVISIBLE);
         }
         paused = newPauseValue;
     }
@@ -303,8 +339,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
                     return; //TODO убрать костыль
                 }
                 if (timerCount == 0) {
-                    viewModel.setTimerCount(-1);
-                    callbackFunctions.callback(GameActions.open_team_result);
+                    timeEnded();
                 }
                 timeLeft.setText(timerCount.toString());
                 Log.d("Timer is ticking...", timerCount.toString());
@@ -343,6 +378,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @Override
     public void onDestroy() {
+        timerService.stopTask();
         super.onDestroy();
     }
 
@@ -358,5 +394,10 @@ public class OnGameFragment extends Fragment implements CardCallback {
 //        viewModel.setRoundTimeLeft(0);
         callbackFunctions.callback(GameActions.open_team_result);
         //TODO переход
+    }
+
+    private void timeEnded() {
+        viewModel.setTimerCount(-1);
+        callbackFunctions.callback(GameActions.open_team_result);
     }
 }

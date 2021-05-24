@@ -108,7 +108,7 @@ public class ResultRoundFragment extends Fragment {
             viewModel.changeTeamPoints();
             viewModel.setCurrentRoundPoints(0);
         }
-        viewModel.setGameAction(GameActions.open_round_or_game_result);
+        viewModel.setGameAction(GameActions.open_round_or_game_result_add_to_backstack);
         roundStatsList.setAdapter(roundStatsAdapter);
 
         Observer<CurrentGameModel> currentGameModelObserver = new Observer<CurrentGameModel>() {

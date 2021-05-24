@@ -58,6 +58,10 @@ public class LocalService extends Service {
         timer = new Timer();
     }
 
+    public void stopTask() {
+        timer.cancel();
+    }
+
     private class changeTimerInView extends TimerTask {
         public void run() {
             if (localTimer > 0) {

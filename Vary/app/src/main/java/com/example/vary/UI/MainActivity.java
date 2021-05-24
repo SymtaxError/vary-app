@@ -20,12 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,7 +34,6 @@ import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
-import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Objects;
@@ -216,8 +212,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             case prepare_game:
                 prepareGameProcess();
                 break;
-            case create_game_process:
-                createGameProcess();
+            case start_game_process_add_to_backstack:
+                startGameProcessAddToBackStack();
                 break;
             case start_game_process:
                 startGameProcess();
@@ -225,8 +221,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             case open_team_result:
                 openTeamResult();
                 break;
+            case open_team_result_add_to_backstack:
+                openTeamResultAddToBackStack();
+                break;
             case open_round_or_game_result:
                 openRoundOrGameResult();
+                break;
+            case open_round_or_game_result_add_to_backstack:
+                openRoundOrGameResultAddToBackStack();
                 break;
             case open_menu:
                 startMainFragment();
@@ -236,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
     }
 
-    private void createGameProcess() {
+    private void startGameProcessAddToBackStack() {
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
@@ -433,6 +435,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
     }
 
+    void openTeamResultAddToBackStack() {
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(ResultTeamFragment.class)) {
+            ResultTeamFragment fragment = new ResultTeamFragment();
+            fragment.setCallback(this);
+            fragment.setViewModel(viewModel);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
     void openRoundOrGameResult() { //TODO добавить бекстек
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
@@ -445,6 +463,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                     .beginTransaction()
                     .replace(R.id.container, fragment)
 //                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    void openRoundOrGameResultAddToBackStack() { //TODO добавить бекстек
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(ResultRoundFragment.class)) {
+            ResultRoundFragment fragment = new ResultRoundFragment();
+            fragment.setCallback(this);
+            fragment.setViewModel(viewModel);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }

@@ -82,7 +82,14 @@ public class CurrentGameRepo {
 
 
     public void setGameModel(boolean steal, PenaltyType penalty, int roundDuration) {
-        gameModel.postValue(new CurrentGameModel(steal, penalty, roundDuration));
+        CurrentGameModel gameModelValue = gameModel.getValue();
+        if (gameModelValue != null) {
+            gameModelValue.setRoundDuration(roundDuration);
+            gameModelValue.setSteal(steal);
+            gameModelValue.setPenalty(penalty);
+        } else
+            gameModelValue = new CurrentGameModel(steal, penalty, roundDuration);
+        gameModel.postValue(gameModelValue);
     }
 
     public void setDuration(int duration) {

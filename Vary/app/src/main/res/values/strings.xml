@@ -48,4 +48,6 @@
     <string name="load_notification_text">Не удалось загрузить данные. Повторить попытку?</string>
     <string name="choose_deck_text">Выбрать колоду</string>
     <string name="team_add_text">Название</string>
+    <string name="players_task_title">Задание от игроков</string>
+    <string name="players_task_content">Выполни задание от игроков\nКогда будешь готов - нажми на экран</string>
 </resources>
