@@ -21,7 +21,8 @@ public class CurrentGameModel {
         mSteal = steal;
         mPenalty = penalty;
         mRoundDuration = roundDuration;
-        roundTimeLeft = roundDuration;
+        mCardModelList = null;
+        mTeams = null;
     }
 
     public void setRoundDuration(int roundDuration) {

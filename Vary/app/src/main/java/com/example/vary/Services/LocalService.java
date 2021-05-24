@@ -60,13 +60,14 @@ public class LocalService extends Service {
 
     private class changeTimerInView extends TimerTask {
         public void run() {
-            localTimer--;
-            if (localTimer % 100 == 0)
-            {
-                viewModel.setTimerCount(localTimer / 100);
-            }
-            if (localTimer == 0) {
-                timer.cancel();
+            if (localTimer > 0) {
+                localTimer--;
+                if (localTimer % 100 == 0) {
+                    viewModel.setTimerCount(localTimer / 100);
+                }
+                if (localTimer == 0) {
+                    timer.cancel();
+                }
             }
         }
     }

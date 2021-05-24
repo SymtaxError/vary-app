@@ -101,6 +101,12 @@ public class ResultTeamFragment extends Fragment {
         this.viewModel = viewModel;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        viewModel.setCurrentRoundPoints(viewModel.countPoints());
+        super.onSaveInstanceState(outState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -143,8 +149,7 @@ public class ResultTeamFragment extends Fragment {
         Button okButton = view.findViewById(R.id.team_result_bottom_text);
         okButton.setOnClickListener(v -> {
             v.startAnimation(buttonClick);
-            viewModel.changeTeamPoints();
-            viewModel.setCurrentRoundPoints(0);
+            viewModel.setCurrentRoundPoints(viewModel.countPoints());
             callbackFunctions.callback(GameActions.open_round_or_game_result);
         });
 

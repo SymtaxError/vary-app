@@ -41,15 +41,14 @@ public class CurrentGameRepo {
     }
 
     public void saveState(List<CardModel> cards, List<TeamModel> commands, SharedPreferences.Editor editor,
-                          int currentRoundPoints, int currentCard, int startCard, int roundTimeLeft) {
+                          int currentCard, int startCard, int roundTimeLeft) {
         CurrentGameModel model = gameModel.getValue();
         if (model == null) {
             return;
         }
-
+        editor.clear();
         model.setTeams(commands);
         model.setCardModelList(cards);
-        model.setCurrentRoundPoints(currentRoundPoints);
         model.setCurrentAndStartCard(currentCard, startCard);
         model.setRoundTimeLeft(roundTimeLeft);
 //        gameModel.postValue(model);
@@ -155,6 +154,7 @@ public class CurrentGameRepo {
     public void setNewGame(SharedPreferences.Editor editor) {
         editor.clear();
         editor.commit();
+//        CurrentGameModel model = new CurrentGameModel(false, PenaltyType.no_penalty, )
         gameModel.postValue(new CurrentGameModel(false, PenaltyType.no_penalty, 0));
     }
 

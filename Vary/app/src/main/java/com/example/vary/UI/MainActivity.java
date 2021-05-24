@@ -99,6 +99,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 }
             }
         };
+        Observer<Integer> currentGameModelObserver = new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer currentGameModel) {
+                Log.d("Model", "Changed, current time = " + currentGameModel);
+            }
+        };
+        viewModel.getTimerCount().observe(this, currentGameModelObserver);
+
         viewModel.getCategories().observe(this, observer);
 //        final DbManager manager = DbManager.getInstance(this);
 //        manager.getCount(countListener);
@@ -370,6 +378,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 super.onBackPressed();
             }
         } else {
+            saveModel();
             super.onBackPressed();
         }
     }
@@ -415,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
     }
 
-    void openRoundOrGameResult() {
+    void openRoundOrGameResult() { //TODO добавить бекстек
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
@@ -426,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
+//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -450,6 +460,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         super.onStop();
 //        unbindService(connection);
         mBound = false;
+    }
+
+    @Override
+    protected void onPause() {
+        saveModel();
+        super.onPause();
     }
 
     @Override

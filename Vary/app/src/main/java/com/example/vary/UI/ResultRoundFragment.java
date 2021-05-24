@@ -1,6 +1,7 @@
 package com.example.vary.UI;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vary.Models.CardModel;
+import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
@@ -103,7 +105,17 @@ public class ResultRoundFragment extends Fragment {
                 .getTeams()
                 .observe(getViewLifecycleOwner(), observerCurrentGame);
 
+        viewModel.changeTeamPoints();
+        viewModel.setCurrentRoundPoints(0);
         roundStatsList.setAdapter(roundStatsAdapter);
+
+        Observer<CurrentGameModel> currentGameModelObserver = new Observer<CurrentGameModel>() {
+            @Override
+            public void onChanged(CurrentGameModel currentGameModel) {
+                Log.d("Model", "Changed, current team points = " + currentGameModel.getCurrentRoundPoints());
+            }
+        };
+        viewModel.getGameModel().observe(getViewLifecycleOwner(), currentGameModelObserver);
 
         Button nextRoundButton = view.findViewById(R.id.next_round_bottom_text);
         GameActions tempCallback;

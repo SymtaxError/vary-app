@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +81,7 @@ public class StartFragment extends Fragment {
         Observer<CurrentGameModel> observerGameModel = new Observer<CurrentGameModel>() {
             @Override
             public void onChanged(CurrentGameModel currentGameModel) {
+                Log.d("Model", "Gor value of model, it is void: " + currentGameModel.isVoid());
                 if (!currentGameModel.isVoid()) {
                     Toast toast = Toast.makeText(getContext(), "Model isn't void, info : " + currentGameModel.getCardModelList().size(), Toast.LENGTH_LONG);
                     toast.show();

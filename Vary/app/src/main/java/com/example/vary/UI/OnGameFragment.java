@@ -332,6 +332,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @Override
     public void onPause() {
+        viewModel.setCurrentRoundPoints(roundScore);
         setPause(true);
         super.onPause();
     }
@@ -343,6 +344,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @Override
     public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        viewModel.setCurrentRoundPoints(roundScore);
         super.onSaveInstanceState(outState);
     }
 

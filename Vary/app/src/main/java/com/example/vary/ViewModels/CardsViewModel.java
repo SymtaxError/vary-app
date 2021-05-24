@@ -116,8 +116,12 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public void changeTeamPoints() {
-        int points = mCategoriesRepo.countPoints();
+        int points = gameRepo.getCurrentRoundPoints();
         mTeamsRepo.increasePoints(points);
+    }
+
+    public int countPoints() {
+        return mCategoriesRepo.countPoints();
     }
 
     public void renameTeam(String name, int pos) {
@@ -127,18 +131,24 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public void saveState(SharedPreferences.Editor editor) {
         List<CardModel> mCardModels = mCategoriesRepo.getCards().getValue();
         if (mCardModels == null) {
+            gameRepo.setNewGame(editor);
             return;
         }
+//        if (gameRepo.getGameModel().getValue().isVoid())
+//        {
+//            gameRepo.setNewGame(editor);
+//            return;
+//        }
         int timer = 0;
         if (getTimerCount().getValue() != null) {
             timer = getTimerCount().getValue();
+
         }
 
 
         gameRepo.saveState(mCardModels,
                             mTeamsRepo.getTeams().getValue(),
                             editor,
-                            mCategoriesRepo.countPoints(),
                             mCategoriesRepo.getCurrentPosition(),
                             mCategoriesRepo.getStartRoundPosition(),
                             timer
@@ -173,6 +183,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public void setNewGame(SharedPreferences.Editor editor) {
+        mCategoriesRepo.setCards(null);
         gameRepo.setNewGame(editor);
     }
 
