@@ -34,6 +34,7 @@ import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Objects;
@@ -143,23 +144,27 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 //                }
                 if (loadStatus.getError() != null && loadStatus.getNotification()) {
                     LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-                    View promView = inflater.inflate(R.layout.load_confirm, null);
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-                    alertDialogBuilder.setView(promView);
-
-                    String add = getResources().getString(R.string.yes);
-                    String cancel = getResources().getString(R.string.no);
-                    alertDialogBuilder
-                            .setCancelable(false)
-                            .setPositiveButton(add, (dialog, which) -> {
-                                viewModel.getNewCategories();
-                            });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-
-                    toast = Toast.makeText(getApplicationContext(), "Loaded ", Toast.LENGTH_LONG);
-                    toast.show();
+//                    View promView = inflater.inflate(R.layout.load_confirm, null);
+//
+//                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+//                    alertDialogBuilder.setView(promView);
+//
+//                    String add = getResources().getString(R.string.yes);
+//                    String cancel = getResources().getString(R.string.no);
+//                    alertDialogBuilder
+//                            .setCancelable(false)
+//                            .setPositiveButton(add, (dialog, which) -> {
+//                                viewModel.getNewCategories();
+//                            });
+//                    AlertDialog alertDialog = alertDialogBuilder.create();
+//                    alertDialog.show();
+                    View contextView = findViewById(R.id.context_view);
+                    Snackbar bar = Snackbar.make(contextView, R.string.no_cards_message, Snackbar.LENGTH_LONG);
+                    bar.setAction(R.string.download, v -> {
+                        viewModel.getNewCategories();
+                    });
+                    bar.show();
+//                    bar.dismiss();
                 }
             }
         };
@@ -410,8 +415,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             SharedPreferences sp = this.getSharedPreferences(prefs, MODE_PRIVATE);
 
             fragment.setSwitches(sp.getBoolean(soundKey, true),
-                                 sp.getBoolean(pushKey, true),
-                                 sp.getBoolean(checkUpdatesKey, true));
+                    sp.getBoolean(pushKey, true),
+                    sp.getBoolean(checkUpdatesKey, true));
 
             getSupportFragmentManager()
                     .beginTransaction()
@@ -536,7 +541,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
 
     public void setSound(boolean setting) {
-        AudioManager manager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         manager.setStreamMute(AudioManager.STREAM_NOTIFICATION, !setting);
     }
 

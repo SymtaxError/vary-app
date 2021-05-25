@@ -16,6 +16,8 @@
     <string name="push_on">Включить push уведомления</string>
     <string name="check_updates">Проверять обновления</string>
 
+    <string name="no_cards_message">Нет доступных карточек</string>
+    <string name="download">Скачать</string>
     <string name="settings_game">Настройки игры</string>
     <string name="deck_of_cards">Колода карт</string>
     <string name="amount_cards">Количество карт</string>
