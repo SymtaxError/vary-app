@@ -23,7 +23,6 @@ import com.example.vary.Network.LoadStatus;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CategoryModel;
 import com.example.vary.Models.TeamModel;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;

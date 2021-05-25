@@ -43,6 +43,7 @@
         android:gravity="center"
 
         android:text="@string/ok"
-        android:textSize="@dimen/menu_bottom_text_size" />
+        android:textSize="@dimen/menu_bottom_text_size"
+        android:textColor="@color/text_bright"/>
 
 </RelativeLayout>

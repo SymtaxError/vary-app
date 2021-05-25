@@ -8,11 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.example.vary.R;
+import com.google.android.material.button.MaterialButton;
 
 
 public class AddButtonViewHolder extends ViewHolder {
-    private final Button addButton;
-    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
+    private final MaterialButton addButton;
+//    private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
 
     public AddButtonViewHolder(@NonNull View itemView) {
         super(itemView);

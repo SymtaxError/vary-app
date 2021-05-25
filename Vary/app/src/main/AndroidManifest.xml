@@ -12,9 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vary"
         android:usesCleartextTraffic="true">
+
         <service
             android:name=".Services.LocalService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <activity
             android:name=".UI.MainActivity"

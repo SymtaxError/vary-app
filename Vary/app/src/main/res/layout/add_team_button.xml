@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/add_team"
+
+        style="@style/Widget.MaterialComponents.Button"
+
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_team"
         android:layout_margin="10dp"
-        android:background="@drawable/button_shape"
+
+        android:background="@drawable/menu_button_primary_ripple"
         android:backgroundTint="@color/primary"
-        android:textStyle="bold"
+
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/add_team"
+
+        android:textColor="@color/text_bright"
         android:textSize="@dimen/menu_button_text_size"
-        tools:targetApi="lollipop" />
+        android:textStyle="bold" />
 </LinearLayout>

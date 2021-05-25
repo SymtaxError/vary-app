@@ -1,6 +1,5 @@
 package com.example.vary.UI;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,11 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
+
 import androidx.lifecycle.Observer;
 
 import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListener, OnAddTeamClickListener, OnChangeTeamClickListener {
     private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
@@ -59,7 +62,16 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        bindButton(R.id.open_game_settings, GameActions.open_game_settings);
+
+        MaterialButton button = view.findViewById(R.id.open_game_settings);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(buttonClick);
+                fCallback.callback(GameActions.open_game_settings);
+            }
+        });
+
         Observer<List<TeamModel>> observer = new Observer<List<TeamModel>>() {
             @Override
             public void onChanged(List<TeamModel> commandModels) {
@@ -70,6 +82,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
                 }
             }
         };
+
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
         viewModel
                 .getTeams()
@@ -84,6 +97,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
                 amount = recyclerView.getHeight() / viewHeight - 1;
             }
         });
+
         return view;
     }
 
@@ -91,21 +105,9 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
         fCallback = callback;
     }
 
-    void bindButton(int id, GameActions action) {
-        Button button = view.findViewById(id);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                fCallback.callback(action);
-            }
-        });
-    }
-
     protected void regulateMinAmount() { // Добавление двух команд по умолчанию
         int min_amount = getResources().getInteger(R.integer.min_teams_amount);
-        if (viewModel.getAmountOfTeams() < min_amount)
-        {
+        if (viewModel.getAmountOfTeams() < min_amount) {
             addItem();
             addItem();
         }
@@ -116,18 +118,22 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
         LayoutInflater inflater = LayoutInflater.from(context);
         View promView = inflater.inflate(R.layout.add_command_window, null);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setView(promView);
-        EditText commandInput = promView.findViewById(R.id.edit_command_name);
 
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
+
+        EditText commandInput = promView.findViewById(R.id.edit_command_name);
+        commandInput.setText(viewModel.getTeamName(pos));
+        commandInput.setSelection(commandInput.getText().length());
         String add = getResources().getString(R.string.save);
         String cancel = getResources().getString(R.string.cancel);
         alertDialogBuilder
+                .setView(promView)
                 .setCancelable(false)
                 .setPositiveButton(add, (dialog, which) -> {
                     viewModel.renameTeam(commandInput.getText().toString(), pos);
                 })
                 .setNegativeButton(cancel, (dialog, which) -> dialog.cancel());
+
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
@@ -151,8 +157,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
             if (dy > 0) {
 //                Log.d("HELP", "increase");
                 index += 1;
-            }
-            else {
+            } else {
                 index -= 1;
 //                Log.d("HELP", "decrease");
             }

@@ -44,6 +44,7 @@
         android:background="@drawable/menu_bottom_shape"
 
         android:text="@string/start_next_round_button"
-        android:textSize="@dimen/menu_bottom_text_size" />
+        android:textSize="@dimen/menu_bottom_text_size"
+        android:textColor="@color/text_bright"/>
 
 </RelativeLayout>

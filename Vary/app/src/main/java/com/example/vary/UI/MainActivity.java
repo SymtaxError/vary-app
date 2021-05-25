@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
