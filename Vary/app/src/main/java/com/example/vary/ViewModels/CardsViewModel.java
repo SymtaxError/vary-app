@@ -121,7 +121,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public int countPoints() {
-        return mCategoriesRepo.countPoints();
+        return mCategoriesRepo.countPoints(gameRepo.getPenalty());
     }
 
     public void renameTeam(String name, int pos) {

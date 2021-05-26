@@ -14,6 +14,7 @@ import com.example.vary.Models.CategoryModel;
 import com.example.vary.Network.CategoriesAPI;
 import com.example.vary.Network.CategoriesNetworkService;
 import com.example.vary.R;
+import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.SetDataCallback;
 
 import java.util.ArrayList;
@@ -251,8 +252,8 @@ public class CategoriesRepo implements SetDataCallback {
         categoriesNetworkService.getNewCategories(version, this);
     }
 
-    public int countPoints() {
-        return mCardsRepo.countPoints();
+    public int countPoints(PenaltyType penalty) {
+        return mCardsRepo.countPoints(penalty);
     }
 
     public int getAmountOfCards() {

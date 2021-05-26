@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public LocalService mService;
     boolean mBound = false;
 
+    public boolean allowStart = true;
     public static final String soundKey = "sound";
     public static final String checkUpdatesKey = "check_updates";
     public static final String pushKey = "push";
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public final String TAG = "MyLogger";
     SharedPreferences mPrefs;
     SharedPreferences.Editor editor;
+    private Snackbar bar;
 
     private final DbManager.CountListener countListener = new DbManager.CountListener() {
         @Override
@@ -142,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 //                    toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
 //                    toast.show();
 //                }
+                View contextView = findViewById(R.id.context_view);
+                bar = Snackbar.make(contextView, R.string.no_cards_message, Snackbar.LENGTH_INDEFINITE);
                 if (loadStatus.getError() != null && loadStatus.getNotification()) {
                     LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 //                    View promView = inflater.inflate(R.layout.load_confirm, null);
@@ -158,13 +162,17 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 //                            });
 //                    AlertDialog alertDialog = alertDialogBuilder.create();
 //                    alertDialog.show();
-                    View contextView = findViewById(R.id.context_view);
-                    Snackbar bar = Snackbar.make(contextView, R.string.no_cards_message, Snackbar.LENGTH_LONG);
                     bar.setAction(R.string.download, v -> {
                         viewModel.getNewCategories();
                     });
+                    allowStart = false;
                     bar.show();
 //                    bar.dismiss();
+                }
+                else {
+//                    if (bar.isShown()) {
+                    bar.dismiss();
+                    allowStart = true;
                 }
             }
         };
@@ -318,6 +326,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
 
     void continueGame() {
+        if (!allowStart) {
+            viewModel.getNewCategories();
+            return;
+        }
         viewModel.continueOldGame();
         callback(viewModel.getGameAction());
 //        if (viewModel.getRoundTimeLeft() > 0) {
@@ -327,7 +339,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 //        }
     }
 
+
     void startNewGame() {
+        if (!allowStart) {
+            viewModel.getNewCategories();
+            return;
+        }
         if (viewModel.getAmountOfTeams() != 0)
             viewModel.removeTeams();
         viewModel.setNewGame(editor);

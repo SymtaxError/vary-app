@@ -55,8 +55,10 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private RelativeLayout playersTask;
     private boolean paused = false;
     private boolean previewed;
+    private boolean onPlayersTask = false;
     private boolean cardTextSetted = false;
     private boolean isLastCard = false;
+    private boolean ended = false;
     private float dY;
     private float startY;
     private Boolean swipeable = true;
@@ -105,13 +107,13 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @SuppressLint("SetTextI18n") //TODO refactor
     private void swipeDown(View v) {
-        viewModel.declineCard();
-        cardText.setText(viewModel.getCard());
         PenaltyType penalty = viewModel.getPenalty();
         if (penalty == PenaltyType.lose_points)
             roundScoreView.setText(String.valueOf(--roundScore));
         else if (penalty == PenaltyType.players_task)
             setPlayersTask(true);
+        viewModel.declineCard();
+        cardText.setText(viewModel.getCard());
         botView.startAnimation(swiped);
         swipeable = false;
         if (isLastCard)
@@ -309,6 +311,10 @@ public class OnGameFragment extends Fragment implements CardCallback {
             pause.setVisibility(View.INVISIBLE);
             playersTask.setVisibility(View.INVISIBLE);
         }
+        onPlayersTask = newPlayersTaskValue;
+        if (ended && !onPlayersTask) {
+            endFragment();
+        }
     }
 
     private void setPause(boolean newPauseValue) {
@@ -396,8 +402,13 @@ public class OnGameFragment extends Fragment implements CardCallback {
     @Override
     public void callback() {
         Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
+        if (paused || onPlayersTask) {
+            ended = true;
+        }
+        else {
+            endFragment();
+        }
 //        viewModel.setRoundTimeLeft(0);
-        callbackFunctions.callback(GameActions.open_team_result);
         //TODO переход
     }
 

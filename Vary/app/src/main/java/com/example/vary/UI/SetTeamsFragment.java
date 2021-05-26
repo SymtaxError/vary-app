@@ -2,6 +2,7 @@ package com.example.vary.UI;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
     int namePostfix = 1;
     private CardsViewModel viewModel;
     int amount = 0;
+    private int viewHeight = 0;
 
     @Nullable
     @Override
@@ -93,8 +95,8 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
             @Override
             public void run() {
                 RelativeLayout root = view.findViewById(R.id.team_layout);
-                int viewHeight = root.getHeight();
-                amount = recyclerView.getHeight() / viewHeight - 1;
+                viewHeight = root.getHeight();
+                amount = recyclerView.getHeight() / viewHeight - 2;
             }
         });
 
@@ -141,6 +143,8 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
     public void addItem() { // Добавить элемент
         String command = getResources().getString(R.string.team);
         viewModel.addTeams(command + ' ' + namePostfix);
+        if (viewModel.getAmountOfTeams() > getContext().getResources().getInteger(R.integer.min_teams_amount))
+            scrollToEnd();
         namePostfix++;
     }
 
@@ -151,13 +155,26 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
         }
     }
 
+    private void scrollToEnd() {
+        if (layoutManager != null) {
+            int index;
+            if (viewModel.getAmountOfTeams() < amount) {
+                index = 0;
+            } else if (viewModel.getAmountOfTeams() > amount) {
+                index = viewModel.getAmountOfTeams() - amount;
+            } else {
+                index = 0;
+            }
+            layoutManager.scrollToPositionWithOffset(index, 0);
+        }
+    }
+
     private void improveVisibility(int dy) {
         if (layoutManager != null) {
             int index = layoutManager.findFirstVisibleItemPosition();
-            if (dy > 0) {
-//                Log.d("HELP", "increase");
+if (dy > 10) {
                 index += 1;
-            } else {
+            } else if (dy < -10) {
                 index -= 1;
 //                Log.d("HELP", "decrease");
             }
@@ -165,9 +182,9 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
                 index = 0;
             } else if (viewModel.getAmountOfTeams() - index < amount) {
 //                Log.d("HELP", "Normalize, amount = " + viewModel.getAmountOfTeams() + "index = " + index);
-                index = viewModel.getAmountOfTeams() - 10;
+                index = viewModel.getAmountOfTeams() - amount;
             }
-//            Log.d("HELP", "erm" + index);
+            Log.d("HELP", "erm " + index);
             layoutManager.scrollToPositionWithOffset(index, 0);
         }
     }

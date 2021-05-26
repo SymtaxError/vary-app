@@ -52,4 +52,5 @@
     <string name="team_add_text">Новое название</string>
     <string name="players_task_title">Задание от игроков</string>
     <string name="players_task_content">Выполни задание от игроков\nКогда будешь готов - нажми на экран</string>
+    <string name="teams">Команды</string>
 </resources>

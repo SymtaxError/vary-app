@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.vary.Database.DbManager;
 import com.example.vary.Models.CardModel;
 import com.example.vary.UI.CardCallback;
+import com.example.vary.UI.GameMode;
+import com.example.vary.UI.PenaltyType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -198,10 +200,14 @@ public class CardsRepo {
         return 0;
     }
 
-    public int countPoints() {
+    public int countPoints(PenaltyType penalty) {
+        int decreaseValue = 0;
+        if (penalty == PenaltyType.lose_points) {
+            decreaseValue = -1;
+        }
         int points = 0;
         for (int index = startRoundPosition; index < currentPosition; index++) {
-            points = (getAnswerState(index - startRoundPosition) == true) ? points + 1 : points - 1;
+            points = (getAnswerState(index - startRoundPosition)) ? points + 1 : points + decreaseValue;
         }
         return points;
     }

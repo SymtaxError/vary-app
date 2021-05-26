@@ -6,13 +6,25 @@
     android:background="@color/surface_color"
     tools:ignore="Overdraw">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <TextView
+        android:id="@+id/set_teams_text"
 
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+
+        android:background="@drawable/menu_top_shape"
+        android:gravity="center"
+
+        android:text="@string/teams"
+        android:textColor="@color/text_bright"
+        android:textSize="@dimen/menu_top_text_size" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commands_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/open_game_settings"
-        android:layout_alignParentTop="true" />
+        android:layout_below="@id/set_teams_text" />
 
     <Button
         android:id="@+id/open_game_settings"
