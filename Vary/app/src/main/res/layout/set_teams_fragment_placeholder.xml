@@ -23,8 +23,8 @@
         android:id="@+id/commands_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/open_game_settings"
-        android:layout_below="@id/set_teams_text" />
+        android:layout_below="@id/set_teams_text"
+        android:layout_marginBottom="61dp"/>
 
     <Button
         android:id="@+id/open_game_settings"

@@ -47,7 +47,6 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mTeamsRepo.setDbManager(application);
         mCategoriesRepo.setNetworkService(application);
         mCategoriesRepo.setDbManager(application);
-        gameRepo.setDbManager(application);
         mCategoriesRepo.setLoadCallback(this);
     }
 

@@ -21,17 +21,12 @@ import java.util.List;
 public class CurrentGameRepo {
     private final MutableLiveData<CurrentGameModel> gameModel = new MutableLiveData<>();
     private static CurrentGameRepo sInstance = null;
-    private DbManager dbManager;
 
     public static synchronized CurrentGameRepo getInstance() {
         if (sInstance == null) {
             sInstance = new CurrentGameRepo();
         }
         return sInstance;
-    }
-
-    public void setDbManager(Context context) {
-        dbManager = DbManager.getInstance(context);
     }
 
     public LiveData<CurrentGameModel> getGameModel() {
