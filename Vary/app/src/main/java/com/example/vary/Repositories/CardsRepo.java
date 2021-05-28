@@ -158,9 +158,9 @@ public class CardsRepo {
             for (CardModel card : mCards.getValue())
                 card.setAnswerState(false);
             Collections.shuffle(mCards.getValue());
-            currentPosition = 0;
-            startRoundPosition = 0;
         }
+        currentPosition = 0;
+        startRoundPosition = 0;
     }
 
     public void setCardCallback(CardCallback callback) {
