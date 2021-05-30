@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
     public static final String soundKey = "sound";
     public static final String checkUpdatesKey = "check_updates";
-    public static final String pushKey = "push";
 
     public final String TAG = "MyLogger";
     SharedPreferences mPrefs;
@@ -395,7 +394,18 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     void showRules() {
-        // Запуск фрагмента? всплывающего окна? с правилами игры
+        if (!Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.container))
+                .getClass()
+                .equals(GameRulesFragment.class)) {
+            GameRulesFragment fragment = new GameRulesFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     void openSettings() {
@@ -406,10 +416,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             SettingsFragment fragment = new SettingsFragment();
             fragment.setCallback(this);
 
-            SharedPreferences sp = this.getSharedPreferences(prefs, MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences(prefs, MODE_PRIVATE);
 
             fragment.setSwitches(sp.getBoolean(soundKey, true),
-                                 sp.getBoolean(pushKey, true),
                                  sp.getBoolean(checkUpdatesKey, true));
 
             getSupportFragmentManager()
@@ -513,16 +522,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
     @Override
     public void callback(SettingActions type, boolean setting) {
-        SharedPreferences.Editor editor = this.getSharedPreferences(prefs, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences(prefs, MODE_PRIVATE).edit();
 
         switch (type) {
             case sound_setting:
                 editor.putBoolean(soundKey, setting);
                 setSound(setting);
-                break;
-            case push_setting:
-                // TODO push settings
-                editor.putBoolean(pushKey, setting);
                 break;
             case check_updates_setting:
                 // TODO udpates settings
@@ -538,5 +543,4 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         AudioManager manager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         manager.setStreamMute(AudioManager.STREAM_NOTIFICATION, !setting);
     }
-
 }

@@ -70,13 +70,16 @@ public class StartFragment extends Fragment {
         bindButton(R.id.settings, GameActions.open_settings);
 
         Button infobtn = view.findViewById(R.id.rules);
-        infobtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                viewModel.getNewCategories();
-            }
-        });
+//        infobtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                v.startAnimation(buttonClick);
+//                viewModel.getNewCategories();
+//            }
+//        });
+
+
+
         checkContinueButtonVisibility(false);
         Observer<CurrentGameModel> observerGameModel = new Observer<CurrentGameModel>() {
             @Override
