@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
         //TODO delete, test sound
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep_short_on);
-        mp.start();
+//        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep_short_on);
+//        mp.start();
 
         mPrefs = getPreferences(MODE_PRIVATE);
         editor = mPrefs.edit();
@@ -403,6 +403,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 saveModel();
                 super.onBackPressed();
             }
+
         } else {
             saveModel();
             super.onBackPressed();

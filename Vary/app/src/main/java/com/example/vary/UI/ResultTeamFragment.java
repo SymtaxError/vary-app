@@ -31,9 +31,12 @@ public class ResultTeamFragment extends Fragment {
     private CardsViewModel viewModel;
     private CallbackFragment callbackFunctions;
     boolean saved = false;
+    int acceptColor, dismissColor;
+
     private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
 
-    private static class TeamStatsAdapter extends RecyclerView.Adapter<TeamStatsAdapter.TeamStatsViewHolder> {
+    //снизу был static
+    private class TeamStatsAdapter extends RecyclerView.Adapter<TeamStatsAdapter.TeamStatsViewHolder> {
         CardsViewModel viewModel;
         private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
 
@@ -41,7 +44,8 @@ public class ResultTeamFragment extends Fragment {
             this.viewModel = viewModel;
         }
 
-        static class TeamStatsViewHolder extends RecyclerView.ViewHolder {
+        //снизу был static
+        class TeamStatsViewHolder extends RecyclerView.ViewHolder {
             private final TextView wordNameView;
 
             public TeamStatsViewHolder(@NonNull View teamView) {
@@ -52,9 +56,9 @@ public class ResultTeamFragment extends Fragment {
             public void bind(String wordName, boolean answerState, View.OnClickListener listener) {
                 wordNameView.setText(wordName);
                 if (answerState) {
-                    wordNameView.setTextColor(Color.parseColor("#1BB400"));
+                    wordNameView.setTextColor(acceptColor);
                 } else {
-                    wordNameView.setTextColor(Color.parseColor("#C50007"));
+                    wordNameView.setTextColor(dismissColor);
                 }
 
                 wordNameView.setOnClickListener(listener);
@@ -112,6 +116,10 @@ public class ResultTeamFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_result_team, container, false);
         viewModel.setGameAction(GameActions.open_team_result_add_to_backstack);
+
+        acceptColor = getResources().getColor(R.color.primary);
+        dismissColor = getResources().getColor(R.color.primary_additional);
+
         RecyclerView teamStatsList = view.findViewById(R.id.result_team_list);
         teamStatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
