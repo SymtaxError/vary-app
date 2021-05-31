@@ -12,7 +12,7 @@
 
         <item name="colorSurface">@color/surface_color</item>
 <!--         Status bar color.-->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSurface</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
 <!--         Customize your theme here.-->
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">false</item>
