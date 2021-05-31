@@ -42,11 +42,14 @@
     <string name="pause_title">Пауза</string>
     <string name="pause_content">Нажмите на экран, чтобы продолжить</string>
     <string name="preview_title">Превью</string>
-    <string name="preview_text">Объясни методом указанным снизу.\nЕсли объяснил-свайпай вверх\nНадо сделать нормальную вьюху\nНажми на экран когда будешь готов</string>
+    <string name="preview_text">Нажми на экран, когда будешь готов</string>
     <string name="_0">0</string>
     <string name="explain_mode_str">Объясни словами</string>
     <string name="gesture_mode_str">Покажи жестами</string>
     <string name="one_word_mode_str">Объясни одним словом</string>
+    <string name="explain_mode_str_preview">Объясни</string>
+    <string name="gesture_mode_str_preview">Покажи</string>
+    <string name="one_word_mode_str_preview">Одно слово</string>
     <string name="load_notification_text">Не удалось загрузить данные. Повторить попытку?</string>
     <string name="choose_deck_text">Выбрать колоду</string>
     <string name="team_add_text">Новое название</string>
