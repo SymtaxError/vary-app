@@ -81,8 +81,8 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
         bindButton(R.id.start_game_button, GameActions.start_game_process);
 
-        amountCards = view.findViewById(R.id.amount_cards);
-        amountCards.setText(getResources().getText(R.string.amount_cards) + "   " + getResources().getInteger(R.integer.defalut_amount_card));
+        amountCards = view.findViewById(R.id.amount_cards_dynamic);
+        amountCards.setText(amountOfCards + getString(R.string.pieces));
 
         amountCardsBar = view.findViewById(R.id.bar_amount_cards);
         amountCardsBar.setOnSeekBarChangeListener(this);
@@ -90,8 +90,8 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         timeBar = view.findViewById(R.id.bar_round_time);
         timeBar.setOnSeekBarChangeListener(this);
 
-        time = view.findViewById(R.id.time_round_text);
-        time.setText(getResources().getText(R.string.time_round)  + "   " + getResources().getInteger(R.integer.default_time));
+        time = view.findViewById(R.id.time_round_dynamic);
+        time.setText(roundDuration + getString(R.string.seconds));
 
         Spinner teamsSpinner = view.findViewById(R.id.choose_team_spinner);
 
@@ -164,13 +164,15 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
             progress *= getResources().getInteger(R.integer.card_amount_step);
             progress += 10;
             amountOfCards = progress;
-            amountCards.setText(getResources().getText(R.string.amount_cards) + "   " + progress);
+            amountCards.setText(amountOfCards + getString(R.string.pieces));
+
         } else if (seekBar.equals(timeBar)) {
             progress /= getResources().getInteger(R.integer.time_step);
             progress *= getResources().getInteger(R.integer.time_step);
             progress += 10;
             roundDuration = progress;
-            time.setText(getResources().getText(R.string.time_round) + "   " +  progress);
+            time.setText(roundDuration + getString(R.string.seconds));
+
         }
     }
 

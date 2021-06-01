@@ -56,4 +56,6 @@
     <string name="players_task_title">Задание от игроков</string>
     <string name="players_task_content">Выполни задание от игроков\nКогда будешь готов - нажми на экран</string>
     <string name="teams">Команды</string>
+    <string name="pieces">\ штук</string>
+    <string name="seconds">\ сек</string>
 </resources>
