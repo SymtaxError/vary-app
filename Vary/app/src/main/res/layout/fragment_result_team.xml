@@ -18,6 +18,14 @@
         android:text="@string/guessed_words"
         android:textColor="@color/text_bright"
         android:textSize="@dimen/menu_top_text_size" />
+    <TextView
+        android:id="@+id/result_team_prompt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/team_result_bottom_text"
+        android:text="@string/result_team_prompt"
+        android:padding="5dp"
+        android:gravity="center"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/result_team_list"
@@ -25,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:layout_above="@id/team_result_bottom_text"
+        android:layout_above="@id/result_team_prompt"
         android:layout_below="@id/team_result_top_text"
         android:paddingTop="8dp"
 

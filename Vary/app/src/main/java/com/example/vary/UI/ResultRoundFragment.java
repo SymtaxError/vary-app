@@ -1,5 +1,6 @@
 package com.example.vary.UI;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,8 @@ import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -134,11 +138,42 @@ public class ResultRoundFragment extends Fragment {
             if (!viewModel.nextRound()) {
                 viewModel.removeTeams();
                 callbackFunctions.callback(GameActions.open_menu_and_save);
-            }
-            else {
+            } else {
                 callbackFunctions.callback(GameActions.start_game_process);
             }
         });
+
+        View explain_logo = view.findViewById(R.id.explain_mode_result);
+        View gesture_logo = view.findViewById(R.id.gesture_mode_result);
+        View one_word_logo = view.findViewById(R.id.one_word_mode_result);
+
+
+        ColorStateList activeColor = ContextCompat
+                .getColorStateList(getContext(), R.color.primary);
+        ColorStateList nextColor = ContextCompat
+                .getColorStateList(getContext(), R.color.text_bright);
+
+        GameMode gameMode = viewModel.getNextGameMode();
+        if (gameMode == GameMode.explain_mode) {
+            explain_logo.setBackgroundTintList(activeColor);
+            gesture_logo.setBackgroundTintList(nextColor);
+            one_word_logo.setBackgroundTintList(nextColor);
+        } else if (gameMode == GameMode.gesture_mode) {
+            explain_logo.setVisibility(View.INVISIBLE);
+            gesture_logo.setBackgroundTintList(activeColor);
+            one_word_logo.setBackgroundTintList(nextColor);
+        } else if (gameMode == GameMode.one_word_mode){
+            explain_logo.setVisibility(View.INVISIBLE);
+            gesture_logo.setVisibility(View.INVISIBLE);
+            one_word_logo.setBackgroundTintList(activeColor);
+        } else {
+            explain_logo.setVisibility(View.INVISIBLE);
+            gesture_logo.setVisibility(View.INVISIBLE);
+            one_word_logo.setVisibility(View.INVISIBLE);
+        }
+
+        TextView cardsLeft = view.findViewById(R.id.cards_left);
+        cardsLeft.setText(viewModel.getCardsLeft()+"");
 
         return view;
     }

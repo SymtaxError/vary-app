@@ -145,6 +145,10 @@ public class CardsRepo {
         return currentPosition == getAmountOfCards();
     }
 
+    public int getCardsLeft() {
+        return getAmountOfCards() - currentPosition;
+    }
+
 
 
     public void endCards() {

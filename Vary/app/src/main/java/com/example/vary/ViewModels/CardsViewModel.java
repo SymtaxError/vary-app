@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -222,9 +223,11 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public boolean endGame() {
-        if (mCategoriesRepo.newRoundRequired() && gameRepo.getGameMode() == GameMode.one_word_mode)
-            return true;
-        return false;
+        return mCategoriesRepo.newRoundRequired() && gameRepo.getGameMode() == GameMode.one_word_mode;
+    }
+
+    public int getCardsLeft() {
+        return mCategoriesRepo.getCardsLeft();
     }
 
     public boolean nextRound() {
@@ -238,6 +241,21 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         }
         setRoundTimeLeft(getRoundDuration());
         return true;
+    }
+
+    public GameMode getNextGameMode() {
+        boolean nextGameMode = mCategoriesRepo.newRoundRequired();
+        GameMode gameMode = getGameMode();
+        if (nextGameMode) {
+            if (gameMode == GameMode.explain_mode)
+                gameMode = GameMode.gesture_mode;
+            else if (gameMode == GameMode.gesture_mode)
+                gameMode = GameMode.one_word_mode;
+            else {
+                gameMode = GameMode.end;
+            }
+        }
+        return gameMode;
     }
 
     public PenaltyType getPenalty() {

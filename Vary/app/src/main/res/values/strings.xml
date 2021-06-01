@@ -60,4 +60,6 @@
     <string name="seconds">\ сек</string>
     <string name="pick_team">Выбери команду</string>
     <string name="nobody">Никто</string>
+    <string name="result_team_prompt">Нажми на слово, чтобы изменить его результат</string>
+    <string name="add_team_prompt">Нажми на команду, чтобы изменить ееё название</string>
 </resources>

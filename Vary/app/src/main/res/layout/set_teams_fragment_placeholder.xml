@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/set_teams_text"
-        android:layout_marginBottom="61dp"/>
+        android:layout_above="@+id/add_team_prompt"/>
 
     <Button
         android:id="@+id/open_game_settings"
@@ -39,6 +39,15 @@
         android:text="@string/next"
         android:textSize="@dimen/menu_bottom_text_size"
         android:textColor="@color/text_bright"/>
+
+    <TextView
+        android:id="@+id/add_team_prompt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/open_game_settings"
+        android:text="@string/add_team_prompt"
+        android:padding="5dp"
+        android:gravity="center"/>
 
 
 </RelativeLayout>
