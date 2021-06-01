@@ -115,7 +115,7 @@ public class ResultTeamFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_result_team, container, false);
-        viewModel.setGameAction(GameActions.open_team_result_add_to_backstack);
+        viewModel.setGameAction(GameActions.open_team_result);
 
         acceptColor = getResources().getColor(R.color.primary);
         dismissColor = getResources().getColor(R.color.primary_additional);

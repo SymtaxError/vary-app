@@ -108,7 +108,7 @@ public class ResultRoundFragment extends Fragment {
             viewModel.changeTeamPoints();
             viewModel.setCurrentRoundPoints(0);
         }
-        viewModel.setGameAction(GameActions.open_round_or_game_result_add_to_backstack);
+        viewModel.setGameAction(GameActions.open_round_or_game_result);
         roundStatsList.setAdapter(roundStatsAdapter);
 
         Observer<CurrentGameModel> currentGameModelObserver = new Observer<CurrentGameModel>() {
@@ -132,7 +132,8 @@ public class ResultRoundFragment extends Fragment {
             if (viewModel.getRoundDuration() == 0)
                 viewModel.setTimerCount(-1);
             if (!viewModel.nextRound()) {
-                callbackFunctions.callback(GameActions.open_menu);
+                viewModel.removeTeams();
+                callbackFunctions.callback(GameActions.open_menu_and_save);
             }
             else {
                 callbackFunctions.callback(GameActions.start_game_process);

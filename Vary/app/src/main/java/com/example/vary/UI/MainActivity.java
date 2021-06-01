@@ -217,24 +217,17 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             case prepare_game:
                 prepareGameProcess();
                 break;
-            case start_game_process_add_to_backstack:
-                startGameProcessAddToBackStack();
-                break;
             case start_game_process:
                 startGameProcess();
                 break;
             case open_team_result:
                 openTeamResult();
                 break;
-            case open_team_result_add_to_backstack:
-                openTeamResultAddToBackStack();
-                break;
             case open_round_or_game_result:
                 openRoundOrGameResult();
                 break;
-            case open_round_or_game_result_add_to_backstack:
-                openRoundOrGameResultAddToBackStack();
-                break;
+            case open_menu_and_save:
+                saveModel();
             case open_menu:
                 startMainFragment();
                 break;
@@ -243,23 +236,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
     }
 
-    private void startGameProcessAddToBackStack() {
-        if (!Objects.requireNonNull(getSupportFragmentManager()
-                .findFragmentById(R.id.container))
-                .getClass()
-                .equals(OnGameFragment.class)) {
-            OnGameFragment fragment = new OnGameFragment();
-            fragment.setCallbackFunctions(this);
-            fragment.setTimerService(mService);
-//            getSupportFragmentManager().popBackStack(); //TODO вернуть
-//            getSupportFragmentManager().popBackStack(); //TODO вернуть
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
 
     void openGameSettings() {
         if (!Objects.requireNonNull(getSupportFragmentManager()
@@ -276,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .addToBackStack(null)
+//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -349,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .addToBackStack(null)
+//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -360,54 +336,93 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .findFragmentById(R.id.container))
                 .getClass()
                 .equals(StartFragment.class)) {
-            StartFragment fragment = new StartFragment();
-            fragment.setCallback(this);
-            FragmentManager manager = getSupportFragmentManager();
-            if (manager.getBackStackEntryCount() > 0) {
-                FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
-                manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            }
-            manager
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
-                    .commit();
+            replaceToStartFragment(getSupportFragmentManager());
+//            StartFragment fragment = new StartFragment();
+//            fragment.setCallback(this);
+//            FragmentManager manager = getSupportFragmentManager();
+//            if (manager.getBackStackEntryCount() > 0) {
+//                FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
+//                manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//            }
+//            manager
+//                    .beginTransaction()
+//                    .replace(R.id.container, fragment)
+////                    .addToBackStack(null)
+//                    .commit();
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (Objects.requireNonNull(getSupportFragmentManager()
-                .findFragmentById(R.id.container))
-                .getClass()
-                .equals(StartFragment.class)) {
-            super.onBackPressed(); //TODO так не должно быть! вообще может перенести во фрагмент?
-            StartFragment fragment = (StartFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.container);
-        } else if (Objects.requireNonNull(getSupportFragmentManager()
-                .findFragmentById(R.id.container))
-                .getClass()
-                .equals(OnGameFragment.class)) {
-            OnGameFragment fragment = (OnGameFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.container);
-            if (!fragment.isPaused()) {
-                fragment.toPause();
-            } else {
-//                while (!Objects.requireNonNull(getSupportFragmentManager()
-//                        .findFragmentById(R.id.container))
-//                        .getClass()
-//                        .equals(FragmentActivity.class))
-//                    getSupportFragmentManager().popBackStack();
-                Fragment old_fragment = getSupportFragmentManager().findFragmentById(R.id.container);
-                getSupportFragmentManager().beginTransaction().remove(old_fragment).commit();
-                saveModel();
-                super.onBackPressed();
-            }
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment activeFragment = manager.findFragmentById(R.id.container);
+        assert activeFragment != null;
+        Class<? extends Fragment> activeFragmentClass = activeFragment.getClass();
+        saveModel();
 
-        } else {
-            saveModel();
+        if (activeFragmentClass.equals(StartFragment.class))
             super.onBackPressed();
+        else if (activeFragmentClass.equals(OnGameFragment.class))
+        {
+            OnGameFragment fragment = (OnGameFragment) activeFragment;
+            if (!fragment.isPaused())
+                fragment.toPause();
+            else
+                replaceToStartFragment(manager);
         }
+        else
+            replaceToStartFragment(manager);
+//
+//        if (Objects.requireNonNull(getSupportFragmentManager()
+//                .findFragmentById(R.id.container))
+//                .getClass()
+//                .equals(StartFragment.class)) {
+//            super.onBackPressed();
+////            StartFragment fragment = (StartFragment) getSupportFragmentManager()
+////                    .findFragmentById(R.id.container);
+////            getSupportFragmentManager().beginTransaction().replace(R.id.container, fr)
+//        } else if (Objects.requireNonNull(getSupportFragmentManager()
+//                .findFragmentById(R.id.container))
+//                .getClass()
+//                .equals(OnGameFragment.class)) {
+//            OnGameFragment fragment = (OnGameFragment) getSupportFragmentManager()
+//                    .findFragmentById(R.id.container);
+//            if (!fragment.isPaused()) {
+//                fragment.toPause();
+//            } else {
+////                while (!Objects.requireNonNull(getSupportFragmentManager()
+////                        .findFragmentById(R.id.container))
+////                        .getClass()
+////                        .equals(FragmentActivity.class))
+////                    getSupportFragmentManager().popBackStack();
+//                Fragment old_fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+//                getSupportFragmentManager().beginTransaction().remove(old_fragment).commit();
+//                saveModel();
+//                super.onBackPressed();
+//            }
+////        } else if (Objects.requireNonNull(getSupportFragmentManager()
+////                .findFragmentById(R.id.container))
+////                .getClass()
+////                .equals(ResultRoundFragment.class)) {
+////            ResultRoundFragment fragment = (ResultRoundFragment) getSupportFragmentManager()
+////                    .findFragmentById(R.id.container);
+////            Fragment old_fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+////            getSupportFragmentManager().beginTransaction().remove(old_fragment).commit();
+////            super.onBackPressed();
+//        } else {
+//            saveModel();
+//            super.onBackPressed();
+//        }
+//
+//
+
+    }
+
+    private void replaceToStartFragment(FragmentManager manager) {
+        StartFragment fragment = new StartFragment();
+        fragment.setCallback(this);
+        fragment.setWidth(getWidth());
+        manager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     void showRules() {
@@ -418,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
-                .equals(SetTeamsFragment.class)) {
+                .equals(SettingsFragment.class)) {
             SettingsFragment fragment = new SettingsFragment();
             fragment.setCallback(this);
 
@@ -431,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .addToBackStack(null)
+//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -451,22 +466,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
     }
 
-    void openTeamResultAddToBackStack() {
-        if (!Objects.requireNonNull(getSupportFragmentManager()
-                .findFragmentById(R.id.container))
-                .getClass()
-                .equals(ResultTeamFragment.class)) {
-            ResultTeamFragment fragment = new ResultTeamFragment();
-            fragment.setCallback(this);
-            fragment.setViewModel(viewModel);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
-
     void openRoundOrGameResult() { //TODO добавить бекстек
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
@@ -479,22 +478,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                     .beginTransaction()
                     .replace(R.id.container, fragment)
 //                    .addToBackStack(null)
-                    .commit();
-        }
-    }
-
-    void openRoundOrGameResultAddToBackStack() { //TODO добавить бекстек
-        if (!Objects.requireNonNull(getSupportFragmentManager()
-                .findFragmentById(R.id.container))
-                .getClass()
-                .equals(ResultRoundFragment.class)) {
-            ResultRoundFragment fragment = new ResultRoundFragment();
-            fragment.setCallback(this);
-            fragment.setViewModel(viewModel);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
                     .commit();
         }
     }

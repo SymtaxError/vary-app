@@ -32,7 +32,7 @@ public class PrepareGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_prepare_game, container, false);
 
-        bindButton(R.id.start_game_process_button, GameActions.start_game_process_add_to_backstack);
+        bindButton(R.id.start_game_process_button, GameActions.start_game_process);
         TextView teamBeginName = view.findViewById(R.id.start_team);
         setViewModel();
 

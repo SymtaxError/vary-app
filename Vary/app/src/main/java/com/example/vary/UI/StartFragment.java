@@ -77,7 +77,6 @@ public class StartFragment extends Fragment {
                 viewModel.getNewCategories();
             }
         });
-        checkContinueButtonVisibility(false);
         Observer<CurrentGameModel> observerGameModel = new Observer<CurrentGameModel>() {
             @Override
             public void onChanged(CurrentGameModel currentGameModel) {
@@ -98,9 +97,14 @@ public class StartFragment extends Fragment {
         viewModel
                 .getGameModel()
                 .observe(getViewLifecycleOwner(), observerGameModel);
+//        checkContinueButtonVisibility(!viewModel.getGameModel().getValue().isVoid());
 
         return view;
     }
+
+//    public void setViewModel(CardsViewModel viewModel) {
+//        this.viewModel = viewModel;
+//    }
 
 
     public void setWidth(int width) {

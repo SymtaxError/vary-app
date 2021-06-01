@@ -168,7 +168,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
-        viewModel.setGameAction(GameActions.start_game_process_add_to_backstack);
+        viewModel.setGameAction(GameActions.start_game_process);
         swiped.setRepeatCount(2);
         swiped.setDuration(100);
         topView = view.findViewById(R.id.game_button_limit_top);
