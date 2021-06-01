@@ -26,27 +26,47 @@
         android:layout_below="@id/settings_game">
 
         <!--        Количество карточек текст-->
-        <TextView
-            android:id="@+id/amount_cards"
-
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/amount_cards_linear"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:paddingStart="52dp"
+            android:paddingEnd="52dp">
 
-            android:text="@string/amount_cards"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/game_text_size" />
+            <TextView
+                android:id="@+id/amount_cards"
+
+                android:layout_alignParentStart="true"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+
+                android:text="@string/amount_cards"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/game_text_size" />
+            <TextView
+                android:id="@+id/amount_cards_dynamic"
+
+                android:layout_alignParentEnd="true"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+
+                tools:text="100 штук"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/game_text_size" />
+
+        </RelativeLayout>
 
         <!--        количество карточек двигается-->
         <SeekBar
             android:id="@+id/bar_amount_cards"
 
-            android:layout_width="@dimen/seek_bar_width"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
 
-            android:layout_below="@id/amount_cards"
+            android:layout_below="@id/amount_cards_linear"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:max="100"
@@ -56,27 +76,60 @@
             android:thumbTint="@color/secondary" />
 
         <!--        Время текст-->
-        <TextView
-            android:id="@+id/time_round_text"
+<!--        <TextView-->
+<!--            android:id="@+id/time_round_text"-->
 
-            android:layout_width="wrap_content"
+<!--            android:layout_width="280dp"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            android:layout_below="@id/bar_amount_cards"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginTop="8dp"-->
+
+<!--            android:text="@string/time_round"-->
+<!--            android:textColor="@color/primary"-->
+<!--            android:textSize="@dimen/settings_text_size" />-->
+        <RelativeLayout
+            android:id="@+id/time_round_linear"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
             android:layout_below="@id/bar_amount_cards"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:paddingStart="52dp"
+            android:paddingEnd="52dp">
 
-            android:text="@string/time_round"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/settings_text_size" />
+            <TextView
+                android:id="@+id/time_round_text"
+
+                android:layout_alignParentStart="true"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+
+                android:text="@string/time_round"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/game_text_size" />
+            <TextView
+                android:id="@+id/time_round_dynamic"
+
+                android:layout_alignParentEnd="true"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+
+                tools:text="100 сек"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/game_text_size" />
+
+        </RelativeLayout>
 
         <!--        Время двигается-->
         <SeekBar
             android:id="@+id/bar_round_time"
-            android:layout_width="@dimen/seek_bar_width"
+            android:layout_width="fill_parent"
+            android:layout_marginStart="80dp"
             android:layout_height="wrap_content"
 
-            android:layout_below="@id/time_round_text"
+            android:layout_below="@id/time_round_linear"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
 
@@ -90,8 +143,10 @@
         <TextView
             android:id="@+id/penalty"
 
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
 
             android:layout_below="@id/bar_round_time"
             android:layout_centerHorizontal="true"
@@ -149,12 +204,13 @@
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/theft_right"
 
-            android:layout_width="280dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
 
             android:layout_below="@id/penalty_group"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
 
             android:buttonTint="@color/secondary"
             android:checked="true"
@@ -163,16 +219,15 @@
             android:textColor="@color/primary"
             android:textSize="@dimen/game_text_size"
             android:thumbTint="@color/secondary"
-            android:trackTint="@color/secondary_additional"
-
-
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            android:trackTint="@color/secondary_additional"/>
 
 
         <TextView
             android:id="@+id/choose_command_text"
-            android:layout_width="280dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
 
             android:layout_below="@id/theft_right"
             android:layout_centerHorizontal="true"
@@ -185,8 +240,10 @@
         <Spinner
             android:id="@+id/choose_team_spinner"
 
-            android:layout_width="280dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
 
             android:layout_below="@id/choose_command_text"
             android:layout_centerHorizontal="true"
@@ -200,8 +257,10 @@
 
         <TextView
             android:id="@+id/choose_deck_text"
-            android:layout_width="280dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
 
             android:layout_below="@id/choose_team_spinner"
             android:layout_centerHorizontal="true"
@@ -215,8 +274,10 @@
         <Spinner
             android:id="@+id/spinner_deck_card"
 
-            android:layout_width="280dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
 
             android:layout_below="@id/choose_deck_text"
             android:layout_centerHorizontal="true"
