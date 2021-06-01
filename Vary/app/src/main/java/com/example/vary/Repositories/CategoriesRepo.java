@@ -141,7 +141,7 @@ public class CategoriesRepo implements SetDataCallback {
     }
 
     public boolean newRoundRequired() {
-        return mCardsRepo.newRoundRequired();
+        return mCardsRepo.newRoundRequiredAndSort();
     }
 
     public int getCurrentPosition() {

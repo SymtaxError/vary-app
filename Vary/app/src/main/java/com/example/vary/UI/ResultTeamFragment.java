@@ -80,7 +80,7 @@ public class ResultTeamFragment extends Fragment {
             String wordName = viewModel.getUsedCardByPosition(position);
             boolean answerState = viewModel.getAnswerState(position);
             View.OnClickListener listener;
-            if (position == getItemCount() - 1 && viewModel.getSteal()) {
+            if (position == getItemCount() - 1 && viewModel.getSteal() && viewModel.getTimerCount().getValue() != -2) {
                 listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

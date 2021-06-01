@@ -154,6 +154,8 @@ public class OnGameFragment extends Fragment implements CardCallback {
         else if (penalty == PenaltyType.players_task)
             setPlayersTask(true);
         viewModel.declineCard();
+        if (isLastCard)
+            viewModel.setAnsweredTeam(-1);
         cardText.setText(viewModel.getCard());
         botView.startAnimation(swiped);
         swipeable = false;
@@ -437,7 +439,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         Observer<Integer> observerTimer = new Observer<Integer>() {
             @Override
             public void onChanged(Integer timerCount) {
-                if (timerCount == -1) {
+                if (timerCount < 0) {
                     viewModel.setRoundTimeLeft(viewModel.getRoundDuration());
                     return; //TODO убрать костыль
                 }
@@ -506,7 +508,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     }
 
     private void timeEnded() {
-//        viewModel.setTimerCount(0);
+        viewModel.setTimerCount(0);
         ended = true;
         timerService.stopTask();
         if (viewModel.getSteal()) {
@@ -519,7 +521,10 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     private void endFragment() {
         if (!onPlayersTask) {
-            viewModel.setTimerCount(-1);
+            if (!isLastCard)
+                viewModel.setTimerCount(-2);
+            else
+                viewModel.setTimerCount(-1);
             callbackFunctions.callback(GameActions.open_team_result);
         }
     }

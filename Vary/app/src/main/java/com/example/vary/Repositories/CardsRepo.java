@@ -136,13 +136,16 @@ public class CardsRepo {
         mCards.postValue(cards);
     }
 
-    public boolean newRoundRequired() {
+    public boolean newRoundRequiredAndSort() {
         sortCards();
-        if (currentPosition == getAmountOfCards()) {
-            return true;
-        }
-        return false;
+        return newRoundRequired();
     }
+
+    public boolean newRoundRequired() {
+        return currentPosition == getAmountOfCards();
+    }
+
+
 
     public void endCards() {
         boolean answered = true;

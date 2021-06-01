@@ -47,19 +47,26 @@ public class LocalService extends Service {
     }
 
     public void resumeTask() {
-        int timeLeft = (localTimer % 100 > 50) ? (localTimer / 100 + 1) : (localTimer / 100);
-        localTimer = timeLeft * 100;
-        viewModel.setTimerCount(timeLeft);
-        timer.schedule(new changeTimerInView(), 0, 10);
+        if (timer != null) {
+            int timeLeft = (localTimer % 100 > 50) ? (localTimer / 100 + 1) : (localTimer / 100);
+            localTimer = timeLeft * 100;
+            viewModel.setTimerCount(timeLeft);
+            timer.schedule(new changeTimerInView(), 0, 10);
+        }
     }
 
+
     public void pauseTask() {
-        timer.cancel();
+        if (timer != null)
+            timer.cancel();
         timer = new Timer();
     }
 
     public void stopTask() {
-        timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     private class changeTimerInView extends TimerTask {
@@ -69,8 +76,8 @@ public class LocalService extends Service {
                 if (localTimer % 100 == 0) {
                     viewModel.setTimerCount(localTimer / 100);
                 }
-                if (localTimer == 0) {
-                    timer.cancel();
+                if (localTimer == 0 && timer != null) {
+                        timer.cancel();
                 }
             }
         }
