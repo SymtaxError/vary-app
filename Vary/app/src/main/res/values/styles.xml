@@ -2,5 +2,14 @@
     <style name="Widget.Theme.Vary.ButtonBar.Fullscreen" parent="">
         <item name="android:background">@color/surface_color</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_additional</item>
+        <item name="colorAccent">@color/secondary</item>
+        <item name="alertDialogTheme">@style/AlertDialog</item>
+    </style>
+    <style name="AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/text_bright</item>
+        <item name="android:textColorPrimary">@color/primary</item>
+        <item name="android:background">@color/primary</item>
     </style>
 </resources>

@@ -58,4 +58,5 @@
     <string name="teams">Команды</string>
     <string name="pieces">\ штук</string>
     <string name="seconds">\ сек</string>
+    <string name="pick_team">Выбери команду</string>
 </resources>

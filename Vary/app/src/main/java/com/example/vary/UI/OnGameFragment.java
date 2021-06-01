@@ -1,6 +1,7 @@
 package com.example.vary.UI;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.media.MediaPlayer;
@@ -31,12 +32,15 @@ import android.widget.Toast;
 
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CurrentGameModel;
+import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class OnGameFragment extends Fragment implements CardCallback {
@@ -108,8 +112,36 @@ public class OnGameFragment extends Fragment implements CardCallback {
             cardText.setText(viewModel.getCard());
             roundScoreView.setText(String.valueOf(++roundScore));
         }
-        else
-            endFragment(); //TODO
+        else{
+            if (viewModel.getSteal())
+            {
+                int count = viewModel.getAmountOfTeams();
+                CharSequence[] teamsNames = new CharSequence[count];
+                count = 0;
+                for (TeamModel model: viewModel.getTeams().getValue())
+                {
+                    teamsNames[count] = model.getName();
+                    count += 1;
+                }
+                new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialog)
+                        .setTitle(getContext().getString(R.string.pick_team))
+                        .setItems(teamsNames, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Toast.makeText(getContext(),"Выбранная команда: "+teamsNames[which], Toast.LENGTH_LONG).show();
+                                endFragment(); //TODO
+                            }
+                }).setCancelable(false).show();
+            }
+//                auto items = Array("Item 1", "Item 2", "Item 3");
+//                new MaterialAlertDialogBuilder(getContext())
+//                        .setTitle("Выберите команду")
+//                        .setItems(items) { dialog, which ->
+//                // Respond to item chosen
+//            }
+//        .show()
+        }
     }
 
     @SuppressLint("SetTextI18n") //TODO refactor
@@ -126,7 +158,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         cardText.setText(viewModel.getCard());
         botView.startAnimation(swiped);
         swipeable = false;
-        if (isLastCard)
+        if (isLastCard && !onPlayersTask)
             endFragment(); //TODO
     }
 
@@ -359,22 +391,24 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
 
     private void setPlayersTask(boolean newPlayersTaskValue) {
+        onPlayersTask = newPlayersTaskValue;
         if (newPlayersTaskValue) {
             timerService.pauseTask();
 //            setPreview(false);
             card.setVisibility(View.INVISIBLE);
             pause.setVisibility(View.INVISIBLE);
             playersTask.setVisibility(View.VISIBLE);
+        } else if (ended) {
+            endFragment();
         } else {
             timerService.resumeTask();
             card.setVisibility(View.VISIBLE);
             pause.setVisibility(View.INVISIBLE);
             playersTask.setVisibility(View.INVISIBLE);
         }
-        onPlayersTask = newPlayersTaskValue;
-        if (ended && !onPlayersTask) {
-            endFragment();
-        }
+//        if (ended && !onPlayersTask) {
+//            endFragment();
+//        }
     }
 
     private void setPause(boolean newPauseValue) {
@@ -461,25 +495,28 @@ public class OnGameFragment extends Fragment implements CardCallback {
     @Override
     public void callback() {
         Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
-        if (paused || onPlayersTask) {
-            ended = true;
-        } else {
-            endFragment();
-        }
+//        if (paused || onPlayersTask) {
+//            ended = true;
+//        } else {
+//            endFragment();
+//        }
 //        viewModel.setRoundTimeLeft(0);
         //TODO переход
+        endFragment();
+
     }
 
     private void timeEnded() {
-        viewModel.setTimerCount(-1);
-        if (viewModel.getSteal()) {
-            isLastCard = true;
-            timerService.stopTask();
-        } else
-            endFragment();
+        viewModel.setTimerCount(0);
+        isLastCard = true;
+        ended = true;
+        timerService.stopTask();
     }
 
     private void endFragment() {
-        callbackFunctions.callback(GameActions.open_team_result);
+        if (!onPlayersTask) {
+            viewModel.setTimerCount(-1);
+            callbackFunctions.callback(GameActions.open_team_result);
+        }
     }
 }
