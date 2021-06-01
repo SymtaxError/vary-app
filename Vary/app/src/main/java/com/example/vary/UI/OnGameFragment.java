@@ -101,12 +101,14 @@ public class OnGameFragment extends Fragment implements CardCallback {
 //        cardText.setText("CARD "+Math.abs(new Random().nextInt()%100));
         soundSwipeUp.seekTo(0);
         soundSwipeUp.start();
-        viewModel.answerCard();
-        cardText.setText(viewModel.getCard());
-        roundScoreView.setText(String.valueOf(++roundScore));
         swipeable = false;
         topView.startAnimation(swiped);
-        if (isLastCard)
+        if (!isLastCard) {
+            viewModel.answerCard(0);
+            cardText.setText(viewModel.getCard());
+            roundScoreView.setText(String.valueOf(++roundScore));
+        }
+        else
             endFragment(); //TODO
     }
 

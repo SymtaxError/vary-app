@@ -58,8 +58,8 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mCategoriesRepo.declineCard();
     }
 
-    public void answerCard() {
-        mCategoriesRepo.answerCard();
+    public void answerCard(int team) {
+        mCategoriesRepo.answerCard(team);
     }
 
     public void changeAnswerState(int pos) {
@@ -71,7 +71,11 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public String getUsedCardByPosition(int pos) {
-        return mCategoriesRepo.getUsedCardByPosition(pos);
+        String result = mCategoriesRepo.getUsedCardByPosition(pos);
+        if (gameRepo.getSteal() && pos == getAmountOfUsedCards() - 1) {
+            result = result + "(" + getCurTeamName(mCategoriesRepo.getAnsweredTeam(pos)) + ")";
+        }
+        return result;
     }
 
     public void setCardsCallback(CardCallback callback) {
@@ -115,8 +119,11 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public void changeTeamPoints() {
+        int lastTeam = mCategoriesRepo.getAnsweredTeam(getAmountOfUsedCards() - 1);
+        if (lastTeam != 0)
+            mTeamsRepo.increasePoints(lastTeam, 1);
         int points = gameRepo.getCurrentRoundPoints();
-        mTeamsRepo.increasePoints(points);
+        mTeamsRepo.increasePoints(0, points);
     }
 
     public int countPoints() {
