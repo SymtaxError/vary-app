@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.vary.Database.DbManager;
 import com.example.vary.Models.CardModel;
 import com.example.vary.UI.CardCallback;
-import com.example.vary.UI.GameMode;
 import com.example.vary.UI.PenaltyType;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ public class CardsRepo {
     private DbManager dbManager = null;
     private static CardsRepo sInstance;
     private CardCallback mCallback;
-    private boolean ended = false;
 
     private final DbManager.CardRepositoryListener cardRepositoryListener = new DbManager.CardRepositoryListener() {
         @Override
@@ -102,12 +100,7 @@ public class CardsRepo {
     public void setAnsweredTeam(int team) {
         List<CardModel> cards = mCards.getValue();
         if (cards != null) {
-            if (team != -1) {
-                cards.get(currentPosition - 1).setAnswerState(true);
-            }
-            else {
-                cards.get(currentPosition - 1).setAnswerState(false);
-            }
+            cards.get(currentPosition - 1).setAnswerState(team != -1);
             cards.get(currentPosition - 1).setAnsweredTeam(team);
             mCards.postValue(cards);
         }
@@ -124,10 +117,7 @@ public class CardsRepo {
     }
 
     public void fillCards(String categoryName, int amount) {
-        //Если количество больше,чем загружено, дозагрузить
         amountOfCards = amount;
-//        mCards.postValue();
-        // scan from db?
         dbManager.getCards(categoryName);
         currentPosition = 0;
     }
@@ -152,7 +142,6 @@ public class CardsRepo {
 
 
     public void endCards() {
-        boolean answered = true;
         List<CardModel> cards = mCards.getValue();
         if (cards != null) {
 //            for (int i = startRoundPosition; i < getAmountOfCards() && answered; i++) {
@@ -277,9 +266,6 @@ public class CardsRepo {
     }
 
     public int getAmountOfUsedCards() {
-        if (ended) {
-            return getAmountOfCards() - startRoundPosition;
-        }
         return currentPosition - startRoundPosition;
     }
 }

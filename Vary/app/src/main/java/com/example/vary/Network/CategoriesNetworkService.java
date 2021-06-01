@@ -3,10 +3,11 @@ package com.example.vary.Network;
 import android.net.ParseException;
 import android.util.Log;
 
-import com.example.vary.UI.LoadDataCallback;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CategoryModel;
 import com.example.vary.UI.SetDataCallback;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class CategoriesNetworkService {
     private static CategoriesNetworkService mInstance;
-    private static String mBaseUrl;
-    private Retrofit mRetrofit;
+    private final Retrofit mRetrofit;
     private static List<CategoryModel> mCategories = new ArrayList<>();
     private final static String TAG = "CardsNetworkService";
 
@@ -28,9 +28,8 @@ public class CategoriesNetworkService {
 
 
     public CategoriesNetworkService(String url) {
-        mBaseUrl = url;
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(mBaseUrl)
+                .baseUrl(url)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
         getCategoriesAPI();
@@ -55,8 +54,8 @@ public class CategoriesNetworkService {
     public void getNewCategories(int version, SetDataCallback callbackLoad) {
         mCategoriesAPI.getNewCategories(version).enqueue(new Callback<List<CategoriesAPI.CategoryPlain>>() {
             @Override
-            public void onResponse(Call<List<CategoriesAPI.CategoryPlain>> call,
-                                   Response<List<CategoriesAPI.CategoryPlain>> response) {
+            public void onResponse(@NotNull Call<List<CategoriesAPI.CategoryPlain>> call,
+                                   @NotNull Response<List<CategoriesAPI.CategoryPlain>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     mCategories = transformDeck(response.body(), callbackLoad);
                     Log.d(TAG, "Categories size " + mCategories.size());
@@ -65,7 +64,7 @@ public class CategoriesNetworkService {
             }
 
             @Override
-            public void onFailure(Call<List<CategoriesAPI.CategoryPlain>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<CategoriesAPI.CategoryPlain>> call, @NotNull Throwable t) {
                 Log.d(TAG, "Failed to load decks ", t);
                 callbackLoad.onLoaded(t);
             }
@@ -75,14 +74,14 @@ public class CategoriesNetworkService {
     public void getVersion(SetDataCallback callbackLoad) {
         mCategoriesAPI.getVersion().enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(@NotNull Call<Integer> call, @NotNull Response<Integer> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callbackLoad.onLoaded(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(@NotNull Call<Integer> call, @NotNull Throwable t) {
                 callbackLoad.onLoaded(t);
             }
         });

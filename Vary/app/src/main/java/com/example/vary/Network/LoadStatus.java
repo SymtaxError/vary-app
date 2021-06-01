@@ -1,19 +1,12 @@
 package com.example.vary.Network;
 
 public class LoadStatus {
-    private Throwable error;
-    private boolean success;
-    private boolean notify;
+    private final Throwable error;
+    private final boolean notify;
 
     public LoadStatus(Throwable e, boolean notification) {
         notify = notification;
-        if (e == null) {
-            success = true;
-        }
-        else {
-            error = e;
-            success = false;
-        }
+        error = e;
     }
 
     public Throwable getError()

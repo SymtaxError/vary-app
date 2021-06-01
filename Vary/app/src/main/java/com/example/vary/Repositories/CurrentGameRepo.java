@@ -1,13 +1,10 @@
 package com.example.vary.Repositories;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import com.example.vary.Database.DbManager;
 import com.example.vary.UI.GameActions;
 import com.example.vary.UI.PenaltyType;
 import com.example.vary.UI.GameMode;
@@ -17,6 +14,7 @@ import com.example.vary.Models.CurrentGameModel;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CurrentGameRepo {
     private final MutableLiveData<CurrentGameModel> gameModel = new MutableLiveData<>();
@@ -72,7 +70,7 @@ public class CurrentGameRepo {
     }
 
     public boolean gameIsVoid() {
-        return gameModel.getValue().isVoid();
+        return Objects.requireNonNull(gameModel.getValue()).isVoid();
     }
 
 
@@ -89,6 +87,7 @@ public class CurrentGameRepo {
 
     public void setDuration(int duration) {
         CurrentGameModel model = gameModel.getValue();
+        assert model != null;
         model.setRoundDuration(duration);
         gameModel.postValue(model);
     }

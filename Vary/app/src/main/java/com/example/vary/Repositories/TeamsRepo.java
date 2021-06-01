@@ -1,9 +1,7 @@
 package com.example.vary.Repositories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -15,8 +13,9 @@ import java.util.List;
 
 
 public class TeamsRepo {
-    private MutableLiveData<List<TeamModel>> mTeams = new MutableLiveData<>();
+    private final MutableLiveData<List<TeamModel>> mTeams = new MutableLiveData<>();
     private static TeamsRepo sInstance;
+    @SuppressLint("StaticFieldLeak")
     private static DbManager dbManager = null;
 
     public TeamsRepo() {

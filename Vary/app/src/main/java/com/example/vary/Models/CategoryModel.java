@@ -5,13 +5,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.vary.Models.CardModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-
-/**
- * Пожалуйста, не трогайте, если не знаете, как это работает!
- */
 
 @Entity
 public class CategoryModel {
@@ -33,7 +29,7 @@ public class CategoryModel {
         return mCards;
     }
 
-    public CategoryModel(String mName, int mVersion, int mAccessLevel) {
+    public CategoryModel(@NotNull String mName, int mVersion, int mAccessLevel) {
         this.mVersion = mVersion;
         this.mName = mName;
         this.mAccessLevel = mAccessLevel;

@@ -5,10 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-/**
- * Пожалуйста, не трогайте, если не знаете, как это работает!
- */
-
 @Entity
 public class CardModel {
     public int mVersion;

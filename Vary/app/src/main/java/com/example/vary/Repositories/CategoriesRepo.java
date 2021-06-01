@@ -164,10 +164,6 @@ public class CategoriesRepo implements SetDataCallback {
         mCardsRepo.setStartRoundPosition(position);
     }
 
-    public void saveState() {
-        //а надо ли?
-    }
-
     public static synchronized CategoriesRepo getInstance() {
         if (sInstance == null) {
             Log.d("GetInstance", "created ");
