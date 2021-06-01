@@ -136,7 +136,7 @@ public class CurrentGameRepo {
         if (gameModel.getValue() != null) {
             return gameModel.getValue().getSteal();
         }
-        return false;
+        return true;
     }
 
     public List<CardModel> getCards() {
