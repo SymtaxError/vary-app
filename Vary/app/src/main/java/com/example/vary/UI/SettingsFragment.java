@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ public class SettingsFragment extends Fragment {
     private boolean sound;
     private boolean check_updates;
     CallbackSettings sCallback;
+    CallbackFragment fCallback;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class SettingsFragment extends Fragment {
 
         ImageView soundView = view.findViewById(R.id.sound_view);
         ImageView updatesView = view.findViewById(R.id.check_updates_view);
+        TextView soundTextView = view.findViewById(R.id.sound_text_view);
+        TextView updatesTextView = view.findViewById(R.id.check_updates_text_view);
+        Button backToMain = view.findViewById(R.id.back_to_main_menu_button);
 
         if (sound) {
             soundView.setImageResource(R.drawable.ic_baseline_music_note_24);
@@ -56,6 +61,30 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+
+        soundTextView.setOnClickListener(v -> {
+            sound = !sound;
+            if (sound)  {
+                soundView.setImageResource(R.drawable.ic_baseline_music_note_24);
+                sCallback.callback(sound_setting, sound);
+            } else {
+                sCallback.callback(sound_setting, sound);
+                soundView.setImageResource(R.drawable.ic_baseline_music_off_24);
+            }
+        });
+
+
+        updatesTextView.setOnClickListener(v -> {
+            check_updates = !check_updates;
+            if (check_updates)  {
+                updatesView.setImageResource(R.drawable.ic_baseline_system_update_24);
+                sCallback.callback(check_updates_setting, check_updates);
+            } else {
+                sCallback.callback(check_updates_setting, check_updates);
+                updatesView.setImageResource(R.drawable.ic_baseline_mobile_off_24);
+            }
+        });
+
         updatesView.setOnClickListener(v -> {
             check_updates = !check_updates;
             if (check_updates)  {
@@ -67,7 +96,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+
+        backToMain.setOnClickListener(v -> fCallback.callback(GameActions.open_menu));
+
         return view;
+    }
+
+    void setFCallback(CallbackFragment callback) {
+        fCallback = callback;
     }
 
     void setCallback(CallbackSettings callback) {
