@@ -1,5 +1,6 @@
 package com.example.vary.UI;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vary.Models.CardModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -76,13 +79,35 @@ public class ResultTeamFragment extends Fragment {
         public void onBindViewHolder(@NonNull TeamStatsViewHolder holder, int position) {
             String wordName = viewModel.getUsedCardByPosition(position);
             boolean answerState = viewModel.getAnswerState(position);
-            View.OnClickListener listener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.startAnimation(buttonClick);
-                    viewModel.changeAnswerState(position);
+            View.OnClickListener listener;
+            if (position == getItemCount() - 1 && viewModel.getSteal()) {
+                listener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.startAnimation(buttonClick);
+                        CharSequence[] teamsNames = viewModel.getTeamsNamesChar(getContext());
+                        new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialog)
+                                .setTitle(getContext().getString(R.string.pick_team))
+                                .setItems(teamsNames, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        which = (which < viewModel.getAmountOfTeams()) ? which : -1;
+                                        viewModel.setAnsweredTeam(which);
+                                    }
+                                }).show();
+                    }
+                };
+            }
+            else {
+                listener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.startAnimation(buttonClick);
+                        viewModel.changeAnswerState(position);
+                        }
+                    };
                 }
-            };
+
             holder.bind(wordName, answerState, listener);
         }
 

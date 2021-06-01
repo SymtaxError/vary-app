@@ -115,20 +115,19 @@ public class OnGameFragment extends Fragment implements CardCallback {
         else{
             if (viewModel.getSteal())
             {
-                int count = viewModel.getAmountOfTeams();
-                CharSequence[] teamsNames = new CharSequence[count];
-                count = 0;
-                for (TeamModel model: viewModel.getTeams().getValue())
-                {
-                    teamsNames[count] = model.getName();
-                    count += 1;
-                }
+                CharSequence[] teamsNames = viewModel.getTeamsNamesChar(getContext());
                 new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialog)
                         .setTitle(getContext().getString(R.string.pick_team))
                         .setItems(teamsNames, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                if (which < viewModel.getAmountOfTeams())
+                                    viewModel.answerCard(which);
+                                else
+                                {
+                                    viewModel.declineCard();
+                                    viewModel.setAnsweredTeam(-1);
+                                }
                                 Toast.makeText(getContext(),"Выбранная команда: "+teamsNames[which], Toast.LENGTH_LONG).show();
                                 endFragment(); //TODO
                             }
@@ -507,10 +506,15 @@ public class OnGameFragment extends Fragment implements CardCallback {
     }
 
     private void timeEnded() {
-        viewModel.setTimerCount(0);
-        isLastCard = true;
+//        viewModel.setTimerCount(0);
         ended = true;
         timerService.stopTask();
+        if (viewModel.getSteal()) {
+            isLastCard = true;
+        }
+        else {
+            endFragment();
+        }
     }
 
     private void endFragment() {

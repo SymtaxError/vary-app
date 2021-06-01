@@ -9,8 +9,8 @@ import java.util.List;
 public class CurrentGameModel {
     List<CardModel> mCardModelList;
     List<TeamModel> mTeams;
-    boolean mSteal;
-    PenaltyType mPenalty;
+    boolean mSteal = true;
+    PenaltyType mPenalty = PenaltyType.lose_points;
     int mRoundDuration;
     GameMode mCurMode = GameMode.explain_mode;
     int currentCard = 0;

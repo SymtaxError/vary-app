@@ -8,8 +8,9 @@
         <item name="alertDialogTheme">@style/AlertDialog</item>
     </style>
     <style name="AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColor">@color/text_bright</item>
+        <item name="android:textColor">@color/primary</item>
         <item name="android:textColorPrimary">@color/primary</item>
-        <item name="android:background">@color/primary</item>
+        <item name="android:background">@color/surface_color</item>
+        <item name="textColorAlertDialogListItem">@color/secondary</item>
     </style>
 </resources>

@@ -47,7 +47,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     private int roundDuration;
     private int startTeam;
     private int startCategory;
-    private boolean steal;
+    private boolean steal = true;
     CallbackFragment fCallback;
     View view;
 

@@ -112,6 +112,10 @@ public class CategoriesRepo implements SetDataCallback {
         mCardsRepo.changeAnswerState(pos);
     }
 
+    public void setAnsweredTeam(int team) {
+        mCardsRepo.setAnsweredTeam(team);
+    }
+
     public boolean getAnswerState(int pos) {
         return mCardsRepo.getAnswerState(pos);
     }

@@ -1,6 +1,7 @@
 package com.example.vary.ViewModels;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.vary.Models.CurrentGameModel;
+import com.example.vary.R;
 import com.example.vary.Repositories.CategoriesRepo;
 import com.example.vary.Repositories.TeamsRepo;
 import com.example.vary.Repositories.CurrentGameRepo;
@@ -70,10 +72,15 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         return mCategoriesRepo.getAnswerState(pos);
     }
 
+    public void setAnsweredTeam(int team) {
+        mCategoriesRepo.setAnsweredTeam(team);
+    }
+
     public String getUsedCardByPosition(int pos) {
         String result = mCategoriesRepo.getUsedCardByPosition(pos);
-        if (gameRepo.getSteal() && pos == getAmountOfUsedCards() - 1) {
-            result = result + "(" + getCurTeamName(mCategoriesRepo.getAnsweredTeam(pos)) + ")";
+        int team = mCategoriesRepo.getAnsweredTeam(pos);
+        if (gameRepo.getSteal() && pos == getAmountOfUsedCards() - 1 && team != -1) {
+            result = result + " (" + getCurTeamName(team) + ")";
         }
         return result;
     }
@@ -120,10 +127,23 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public void changeTeamPoints() {
         int lastTeam = mCategoriesRepo.getAnsweredTeam(getAmountOfUsedCards() - 1);
-        if (lastTeam != 0)
+        if (lastTeam > 0 && gameRepo.getSteal())
             mTeamsRepo.increasePoints(lastTeam, 1);
         int points = gameRepo.getCurrentRoundPoints();
         mTeamsRepo.increasePoints(0, points);
+    }
+
+    public CharSequence[] getTeamsNamesChar(Context context) {
+        int count = getAmountOfTeams() + 1;
+        CharSequence[] teamsNames = new CharSequence[count];
+        count = 0;
+        for (String model: getTeamsNames())
+        {
+            teamsNames[count] = model;
+            count += 1;
+        }
+        teamsNames[count] = context.getResources().getString(R.string.nobody);
+        return teamsNames;
     }
 
     public int countPoints() {

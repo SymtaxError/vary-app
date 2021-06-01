@@ -61,7 +61,7 @@ public class CardsRepo {
             while (index < currentPosition) {
                 CardModel card = cards.get(index);
                 if (!card.getAnswerState()) {
-                    card.setAnsweredTeam(0);
+                    card.setAnsweredTeam(-1);
                     cards.remove(index);
                     currentPosition--;
                     cards.add(card);
@@ -99,10 +99,25 @@ public class CardsRepo {
         }
     }
 
+    public void setAnsweredTeam(int team) {
+        List<CardModel> cards = mCards.getValue();
+        if (cards != null) {
+            if (team != -1) {
+                cards.get(currentPosition - 1).setAnswerState(true);
+            }
+            else {
+                cards.get(currentPosition - 1).setAnswerState(false);
+            }
+            cards.get(currentPosition - 1).setAnsweredTeam(team);
+            mCards.postValue(cards);
+        }
+    }
+
     public void declineCard() {
         List<CardModel> cards = mCards.getValue();
         if (cards != null) {
             cards.get(currentPosition).setAnswerState(false);
+            cards.get(currentPosition).setAnsweredTeam(0);
             mCards.postValue(cards);
             currentPosition++;
         }
