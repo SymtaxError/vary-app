@@ -79,7 +79,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public String getUsedCardByPosition(int pos) {
         String result = mCategoriesRepo.getUsedCardByPosition(pos);
         int team = mCategoriesRepo.getAnsweredTeam(pos);
-        if (gameRepo.getSteal() && pos == getAmountOfUsedCards() - 1 && team > 0) {
+        if (gameRepo.getSteal() && pos == getAmountOfUsedCards() - 1 && team != -1 && getTimerCount().getValue() != -2) {
             result = result + " (" + getCurTeamName(team) + ")";
         }
         return result;
