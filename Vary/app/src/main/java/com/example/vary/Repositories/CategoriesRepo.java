@@ -104,8 +104,8 @@ public class CategoriesRepo implements SetDataCallback {
         mCardsRepo.declineCard();
     }
 
-    public void answerCard() {
-        mCardsRepo.answerCard();
+    public void answerCard(int team) {
+        mCardsRepo.answerCard(team);
     }
 
     public void changeAnswerState(int pos) {
@@ -122,6 +122,10 @@ public class CategoriesRepo implements SetDataCallback {
 
     public int getAmountOfUsedCards() {
         return mCardsRepo.getAmountOfUsedCards();
+    }
+
+    public int getAnsweredTeam(int pos) {
+        return mCardsRepo.getAnsweredTeam(pos);
     }
 
     public void newRoundMix() {

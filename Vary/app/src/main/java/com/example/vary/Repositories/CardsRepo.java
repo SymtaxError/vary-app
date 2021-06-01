@@ -61,6 +61,7 @@ public class CardsRepo {
             while (index < currentPosition) {
                 CardModel card = cards.get(index);
                 if (!card.getAnswerState()) {
+                    card.setAnsweredTeam(0);
                     cards.remove(index);
                     currentPosition--;
                     cards.add(card);
@@ -88,10 +89,11 @@ public class CardsRepo {
         return false;
     }
 
-    public void answerCard() {
+    public void answerCard(int team) {
         List<CardModel> cards = mCards.getValue();
         if (cards != null) {
             cards.get(currentPosition).setAnswerState(true);
+            cards.get(currentPosition).setAnsweredTeam(team);
             mCards.postValue(cards);
             currentPosition++;
         }
@@ -155,8 +157,10 @@ public class CardsRepo {
 
     public void mixCards() {
         if (mCards.getValue() != null) {
-            for (CardModel card : mCards.getValue())
+            for (CardModel card : mCards.getValue()) {
                 card.setAnswerState(false);
+                card.setAnsweredTeam(0);
+            }
             Collections.shuffle(mCards.getValue());
         }
         currentPosition = 0;
@@ -200,13 +204,22 @@ public class CardsRepo {
         return 0;
     }
 
+    public int getAnsweredTeam(int pos) {
+        if (mCards.getValue() != null) {
+            return mCards.getValue()
+                    .get(pos + startRoundPosition)
+                    .getAnsweredTeam();
+        }
+        return 0;
+    }
+
     public int countPoints(PenaltyType penalty) {
         int decreaseValue = 0;
         if (penalty == PenaltyType.lose_points) {
             decreaseValue = -1;
         }
         int points = 0;
-        for (int index = startRoundPosition; index < currentPosition; index++) {
+        for (int index = startRoundPosition; index < currentPosition && getAnsweredTeam(index - startRoundPosition) == 0; index++) {
             points = (getAnswerState(index - startRoundPosition)) ? points + 1 : points + decreaseValue;
         }
         return points;

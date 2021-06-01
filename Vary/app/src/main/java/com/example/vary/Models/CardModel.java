@@ -16,7 +16,8 @@ public class CardModel {
     public String mId;
     public String mText;
     public String mCategory;
-
+    @Ignore
+    private int answeredTeam;
     @Ignore
     private boolean mAnswered;
 
@@ -50,4 +51,15 @@ public class CardModel {
     public boolean getAnswerState() {
         return mAnswered;
     }
+
+    @Ignore
+    public int getAnsweredTeam() {
+        return answeredTeam;
+    }
+
+    @Ignore
+    public void setAnsweredTeam(int team) {
+        answeredTeam = team;
+    }
+
 }
