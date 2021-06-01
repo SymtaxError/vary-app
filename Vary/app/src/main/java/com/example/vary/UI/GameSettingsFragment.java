@@ -2,6 +2,7 @@ package com.example.vary.UI;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -111,7 +112,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
 
 
         setObservers();
-        Switch theftRightSwitch = view.findViewById(R.id.theft_right);
+        SwitchCompat theftRightSwitch = view.findViewById(R.id.theft_right);
         theftRightSwitch.setOnCheckedChangeListener(this);
 
         RadioGroup penaltyGroup = view.findViewById(R.id.penalty_group);

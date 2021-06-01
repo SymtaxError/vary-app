@@ -146,7 +146,7 @@
                 android:textColor="@color/text_bright" />
         </RadioGroup>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/theft_right"
 
             android:layout_width="280dp"
