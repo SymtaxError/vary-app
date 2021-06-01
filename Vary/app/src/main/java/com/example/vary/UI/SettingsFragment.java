@@ -3,6 +3,7 @@ package com.example.vary.UI;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -20,34 +22,52 @@ import androidx.fragment.app.Fragment;
 import com.example.vary.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import static com.example.vary.UI.SettingActions.*;
+
 public class SettingsFragment extends Fragment {
     private boolean sound;
-    private boolean push;
     private boolean check_updates;
-    private Switch switchSound;
-    private Switch switchPush;
-    private Switch switchCheckUpdates;
     CallbackSettings sCallback;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.settings_fragment, container, false);
 
-        switchSound = view.findViewById(R.id.switch_sound);
-        switchPush = view.findViewById(R.id.switch_push);
-        switchCheckUpdates = view.findViewById(R.id.switch_updates);
-        ImageButton buttonAuthVK = view.findViewById(R.id.vk_button);
+        ImageView soundView = view.findViewById(R.id.sound_view);
+        ImageView updatesView = view.findViewById(R.id.check_updates_view);
 
-        switchSound.setChecked(sound);
-        switchPush.setChecked(push);
-        switchCheckUpdates.setChecked(check_updates);
+        if (sound) {
+            soundView.setImageResource(R.drawable.ic_baseline_music_note_24);
+        } else {
+            soundView.setImageResource(R.drawable.ic_baseline_music_off_24);
+        }
 
-        switchSound.setOnClickListener(v -> sCallback.callback(SettingActions.sound_setting, ((Switch) v).isChecked()));
-        switchPush.setOnClickListener(v -> sCallback.callback(SettingActions.push_setting, ((Switch) v).isChecked()));
-        switchCheckUpdates.setOnClickListener(v -> sCallback.callback(SettingActions.check_updates_setting, ((Switch) v).isChecked()));
+        if (check_updates) {
+            updatesView.setImageResource(R.drawable.ic_baseline_system_update_24);
+        } else {
+            updatesView.setImageResource(R.drawable.ic_baseline_mobile_off_24);
+        }
 
-        buttonAuthVK.setOnClickListener(v -> {
-//             TODO VK authentication
+        soundView.setOnClickListener(v -> {
+            sound = !sound;
+            if (sound)  {
+                soundView.setImageResource(R.drawable.ic_baseline_music_note_24);
+                sCallback.callback(sound_setting, sound);
+            } else {
+                sCallback.callback(sound_setting, sound);
+                soundView.setImageResource(R.drawable.ic_baseline_music_off_24);
+            }
+        });
+
+        updatesView.setOnClickListener(v -> {
+            check_updates = !check_updates;
+            if (check_updates)  {
+                updatesView.setImageResource(R.drawable.ic_baseline_system_update_24);
+                sCallback.callback(check_updates_setting, check_updates);
+            } else {
+                sCallback.callback(check_updates_setting, check_updates);
+                updatesView.setImageResource(R.drawable.ic_baseline_mobile_off_24);
+            }
         });
 
         return view;
@@ -57,9 +77,8 @@ public class SettingsFragment extends Fragment {
         sCallback = callback;
     }
 
-    void setSwitches(boolean sound, boolean push, boolean check_updates) {
+    void setSwitches(boolean sound, boolean check_updates) {
         this.sound = sound;
-        this.push = push;
         this.check_updates = check_updates;
     }
 }
