@@ -129,10 +129,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public void saveState(SharedPreferences.Editor editor) {
         List<CardModel> mCardModels = mCategoriesRepo.getCards().getValue();
-        if (mCardModels == null) {
-            gameRepo.setNewGame(editor);
-            return;
-        }
+//        if (mCardModels == null) {
+//            gameRepo.setNewGame(editor);
+////            return; //честно не знаю на что может повлиять, но по крайней мере работает)
+//        }
 //        if (gameRepo.getGameModel().getValue().isVoid())
 //        {
 //            gameRepo.setNewGame(editor);
