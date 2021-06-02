@@ -8,7 +8,10 @@ https://docs.google.com/document/d/1AsyYsCpb5-TdwodNP_iponvgHtCiFXV5i9ub5UHbqQc/
 
 ### Стек технологий
 * Java
-* Room
-* ...
+* Room (SQLite)
+* Retrofit
+
 ### Backend server стек
 * Spring
+* Postgrees
+* Hibernate
