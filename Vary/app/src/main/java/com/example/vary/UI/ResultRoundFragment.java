@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.w3c.dom.Text;
 
@@ -159,22 +161,43 @@ public class ResultRoundFragment extends Fragment {
             gesture_logo.setBackgroundTintList(nextColor);
             one_word_logo.setBackgroundTintList(nextColor);
         } else if (gameMode == GameMode.gesture_mode) {
-            explain_logo.setVisibility(View.INVISIBLE);
+            explain_logo.setVisibility(View.GONE);
             gesture_logo.setBackgroundTintList(activeColor);
             one_word_logo.setBackgroundTintList(nextColor);
         } else if (gameMode == GameMode.one_word_mode){
-            explain_logo.setVisibility(View.INVISIBLE);
-            gesture_logo.setVisibility(View.INVISIBLE);
+            explain_logo.setVisibility(View.GONE);
+            gesture_logo.setVisibility(View.GONE);
             one_word_logo.setBackgroundTintList(activeColor);
         } else {
-            explain_logo.setVisibility(View.INVISIBLE);
-            gesture_logo.setVisibility(View.INVISIBLE);
-            one_word_logo.setVisibility(View.INVISIBLE);
+            explain_logo.setVisibility(View.GONE);
+            gesture_logo.setVisibility(View.GONE);
+            one_word_logo.setVisibility(View.GONE);
         }
 
         TextView cardsLeft = view.findViewById(R.id.cards_left);
         cardsLeft.setText(viewModel.getCardsLeft()+"");
 
+
+        LinearLayout cards_info = view.findViewById(R.id.round_result_cards_info);
+        LinearLayout modes_info = view.findViewById(R.id.round_result_modes_info);
+
+        cards_info.setOnClickListener(v -> showCardsInfo());
+        modes_info.setOnClickListener(v -> showModesInfo());
+
         return view;
+    }
+
+    private void showModesInfo() {
+        View contextView = getView().findViewById(R.id.context_view_result_round);
+        Snackbar bar = Snackbar.make(contextView, R.string.modes_tooltip, Snackbar.LENGTH_LONG);
+//        bar.setTextColor(getResources().getColor(R.color.primary));
+        bar.show();
+    }
+
+    private void showCardsInfo() {
+        View contextView = getView().findViewById(R.id.context_view_result_round);
+        Snackbar bar = Snackbar.make(contextView, R.string.cards_tooltip, Snackbar.LENGTH_LONG);
+//        bar.setTextColor(getResources().getColor(R.color.primary));
+        bar.show();
     }
 }

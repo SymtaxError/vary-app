@@ -57,19 +57,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     SharedPreferences mPrefs;
     SharedPreferences.Editor editor;
 
-    private final DbManager.CountListener countListener = new DbManager.CountListener() {
-        @Override
-        public void onGetCount(final int cardCount, final int catCount) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //                    showStringList(allItems);
-                    String countText = "Loaded " + cardCount + " cards in " + catCount + " categories";
-                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    };
+//    private final DbManager.CountListener countListener = new DbManager.CountListener() {
+//        @Override
+//        public void onGetCount(final int cardCount, final int catCount) {
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    //                    showStringList(allItems);
+////                    String countText = "Loaded " + cardCount + " cards in " + catCount + " categories";
+////                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
+//                }
+//            });
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             public void onChanged(List<CategoryModel> categoryModels) {
                 if (categoryModels.size() != 0) {
                     String countText = "Loaded from " + categoryModels.size() + " categories";
-                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         Observer<LoadStatus> observerLoadStatus = new Observer<LoadStatus>() {
             @Override
             public void onChanged(LoadStatus loadStatus) {
-                Toast toast;
+//                Toast toast;
 //                if (loadStatus.getError() != null && loadStatus.getNotification()) {
 //                    toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
 //                    toast.show();

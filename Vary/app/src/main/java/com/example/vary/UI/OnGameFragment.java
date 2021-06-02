@@ -128,7 +128,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
                                     viewModel.declineCard();
                                     viewModel.setAnsweredTeam(-1);
                                 }
-                                Toast.makeText(getContext(),"Выбранная команда: "+teamsNames[which], Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getContext(),"Выбранная команда: "+teamsNames[which], Toast.LENGTH_LONG).show();
                                 endFragment(); //TODO
                             }
                 }).setCancelable(false).show();
@@ -495,7 +495,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @Override
     public void callback() {
-        Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
 //        if (paused || onPlayersTask) {
 //            ended = true;
 //        } else {

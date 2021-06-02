@@ -86,8 +86,8 @@ public class StartFragment extends Fragment {
             public void onChanged(CurrentGameModel currentGameModel) {
                 Log.d("Model", "Gor value of model, it is void: " + currentGameModel.isVoid());
                 if (!currentGameModel.isVoid()) {
-                    Toast toast = Toast.makeText(getContext(), "Model isn't void, info : " + currentGameModel.getCardModelList().size(), Toast.LENGTH_LONG);
-                    toast.show();
+//                    Toast toast = Toast.makeText(getContext(), "Model isn't void, info : " + currentGameModel.getCardModelList().size(), Toast.LENGTH_LONG);
+//                    toast.show();
                     checkContinueButtonVisibility(true);
                 }
                 else {

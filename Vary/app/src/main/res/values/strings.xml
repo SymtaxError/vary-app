@@ -63,4 +63,6 @@
     <string name="nobody">Никто</string>
     <string name="result_team_prompt">Нажми на слово, чтобы изменить его результат</string>
     <string name="add_team_prompt">Нажми на команду, чтобы изменить её название</string>
+    <string name="cards_tooltip">Оставшиеся карты в колоде</string>
+    <string name="modes_tooltip">Следующие режимы игры</string>
 </resources>
