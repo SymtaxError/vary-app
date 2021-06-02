@@ -17,7 +17,6 @@ public interface CardModelDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(CardModel... cards);
 
-    // Получение количества карточек  TODO delete
     @Query("SELECT COUNT(*) FROM cardmodel")
     int getCardsCount();
 

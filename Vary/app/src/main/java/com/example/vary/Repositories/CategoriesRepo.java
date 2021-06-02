@@ -33,9 +33,8 @@ public class CategoriesRepo implements SetDataCallback {
 
     private final DbManager.CategoryRepositoryListener categoryRepositoryListener = categoryModels -> {
         if (categoryModels.size() > 0) {
-            mCategories.postValue(categoryModels); //TODO обработать
+            mCategories.postValue(categoryModels);
             updateVersion(categoryModels);
-//            Log.d("DB", "version")
         }
         else {
             version = -1;

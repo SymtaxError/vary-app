@@ -6,13 +6,9 @@
 
     <dimen name="settings_text_size">18sp</dimen>
     <dimen name="settings_header_size">28sp</dimen>
-    <dimen name="settings_switch_padding">10dp</dimen>
 
-    <dimen name="main_small_text_size">18sp</dimen>
     <dimen name="main_big_text_size">24sp</dimen>
 
     <dimen name="game_text_size">18sp</dimen>
-    <dimen name="game_header_size">28sp</dimen>
 
-    <dimen name="seek_bar_width">240dp</dimen>
 </resources>

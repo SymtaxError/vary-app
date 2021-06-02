@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/command_add_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
     <!--    android:backgroundTint="@color/primary">-->
     <TextView
-        android:id="@+id/notification_new_command"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

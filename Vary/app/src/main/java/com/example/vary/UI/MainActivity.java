@@ -1,18 +1,14 @@
 package com.example.vary.UI;
 
-// TODO: дохимичить с полноэкранным режимом
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
@@ -20,16 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.vary.Database.DbManager;
 import com.example.vary.Models.CategoryModel;
-import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
@@ -57,27 +50,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     SharedPreferences mPrefs;
     SharedPreferences.Editor editor;
 
-//    private final DbManager.CountListener countListener = new DbManager.CountListener() {
-//        @Override
-//        public void onGetCount(final int cardCount, final int catCount) {
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    //                    showStringList(allItems);
-////                    String countText = "Loaded " + cardCount + " cards in " + catCount + " categories";
-////                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
-//                }
-//            });
-//        }
-//    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
         setContentView(R.layout.activity_main);
@@ -98,21 +73,13 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             public void onChanged(List<CategoryModel> categoryModels) {
                 if (categoryModels.size() != 0) {
                     String countText = "Loaded from " + categoryModels.size() + " categories";
-//                    Toast.makeText(getApplicationContext(), countText, Toast.LENGTH_LONG).show();
                 }
             }
         };
 
         viewModel.getCategories().observe(this, observer);
-//        final DbManager manager = DbManager.getInstance(this);
-//        manager.getCount(countListener);
-        // binding service to activity
         Intent intent = new Intent(this, LocalService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-
-        //TODO delete, test sound
-//        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep_short_on);
-//        mp.start();
 
         mPrefs = getPreferences(MODE_PRIVATE);
         editor = mPrefs.edit();
@@ -134,20 +101,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 //                }
                 if (loadStatus.getError() != null && loadStatus.getNotification()) {
                     LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-//                    View promView = inflater.inflate(R.layout.load_confirm, null);
-//
-//                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-//                    alertDialogBuilder.setView(promView);
-//
-//                    String add = getResources().getString(R.string.yes);
-//                    String cancel = getResources().getString(R.string.no);
-//                    alertDialogBuilder
-//                            .setCancelable(false)
-//                            .setPositiveButton(add, (dialog, which) -> {
-//                                viewModel.getNewCategories();
-//                            });
-//                    AlertDialog alertDialog = alertDialogBuilder.create();
-//                    alertDialog.show();
                     View contextView = findViewById(R.id.context_view);
                     Snackbar bar = Snackbar.make(contextView, R.string.no_cards_message, Snackbar.LENGTH_LONG);
                     bar.setAction(R.string.download, v -> {
@@ -156,10 +109,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                     });
                     allowStart = false;
                     bar.show();
-//                    bar.dismiss();
                 }
                 else {
-//                    if (bar.isShown()) {
                     allowStart = true;
                     if (startGamePressed) {
                         callback(GameActions.new_game_action);
@@ -168,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             }
         };
 
-//        viewModel = new ViewModelProvider(this).get(CardsViewModel.class);
         viewModel
                 .getLoadStatus()
                 .observe(this, observerLoadStatus);
@@ -252,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -266,12 +215,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             OnGameFragment fragment = new OnGameFragment();
             fragment.setCallbackFunctions(this);
             fragment.setTimerService(mService);
-//            getSupportFragmentManager().popBackStack(); //TODO вернуть
-//            getSupportFragmentManager().popBackStack(); //TODO вернуть
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -286,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -299,11 +244,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
         viewModel.continueOldGame();
         callback(viewModel.getGameAction());
-//        if (viewModel.getRoundTimeLeft() > 0) {
-//            createGameProcess();
-//        } else {
-//            openRoundOrGameResult();
-//        }
     }
 
 
@@ -325,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -337,18 +276,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .getClass()
                 .equals(StartFragment.class)) {
             replaceToStartFragment(getSupportFragmentManager());
-//            StartFragment fragment = new StartFragment();
-//            fragment.setCallback(this);
-//            FragmentManager manager = getSupportFragmentManager();
-//            if (manager.getBackStackEntryCount() > 0) {
-//                FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
-//                manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//            }
-//            manager
-//                    .beginTransaction()
-//                    .replace(R.id.container, fragment)
-////                    .addToBackStack(null)
-//                    .commit();
         }
     }
 
@@ -372,49 +299,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
         else
             replaceToStartFragment(manager);
-//
-//        if (Objects.requireNonNull(getSupportFragmentManager()
-//                .findFragmentById(R.id.container))
-//                .getClass()
-//                .equals(StartFragment.class)) {
-//            super.onBackPressed();
-////            StartFragment fragment = (StartFragment) getSupportFragmentManager()
-////                    .findFragmentById(R.id.container);
-////            getSupportFragmentManager().beginTransaction().replace(R.id.container, fr)
-//        } else if (Objects.requireNonNull(getSupportFragmentManager()
-//                .findFragmentById(R.id.container))
-//                .getClass()
-//                .equals(OnGameFragment.class)) {
-//            OnGameFragment fragment = (OnGameFragment) getSupportFragmentManager()
-//                    .findFragmentById(R.id.container);
-//            if (!fragment.isPaused()) {
-//                fragment.toPause();
-//            } else {
-////                while (!Objects.requireNonNull(getSupportFragmentManager()
-////                        .findFragmentById(R.id.container))
-////                        .getClass()
-////                        .equals(FragmentActivity.class))
-////                    getSupportFragmentManager().popBackStack();
-//                Fragment old_fragment = getSupportFragmentManager().findFragmentById(R.id.container);
-//                getSupportFragmentManager().beginTransaction().remove(old_fragment).commit();
-//                saveModel();
-//                super.onBackPressed();
-//            }
-////        } else if (Objects.requireNonNull(getSupportFragmentManager()
-////                .findFragmentById(R.id.container))
-////                .getClass()
-////                .equals(ResultRoundFragment.class)) {
-////            ResultRoundFragment fragment = (ResultRoundFragment) getSupportFragmentManager()
-////                    .findFragmentById(R.id.container);
-////            Fragment old_fragment = getSupportFragmentManager().findFragmentById(R.id.container);
-////            getSupportFragmentManager().beginTransaction().remove(old_fragment).commit();
-////            super.onBackPressed();
-//        } else {
-//            saveModel();
-//            super.onBackPressed();
-//        }
-//
-//
 
     }
 
@@ -456,7 +340,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -487,7 +370,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-//                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -510,7 +392,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     @Override
     protected void onStop() {
         super.onStop();
-//        unbindService(connection);
         mBound = false;
     }
 

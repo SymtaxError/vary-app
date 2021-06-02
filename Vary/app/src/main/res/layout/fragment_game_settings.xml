@@ -19,7 +19,6 @@
         android:textSize="@dimen/menu_top_text_size" />
 
     <RelativeLayout
-        android:id="@+id/setting_game_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/start_game_button"
@@ -36,7 +35,6 @@
             android:paddingEnd="52dp">
 
             <TextView
-                android:id="@+id/amount_cards"
 
                 android:layout_alignParentStart="true"
                 android:layout_height="wrap_content"
@@ -75,20 +73,6 @@
             android:progressTint="@color/secondary"
             android:thumbTint="@color/secondary" />
 
-        <!--        Время текст-->
-<!--        <TextView-->
-<!--            android:id="@+id/time_round_text"-->
-
-<!--            android:layout_width="280dp"-->
-<!--            android:layout_height="wrap_content"-->
-
-<!--            android:layout_below="@id/bar_amount_cards"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_marginTop="8dp"-->
-
-<!--            android:text="@string/time_round"-->
-<!--            android:textColor="@color/primary"-->
-<!--            android:textSize="@dimen/settings_text_size" />-->
         <RelativeLayout
             android:id="@+id/time_round_linear"
             android:layout_width="fill_parent"
@@ -100,7 +84,6 @@
             android:paddingEnd="52dp">
 
             <TextView
-                android:id="@+id/time_round_text"
 
                 android:layout_alignParentStart="true"
                 android:layout_height="wrap_content"

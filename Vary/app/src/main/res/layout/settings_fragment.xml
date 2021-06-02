@@ -21,7 +21,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/check_updates_text_view"
         android:layout_width="165dp"
         android:layout_height="52dp"
         android:layout_marginTop="68dp"

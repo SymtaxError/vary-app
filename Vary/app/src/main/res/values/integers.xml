@@ -4,6 +4,4 @@
     <integer name="min_teams_amount">2</integer>
     <integer name="time_step">5</integer>
     <integer name="card_amount_step">10</integer>
-    <integer name="default_time">60</integer>
-    <integer name="defalut_amount_card">50</integer>
 </resources>

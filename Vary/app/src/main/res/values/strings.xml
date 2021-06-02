@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">Vary</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="add_team">+</string>
     <string name="next">Далее</string>
-    <string name="insert_command_name">Ваша классная команда</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
     <string name="team">Команда</string>
@@ -26,15 +24,9 @@
     <string name="no">Нет</string>
     <string name="loss_of_points">Потеря баллов</string>
     <string name="players_task">Задание от игроков</string>
-    <string name="yes">Да</string>
     <string name="theft_right">Общее последнее слово</string>
-    <string name="random_command">Случайная команда</string>
     <string name="start_command">Начинающая команда</string>
-    <string name="settings_file">vary_settings</string>
-    <string name="error_server_load">Ошибка, не удалось загрузить данные</string>
     <string name="base_url">http://158.255.154.106:33727</string>
-    <string name="next_team">Следующая команда</string>
-    <string name="next_game_mode">Режим раунда</string>
     <string name="start_next_round_button">Следующий раунд</string>
     <string name="results">Результаты</string>
     <string name="guessed_words">Набранные баллы</string>
@@ -50,7 +42,6 @@
     <string name="explain_mode_str_preview">Объясни</string>
     <string name="gesture_mode_str_preview">Покажи</string>
     <string name="one_word_mode_str_preview">Одно слово</string>
-    <string name="load_notification_text">Не удалось загрузить данные. Повторить попытку?</string>
     <string name="choose_deck_text">Выбрать колоду</string>
     <string name="team_add_text">Новое название</string>
     <string name="players_task_title">Задание от игроков</string>
