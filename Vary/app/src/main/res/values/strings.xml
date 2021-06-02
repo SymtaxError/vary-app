@@ -55,17 +55,12 @@
     <string name="team_add_text">Новое название</string>
     <string name="players_task_title">Задание от игроков</string>
     <string name="players_task_content">Выполни задание от игроков\nКогда будешь готов - нажми на экран</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
     <string name="game_rules">1. Игроки разбиваются на команды.\n\n2. Игрок из команды должен объяснить слово, изображенное на карточке своей команде за отведенное время.\n\n3. Однокоренные слова использовать запрещено (качели – качаются, водоросли – в воде), так же, как и переводы с другого языка.\n\n4. Если карточка отгадана, игрок объясняет следующую, пока есть время.\n\n5. За каждое отгаданное слово команда получает одно очко.\n\n6. Цель игры – набрать наибольшее количество очков.</string>
-
     <string name="teams">Команды</string>
     <string name="pieces">\ штук</string>
     <string name="seconds">\ сек</string>
     <string name="pick_team">Выбери команду</string>
     <string name="nobody">Никто</string>
     <string name="result_team_prompt">Нажми на слово, чтобы изменить его результат</string>
-    <string name="add_team_prompt">Нажми на команду, чтобы изменить ееё название</string>
+    <string name="add_team_prompt">Нажми на команду, чтобы изменить её название</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.example.vary.Database;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -17,10 +16,6 @@ public interface CategoryModelDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(CategoryModel... categories);
 
-    // Удаление категории из бд
-    @Delete
-    void delete(CategoryModel category);
-
     // Получение всех категорий из бд
     @Query("SELECT * FROM categorymodel")
     List<CategoryModel> getAllCategories();
@@ -28,8 +23,4 @@ public interface CategoryModelDao {
     // Получение количества категорий
     @Query("SELECT COUNT(*) FROM categorymodel")
     int getCategoriesCount();
-
-//    @Override
-    @Update
-    void updateAll(CategoryModel... newCategories);
 }

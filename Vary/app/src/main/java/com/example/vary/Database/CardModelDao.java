@@ -17,25 +17,9 @@ public interface CardModelDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(CardModel... cards);
 
-    // Удаление карточки
-    @Delete
-    void delete(CardModel person);
-
-//    // Получение всех карточек TODO delete
-//    @Query("SELECT * FROM card")
-//    List<Card> getAllCards();
-//
     // Получение количества карточек  TODO delete
     @Query("SELECT COUNT(*) FROM cardmodel")
     int getCardsCount();
-//
-//    // Получение количества карточек из определенной категории TODO delete
-//    @Query("SELECT COUNT(*) FROM card WHERE categoryId = :categoryId")
-//    int getCardsCategoryCount(int categoryId);
-//
-//    // Получение карточки с определенным id TODO delete
-//    @Query("SELECT * FROM card WHERE id = :id")
-//    Card getCardById(int id);
 
     // Получение всех карточек определенной категории
     @Query("SELECT * FROM cardmodel WHERE mCategory = :category")
