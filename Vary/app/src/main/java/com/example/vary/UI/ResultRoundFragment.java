@@ -1,5 +1,6 @@
 package com.example.vary.UI;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,6 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,16 +20,14 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
+import java.util.Objects;
 
 public class ResultRoundFragment extends Fragment {
     View view;
@@ -88,6 +86,7 @@ public class ResultRoundFragment extends Fragment {
         this.viewModel = viewModel;
     }
 
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,12 +98,9 @@ public class ResultRoundFragment extends Fragment {
         RoundStatsAdapter roundStatsAdapter = new RoundStatsAdapter();
         roundStatsAdapter.setViewModel(viewModel);
 
-        Observer<List<TeamModel>> observerCurrentGame = new Observer<List<TeamModel>>() {
-            @Override
-            public void onChanged(List<TeamModel> teams) {
-                if (teams != null) {
-                    roundStatsAdapter.notifyDataSetChanged();
-                }
+        Observer<List<TeamModel>> observerCurrentGame = teams -> {
+            if (teams != null) {
+                roundStatsAdapter.notifyDataSetChanged();
             }
         };
         viewModel
@@ -117,12 +113,7 @@ public class ResultRoundFragment extends Fragment {
         viewModel.setGameAction(GameActions.open_round_or_game_result);
         roundStatsList.setAdapter(roundStatsAdapter);
 
-        Observer<CurrentGameModel> currentGameModelObserver = new Observer<CurrentGameModel>() {
-            @Override
-            public void onChanged(CurrentGameModel currentGameModel) {
-                Log.d("Model", "Changed, current team points = " + currentGameModel.getCurrentRoundPoints());
-            }
-        };
+        Observer<CurrentGameModel> currentGameModelObserver = currentGameModel -> Log.d("Model", "Changed, current team points = " + currentGameModel.getCurrentRoundPoints());
         viewModel.getGameModel().observe(getViewLifecycleOwner(), currentGameModelObserver);
 
         Button nextRoundButton = view.findViewById(R.id.next_round_bottom_text);
@@ -151,7 +142,7 @@ public class ResultRoundFragment extends Fragment {
 
 
         ColorStateList activeColor = ContextCompat
-                .getColorStateList(getContext(), R.color.primary);
+                .getColorStateList(Objects.requireNonNull(getContext()), R.color.primary);
         ColorStateList nextColor = ContextCompat
                 .getColorStateList(getContext(), R.color.text_bright);
 
@@ -178,7 +169,7 @@ public class ResultRoundFragment extends Fragment {
         cardsLeft.setText(viewModel.getCardsLeft()+"");
 
 
-        LinearLayout cards_info = view.findViewById(R.id.round_result_cards_info);
+        LinearLayout cards_info = view.findViewById(R.id.v_round_result_cards_info);
         LinearLayout modes_info = view.findViewById(R.id.round_result_modes_info);
 
         cards_info.setOnClickListener(v -> showCardsInfo());
@@ -188,14 +179,14 @@ public class ResultRoundFragment extends Fragment {
     }
 
     private void showModesInfo() {
-        View contextView = getView().findViewById(R.id.context_view_result_round);
+        View contextView = Objects.requireNonNull(getView()).findViewById(R.id.context_view_result_round);
         Snackbar bar = Snackbar.make(contextView, R.string.modes_tooltip, Snackbar.LENGTH_LONG);
 //        bar.setTextColor(getResources().getColor(R.color.primary));
         bar.show();
     }
 
     private void showCardsInfo() {
-        View contextView = getView().findViewById(R.id.context_view_result_round);
+        View contextView = Objects.requireNonNull(getView()).findViewById(R.id.context_view_result_round);
         Snackbar bar = Snackbar.make(contextView, R.string.cards_tooltip, Snackbar.LENGTH_LONG);
 //        bar.setTextColor(getResources().getColor(R.color.primary));
         bar.show();

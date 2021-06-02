@@ -32,73 +32,81 @@
 
         tools:listitem="@layout/item_result_round" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:id="@+id/round_result_cards_info"
-        android:background="@drawable/game_bottom_shape"
-        android:backgroundTint="@color/secondary"
-        android:layout_above="@id/next_round_bottom_text"
-        android:paddingLeft="56dp"
-        android:paddingRight="56dp"
-        android:orientation="horizontal">
-        <View
-            android:id="@+id/cards_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_baseline_library_books_24"
-            android:backgroundTint="@color/primary"/>
-        <TextView
-            android:id="@+id/cards_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            tools:text="15"
-            android:textSize="32sp"
-            android:textColor="@color/text_bright"
-            android:textStyle="bold"/>
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/round_result_modes_info"
-        android:layout_width="wrap_content"
-        android:layout_alignParentEnd="true"
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@drawable/game_bottom_shape"
-        android:backgroundTint="@color/secondary"
         android:layout_above="@id/next_round_bottom_text"
-        android:paddingLeft="56dp"
-        android:paddingRight="56dp"
-        android:orientation="horizontal"
-        android:gravity="end">
-        <View
-            android:id="@+id/explain_mode_result"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_explain_mode"
-            android:backgroundTint="@color/text_bright"
-            android:layout_margin="5dp"/>
-        <View
-            android:id="@+id/gesture_mode_result"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_gesture_mode"
-            android:backgroundTint="@color/text_bright"
-            android:layout_margin="5dp"/>
-        <View
-            android:id="@+id/one_word_mode_result"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_one_word_mode"
-            android:backgroundTint="@color/text_bright"
-            android:layout_margin="5dp"
-            />
-    </LinearLayout>
+        android:background="@drawable/game_bottom_shape"
+        android:backgroundTint="@color/secondary">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:id="@+id/v_round_result_cards_info"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="56dp"
+            android:paddingRight="56dp"
+            android:orientation="horizontal">
+            <View
+                android:id="@+id/cards_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/cards_logo"
+                android:backgroundTint="@color/primary"/>
+            <TextView
+                android:id="@+id/cards_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                tools:text="15"
+                android:textSize="32sp"
+                android:textColor="@color/text_bright"
+                android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/round_result_modes_info"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_alignParentEnd="true"
+            android:paddingLeft="56dp"
+            android:paddingRight="56dp"
+            android:orientation="horizontal"
+            android:gravity="end">
+            <View
+                android:id="@+id/explain_mode_result"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_explain_mode"
+                android:backgroundTint="@color/text_bright"
+                android:layout_margin="5dp"/>
+            <View
+                android:id="@+id/gesture_mode_result"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_gesture_mode"
+                android:backgroundTint="@color/text_bright"
+                android:layout_margin="5dp"/>
+            <View
+                android:id="@+id/one_word_mode_result"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_one_word_mode"
+                android:backgroundTint="@color/text_bright"
+                android:layout_margin="5dp"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
 
 
 
