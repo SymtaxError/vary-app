@@ -194,7 +194,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
 
     public void restoreState(SharedPreferences sp) {
-        CurrentGameModel model = gameRepo.restoreState(sp);
+        gameRepo.restoreState(sp);
     }
 
     public void continueOldGame() {

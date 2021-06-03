@@ -55,22 +55,25 @@ public class CurrentGameRepo {
     }
 
 
-    public CurrentGameModel restoreState(SharedPreferences sp) {
+    public void restoreState(SharedPreferences sp) {
         Gson gson = new Gson();
         String json = sp.getString("current_game_model", "");
         CurrentGameModel modelRestore = gson.fromJson(json, CurrentGameModel.class);
 
-        if (modelRestore == null) {
-            return null;
+        if (modelRestore == null)
+        {
+            setGameModel(true, PenaltyType.lose_points, 60);
         }
-
-        gameModel.postValue(modelRestore);
-        return modelRestore;
+        else
+            gameModel.postValue(modelRestore);
         // load from db
     }
 
     public boolean gameIsVoid() {
-        return Objects.requireNonNull(gameModel.getValue()).isVoid();
+        if (gameModel.getValue() != null) {
+            return gameModel.getValue().isVoid();
+        }
+        return true;
     }
 
 
