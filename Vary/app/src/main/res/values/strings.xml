@@ -26,7 +26,7 @@
     <string name="players_task">Задание от игроков</string>
     <string name="theft_right">Общее последнее слово</string>
     <string name="start_command">Начинающая команда</string>
-    <string name="base_url">http://158.255.154.106:33727</string>
+    <string name="base_url">http://95.165.156.185:33727</string>
     <string name="start_next_round_button">Следующий раунд</string>
     <string name="results">Результаты</string>
     <string name="guessed_words">Набранные баллы</string>
@@ -56,4 +56,5 @@
     <string name="add_team_prompt">Нажми на команду, чтобы изменить её название</string>
     <string name="cards_tooltip">Оставшиеся карты в колоде</string>
     <string name="modes_tooltip">Следующие режимы игры</string>
+    <string name="random">Случайная</string>
 </resources>

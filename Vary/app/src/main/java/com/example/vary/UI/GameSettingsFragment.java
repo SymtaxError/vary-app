@@ -128,7 +128,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
                 if (teamModels != null) {
                     mTeamsNames = viewModel.getTeamsNames();
                     arrayAdapterTeams.clear();
-                    arrayAdapterTeams.add("Случайная");
+                    arrayAdapterTeams.add(getResources().getString(R.string.random));
                     arrayAdapterTeams.addAll(mTeamsNames);
                     arrayAdapterTeams.notifyDataSetChanged();
                 }

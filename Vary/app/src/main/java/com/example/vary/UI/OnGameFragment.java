@@ -1,10 +1,15 @@
 package com.example.vary.UI;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.Image;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -72,11 +77,14 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private SpringAnimation yAnimation;
     private GameMode gameMode;
     private View topView, botView;
-    MediaPlayer soundSwipeUp, soundSwipeDown;
+    float volume;
+    int idSwipeUp, idSwipeDown, idEnding1, idEnding2, idEnding3, idEnded, idPauseIn, idPauseOut;
+    SoundPool soundPool;
 
 
     private CallbackFragment callbackFunctions;
     private LocalService timerService;
+    private boolean endNotPlayed = true;
 
     public OnGameFragment() {
         // Required empty public constructor
@@ -102,52 +110,34 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @SuppressLint("SetTextI18n") //TODO refactor
     private void swipeUp(View v) {
-//        cardText.setText("CARD "+Math.abs(new Random().nextInt()%100));
-        soundSwipeUp.seekTo(0);
-        soundSwipeUp.start();
+        soundPool.play(idSwipeUp, volume, volume, 1, 0, 1f);
         swipeable = false;
         topView.startAnimation(swiped);
         if (!isLastCard) {
             viewModel.answerCard(0);
             cardText.setText(viewModel.getCard());
             roundScoreView.setText(String.valueOf(++roundScore));
-        }
-        else{
-            if (viewModel.getSteal())
-            {
+        } else {
+            if (viewModel.getSteal()) {
                 CharSequence[] teamsNames = viewModel.getTeamsNamesChar(getContext());
                 new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialog)
                         .setTitle(getContext().getString(R.string.pick_team))
-                        .setItems(teamsNames, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which < viewModel.getAmountOfTeams())
-                                    viewModel.answerCard(which);
-                                else
-                                {
-                                    viewModel.declineCard();
-                                    viewModel.setAnsweredTeam(-1);
-                                }
-//                                Toast.makeText(getContext(),"Выбранная команда: "+teamsNames[which], Toast.LENGTH_LONG).show();
-                                endFragment(); //TODO
+                        .setItems(teamsNames, (dialog, which) -> {
+                            if (which < viewModel.getAmountOfTeams())
+                                viewModel.answerCard(which);
+                            else {
+                                viewModel.declineCard();
+                                viewModel.setAnsweredTeam(-1);
                             }
-                }).setCancelable(false).show();
+                            endFragment(); //TODO
+                        }).setCancelable(false).show();
             }
-//                auto items = Array("Item 1", "Item 2", "Item 3");
-//                new MaterialAlertDialogBuilder(getContext())
-//                        .setTitle("Выберите команду")
-//                        .setItems(items) { dialog, which ->
-//                // Respond to item chosen
-//            }
-//        .show()
         }
     }
 
     @SuppressLint("SetTextI18n") //TODO refactor
     private void swipeDown(View v) {
-//        soundSwipeDown.reset();
-        soundSwipeDown.seekTo(0);
-        soundSwipeDown.start();
+        soundPool.play(idSwipeDown, volume, volume, 1, 0, 1f);
         PenaltyType penalty = viewModel.getPenalty();
         if (penalty == PenaltyType.lose_points)
             roundScoreView.setText(String.valueOf(--roundScore));
@@ -318,13 +308,44 @@ public class OnGameFragment extends Fragment implements CardCallback {
             }
         });
 
-        soundSwipeDown = MediaPlayer.create(getContext(), R.raw.swipe_down);
-        soundSwipeUp = MediaPlayer.create(getContext(), R.raw.swipe_up);
-//        MediaPlayer mp = MediaPlayer.create(get(), R.raw.beep_short_on);
+        setSounds(getContext());
 
+//        AudioManager manager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (!manager.isStreamMute(AudioManager.STREAM_MUSIC)) {
+//                setSounds(getContext());
+//            } else
+//
+//        } else
+//            setSounds(getContext());
 
         return view;
     }
+
+    private void setSounds(Context context) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        float actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (audioManager.isStreamMute(AudioManager.STREAM_MUSIC))
+                actualVolume = 0;
+        float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        volume = actualVolume / maxVolume;
+        AudioAttributes audioAttrib = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        soundPool = new SoundPool.Builder().setAudioAttributes(audioAttrib).setMaxStreams(1).build();
+        idSwipeDown = soundPool.load(getContext(), R.raw.swipe_down, 1);
+        idSwipeUp = soundPool.load(getContext(), R.raw.swipe_up, 1);
+        idEnding1 = soundPool.load(getContext(), R.raw.sound_end_1, 1);
+        idEnding2 = soundPool.load(getContext(), R.raw.sound_end_2, 1);
+        idEnding3 = soundPool.load(getContext(), R.raw.sound_end_3, 1);
+        idEnded = soundPool.load(getContext(), R.raw.sound_end, 1);
+        idPauseIn = soundPool.load(getContext(), R.raw.pause_in, 1);
+        idPauseOut = soundPool.load(getContext(), R.raw.pause_out, 1);
+
+    }
+
 
     private void fillPreview(View view) {
         ImageView previewImage = view.findViewById(R.id.preview_ic);
@@ -395,7 +416,6 @@ public class OnGameFragment extends Fragment implements CardCallback {
         onPlayersTask = newPlayersTaskValue;
         if (newPlayersTaskValue) {
             timerService.pauseTask();
-//            setPreview(false);
             card.setVisibility(View.INVISIBLE);
             pause.setVisibility(View.INVISIBLE);
             playersTask.setVisibility(View.VISIBLE);
@@ -407,20 +427,19 @@ public class OnGameFragment extends Fragment implements CardCallback {
             pause.setVisibility(View.INVISIBLE);
             playersTask.setVisibility(View.INVISIBLE);
         }
-//        if (ended && !onPlayersTask) {
-//            endFragment();
-//        }
     }
 
     private void setPause(boolean newPauseValue) {
         if (newPauseValue) {
+            if (!paused)
+                soundPool.play(idPauseIn, volume, volume, 1, 0, 1f);
             setPreview(false);
             timerService.pauseTask();
-//            setPlayersTask(false);
             pause.setVisibility(View.VISIBLE);
             card.setVisibility(View.INVISIBLE);
             playersTask.setVisibility(View.INVISIBLE);
         } else {
+            soundPool.play(idPauseOut, volume, volume, 1, 0, 1f);
             timerService.resumeTask();
             card.setVisibility(View.VISIBLE);
             pause.setVisibility(View.INVISIBLE);
@@ -433,16 +452,20 @@ public class OnGameFragment extends Fragment implements CardCallback {
         Observer<List<CardModel>> observer = new Observer<List<CardModel>>() {
             @Override
             public void onChanged(List<CardModel> cardModels) {
+                cardText.setText(viewModel.getCard());
             }
         };
 
         Observer<Integer> observerTimer = new Observer<Integer>() {
             @Override
             public void onChanged(Integer timerCount) {
+                if (timerCount < 5)
+                    playEndSound(timerCount);
                 if (timerCount < 0) {
                     viewModel.setRoundTimeLeft(viewModel.getRoundDuration());
                     return; //TODO убрать костыль
                 }
+
                 if (timerCount == 0) {
                     timeEnded();
                 }
@@ -461,6 +484,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
             }
         };
 
+
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
         viewModel
                 .getCards()
@@ -472,6 +496,20 @@ public class OnGameFragment extends Fragment implements CardCallback {
                 .getGameModel()
                 .observe(getViewLifecycleOwner(), observerCurrentGame);
         viewModel.setCardsCallback(this);
+    }
+
+    private void playEndSound(int timerCount) {
+        if (timerCount == 3)
+            soundPool.play(idEnding1, volume, volume, 1, 0, 1f);
+        else if (timerCount == 2)
+            soundPool.play(idEnding2, volume, volume, 1, 0, 1f);
+        else if (timerCount == 1)
+            soundPool.play(idEnding3, volume, volume, 1, 0, 1f);
+        else if (timerCount == 0 && endNotPlayed) {
+            soundPool.play(idEnded, volume, volume, 1, 0, 1f);
+            endNotPlayed = false;
+        }
+
     }
 
     @Override
@@ -503,6 +541,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
 //        }
 //        viewModel.setRoundTimeLeft(0);
         //TODO переход
+        paused = true;
         endFragment();
 
     }
@@ -513,8 +552,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         timerService.stopTask();
         if (viewModel.getSteal()) {
             isLastCard = true;
-        }
-        else {
+        } else {
             endFragment();
         }
     }

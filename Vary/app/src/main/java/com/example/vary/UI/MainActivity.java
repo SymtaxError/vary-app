@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         viewModel.getCategories().observe(this, observer);
         Intent intent = new Intent(this, LocalService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-
         mPrefs = getPreferences(MODE_PRIVATE);
         editor = mPrefs.edit();
 
         readModel();
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
 
@@ -423,6 +423,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
     public void setSound(boolean setting) {
         AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        manager.setStreamMute(AudioManager.STREAM_NOTIFICATION, !setting);
+        manager.setStreamMute(AudioManager.STREAM_MUSIC, !setting);
     }
 }
