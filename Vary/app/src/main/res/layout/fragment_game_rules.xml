@@ -206,12 +206,25 @@
                 android:textColor="@color/secondary"
                 android:text='О нас'
                 />
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textColor="@color/text_bright"
-                android:text="\tМГТУ им. Н.Э. Баумана\n\tТехнопарк Mail.ru\n\tSymtax error"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/about_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="@color/text_bright"
+                    android:layout_alignParentLeft="true"
+                    android:text="\tМГТУ им. Н.Э. Баумана\n\tТехнопарк Mail.ru\n\tSymtax error\n\t2021"/>
+                <View
+                    android:layout_width="60dp"
+                    android:layout_height="64dp"
+                    android:background="@drawable/bmstu"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="4dp"/>
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
