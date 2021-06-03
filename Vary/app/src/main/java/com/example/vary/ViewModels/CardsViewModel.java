@@ -157,6 +157,20 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public void saveState(SharedPreferences.Editor editor) {
         List<CardModel> mCardModels = mCategoriesRepo.getCards().getValue();
+        int timer = 0;
+        if (mCardModels != null){
+            if (getTimerCount().getValue() != null) {
+                timer = getTimerCount().getValue();
+
+            }
+            gameRepo.saveState(mCardModels,
+                    mTeamsRepo.getTeams().getValue(),
+                    editor,
+                    mCategoriesRepo.getCurrentPosition(),
+                    mCategoriesRepo.getStartRoundPosition(),
+                    timer
+            );
+        }
 //        if (mCardModels == null) {
 //            gameRepo.setNewGame(editor);
 ////            return; //честно не знаю на что может повлиять, но по крайней мере работает)
@@ -166,20 +180,8 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 //            gameRepo.setNewGame(editor);
 //            return;
 //        }
-        int timer = 0;
-        if (getTimerCount().getValue() != null) {
-            timer = getTimerCount().getValue();
-
-        }
 
 
-        gameRepo.saveState(mCardModels,
-                mTeamsRepo.getTeams().getValue(),
-                editor,
-                mCategoriesRepo.getCurrentPosition(),
-                mCategoriesRepo.getStartRoundPosition(),
-                timer
-        );
     }
 
     public int getRoundTimeLeft() {
