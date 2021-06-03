@@ -6,83 +6,109 @@
     android:layout_height="match_parent"
     android:background="@color/surface_color">
 
-
-    <TextView
-        android:id="@+id/settings_available_text_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@drawable/menu_top_shape"
-        android:gravity="center"
-        android:text="@string/available_settings"
-        android:textColor="@color/text_bright"
-        android:textSize="@dimen/menu_top_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/check_updates_text_view"
-        android:layout_width="237dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="56dp"
-        android:gravity="center"
-        android:text="Проверять обновления"
-        android:textColor="@color/text_bright"
-        android:textSize="@dimen/settings_text_size"
-        app:layout_constraintEnd_toStartOf="@+id/check_updates_view"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sound_text_view" />
+        <TextView
+            android:id="@+id/settings_available_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/menu_top_shape"
+            android:gravity="center"
+            android:text="@string/available_settings"
+            android:textColor="@color/text_bright"
+            android:textSize="@dimen/menu_top_text_size" />
 
-    <ImageView
-        android:id="@+id/check_updates_view"
-        android:layout_width="80dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="64dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sound_view"
-        app:srcCompat="@drawable/ic_baseline_system_update_24" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_available_text_view"
+            android:layout_marginTop="52dp"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/sound_text_view"
-        android:layout_width="246dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="48dp"
-        android:gravity="center"
-        android:text="Звуки в игре"
-        android:textColor="@color/text_bright"
-        android:textSize="@dimen/settings_text_size"
-        app:layout_constraintEnd_toStartOf="@+id/sound_view"
-        app:layout_constraintHorizontal_bias="0.875"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_available_text_view" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/sound_view"
-        android:layout_width="81dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_available_text_view"
-        app:srcCompat="@drawable/ic_baseline_music_note_24" />
+                <TextView
+                    android:id="@+id/sound_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/sounds"
+                    android:textColor="@color/text_bright"
+                    android:textSize="@dimen/settings_text_size" />
+
+                <ImageView
+                    android:id="@+id/sound_view"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentEnd="true"
+                    tools:src="@drawable/ic_baseline_music_note_24" />
+
+            </RelativeLayout>
 
 
-    <Button
-        android:id="@+id/back_to_main_menu_button"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="384dp"
-        android:background="@drawable/menu_bottom_shape"
-        android:text="Назад"
-        android:textSize="@dimen/menu_bottom_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/check_updates_text_view" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/check_updates_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+
+                    android:gravity="center"
+                    android:text="@string/check_updates"
+                    android:textColor="@color/text_bright"
+                    android:textSize="@dimen/settings_text_size" />
+
+                <ImageView
+                    android:id="@+id/check_updates_view"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentEnd="true"
+                    tools:src="@drawable/ic_baseline_system_update_24" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/back_to_main_menu_button"
+
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/menu_bottom_shape"
+
+            android:gravity="center"
+
+            android:text="@string/back"
+            android:textSize="@dimen/menu_bottom_text_size"
+            android:textColor="@color/text_bright"/>
+
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

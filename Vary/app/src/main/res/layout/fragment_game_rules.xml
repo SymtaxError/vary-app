@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,49 +14,260 @@
         android:layout_height="56dp"
         android:background="@drawable/menu_top_shape"
         android:gravity="center"
-        android:text="Правила игры"
+        android:text="@string/app_name"
         android:textColor="@color/text_bright"
-        android:textSize="@dimen/menu_top_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="@dimen/menu_top_text_size"/>
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/gifImageView"
-        android:layout_width="357dp"
-        android:layout_height="220dp"
-        android:layout_marginTop="28dp"
-        android:src="@drawable/explaining_something"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rules_game_text_view" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rules_game_text_view"
+        android:layout_above="@id/back_to_main_menu_button_rules"
+        android:scrollbars="none">
 
-    <TextView
-        android:id="@+id/rules_game"
-        android:layout_width="365dp"
-        android:layout_height="312dp"
-        android:layout_marginTop="39dp"
-        android:text="@string/game_rules"
-        android:textColor="@color/text_bright"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gifImageView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:orientation="vertical"
+            android:padding="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Авторская игра для компаний от четырех человек."
+                android:textColor="@color/secondary"
+                android:gravity="center"
+                android:textSize="18sp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/text_bright"
+                android:text="\tИгроки разбиваются на команды от двух человек. Выбирается размер колоды карт.\n\tДалее нужно за выбранное время указанным способом объяснить своей команде как можно больше слов. Следующая команда получает колоду со всеми словами, кроме объясненных ранее.\n\tПосле того, как карты закончатся, начальная колода перемешивается и команды объясняют те же слова, но новым способом:"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/rules_left_arrow"
+                        android:orientation="vertical">
+                        <View
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/ic_explain_mode"
+                            android:backgroundTint="@color/primary"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/explain_mode_str_preview"
+                            android:layout_gravity="center"
+                            android:textColor="@color/text_bright"/>
+                    </LinearLayout>
 
+                    <View
+                        android:id="@+id/rules_left_arrow"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_arrow"
+                        android:backgroundTint="@color/text_bright"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/rules_gesture"/>
+
+                    <LinearLayout
+                        android:id="@+id/rules_gesture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true">
+                        <View
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/ic_gesture_mode"
+                            android:backgroundTint="@color/primary"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/gesture_mode_str_preview"
+                            android:textColor="@color/text_bright"/>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/rules_right_arrow"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_arrow"
+                        android:backgroundTint="@color/text_bright"
+                        android:layout_toRightOf="@id/rules_gesture"
+                        android:layout_centerVertical="true"/>
+<!--                    <View-->
+<!--                        android:layout_width="80dp"-->
+<!--                        android:layout_height="80dp"-->
+<!--                        android:background="@drawable/ic_one_word_mode"-->
+<!--                        android:backgroundTint="@color/primary"/>-->
+<!--                        -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_toRightOf="@id/rules_right_arrow"
+                        android:layout_centerInParent="true">
+                        <View
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_one_word_mode"
+                            android:backgroundTint="@color/primary"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/one_word_mode_str_preview"
+                            android:textColor="@color/text_bright"/>
+                    </LinearLayout>
+
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/secondary"
+                android:text='Режим "Объясни словами"'
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/text_bright"
+                android:text='\tРассказывай истории, приводи примеры, вспоминай песни и придумывай подсказки, но не объясняй буквы, не используй однокоренные (например качели - качаются) и слова из других языков.\n\tПохожие игры - Шляпа, Alias.'
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/secondary"
+                android:text='Режим "Покажи жестами"'
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/text_bright"
+                android:text='\tДвигай любой частью тела, принимай любые позы, рисуй жестами, но не издавай звуков, не показывай на какие-либо предметы и не показывай буквы.\n\tПохожие игры - Крокодил.'
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/secondary"
+                android:text='Режим "Объясни одним словом"'
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/text_bright"
+                android:text='\tТы можешь сказать лишь одно слово, ведь за два раунда все игроки уже выучили колоду карт. Будь внимателен - это слово нельзя будет изменить и исправить свою ошибку можно лишь сбросив карту. Не забывай про однокоренные и иностранные слова.'
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/secondary"
+                android:text='Дополнительные указания'
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/text_bright"
+                android:text='\tПобеждает команда, набравшая наибольшее количество очков по итогам всех раундов.\n\tИгроки могут включить последнее общее слово - по истечении времени карточку может отгадать любая команда.\n\t"Задание от игроков" - может быть что угодно, начиная от правды или действия, заканчивая кукареканьем под столом.'
+            />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/secondary"
+                android:text='О нас'
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/text_bright"
+                android:text="\tМГТУ им. Н.Э. Баумана\n\tТехнопарк Mail.ru\n\tSymtax error"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+<!--    <pl.droidsonroids.gif.GifImageView-->
+<!--        android:id="@+id/gifImageView"-->
+<!--        android:layout_width="357dp"-->
+<!--        android:layout_height="220dp"-->
+<!--        android:layout_marginTop="28dp"-->
+<!--        android:src="@drawable/explaining_something"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/rules_game_text_view" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/rules_game"-->
+<!--        android:layout_width="365dp"-->
+<!--        android:layout_height="312dp"-->
+<!--        android:layout_marginTop="39dp"-->
+<!--        android:text="@string/game_rules"-->
+<!--        android:textColor="@color/text_bright"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/gifImageView" />-->
+
+
+<!--    <Button-->
+<!--        android:id="@+id/back_to_main_menu_button_rules"-->
+
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="56dp"-->
+
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="@drawable/menu_bottom_shape"-->
+
+<!--        android:gravity="center"-->
+
+<!--        android:text="@string/back"-->
+<!--        android:textSize="@dimen/menu_bottom_text_size"-->
+<!--        android:textColor="@color/text_bright"/>-->
     <Button
         android:id="@+id/back_to_main_menu_button_rules"
+
         android:layout_width="match_parent"
         android:layout_height="56dp"
+
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="20dp"
         android:background="@drawable/menu_bottom_shape"
-        android:text="Назад"
+
+        android:gravity="center"
+
+        android:text="@string/back"
         android:textSize="@dimen/menu_bottom_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rules_game" />
+        android:textColor="@color/text_bright"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

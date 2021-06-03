@@ -8,12 +8,10 @@
     <string name="settings">Настройки</string>
     <string name="continue_game">Продолжить</string>
     <string name="new_game">Новая игра</string>
-    <string name="available_settings">Доступные настройки</string>
+    <string name="available_settings">Настройки</string>
     <string name="vk_auth">Войти с помощью VK</string>
     <string name="sound_on">Включить звук</string>
     <string name="push_on">Включить push уведомления</string>
-    <string name="check_updates">Проверять обновления</string>
-
     <string name="no_cards_message">Нет доступных карточек</string>
     <string name="download">Скачать</string>
     <string name="settings_game">Настройки игры</string>
@@ -57,4 +55,7 @@
     <string name="cards_tooltip">Оставшиеся карты в колоде</string>
     <string name="modes_tooltip">Следующие режимы игры</string>
     <string name="random">Случайная</string>
+    <string name="sounds">Звуки в игре</string>
+    <string name="check_updates">Проверять обновления</string>
+    <string name="back">Назад</string>
 </resources>
