@@ -315,11 +315,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .getClass()
                 .equals(GameRulesFragment.class)) {
             GameRulesFragment fragment = new GameRulesFragment();
+            fragment.setFCallback(this);
 
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
-                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -331,6 +331,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .equals(SettingsFragment.class)) {
             SettingsFragment fragment = new SettingsFragment();
             fragment.setCallback(this);
+            fragment.setFCallback(this);
 
             SharedPreferences sp = getSharedPreferences(prefs, MODE_PRIVATE);
 
