@@ -2,7 +2,6 @@
 <resources>
 
     <color name="surface_color">#3E3E3E</color>
-    <color name="surface_color_dark">#272727</color>
 
     <color name="white">#FFFFFFFF</color>
 
@@ -15,8 +14,5 @@
     <color name="secondary_additional">#3E5CCA</color>
 
     <color name="text_bright">#EDEDED</color>
-    <color name="text_dark">#4A4A4A</color>
 
-    <color name="transparent">#00000000</color>
-    <color name="black_overlay">#101010</color>
 </resources>

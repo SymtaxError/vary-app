@@ -87,7 +87,8 @@
             android:layout_above="@id/preview_title"
             android:layout_centerHorizontal="true"
             android:padding="5dp"
-            app:tint="@color/primary"/>
+            app:tint="@color/primary"
+            android:contentDescription="@string/previewview" />
 
         <TextView
             android:id="@+id/preview_content"

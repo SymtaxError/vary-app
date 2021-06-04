@@ -36,13 +36,15 @@ public class DbManager {
     private final Executor executor = Executors.newSingleThreadExecutor();
     private Context context;
 
-    public void getCount(final CountListener countListener) {
-        executor.execute(() -> {
-            int cardCount = AppDatabase.getInstance(context).getCardDao().getCardsCount();
-            int catCount = AppDatabase.getInstance(context).getCategoryDao().getCategoriesCount();
-            countListener.onGetCount(cardCount, catCount);
-        });
-    }
+// --Commented out by Inspection START (04.06.2021, 21:44):
+//    public void getCount(final CountListener countListener) {
+//        executor.execute(() -> {
+//            int cardCount = AppDatabase.getInstance(context).getCardDao().getCardsCount();
+//            int catCount = AppDatabase.getInstance(context).getCategoryDao().getCategoriesCount();
+//            countListener.onGetCount(cardCount, catCount);
+//        });
+//    }
+// --Commented out by Inspection STOP (04.06.2021, 21:44)
 
     public void getCategoriesNoCards() {
         executor.execute(() -> {
@@ -75,9 +77,9 @@ public class DbManager {
 
     }
 
-    public interface CountListener {
-        void onGetCount(int cardCount, int catCount);
-    }
+//    public interface CountListener {
+//        void onGetCount(int cardCount, int catCount);
+//    }
 
     public interface CategoryRepositoryListener {
         void onGetCategoriesNoCards(List<CategoryModel> categoryModels);

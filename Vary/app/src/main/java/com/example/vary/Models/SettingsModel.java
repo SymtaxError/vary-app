@@ -1,8 +1,8 @@
 package com.example.vary.Models;
 
 public class SettingsModel {
-    boolean soundOn = true;
-    boolean notificationsOn = true;
+    boolean soundOn;
+    boolean notificationsOn;
     boolean lowerVolume = false;
 
     public SettingsModel(boolean sound, boolean notifications) {

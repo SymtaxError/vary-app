@@ -16,8 +16,10 @@ public interface CardModelDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(CardModel... cards);
 
-    @Query("SELECT COUNT(*) FROM cardmodel")
-    int getCardsCount();
+// --Commented out by Inspection START (04.06.2021, 21:47):
+//    @Query("SELECT COUNT(*) FROM cardmodel")
+//    int getCardsCount();
+// --Commented out by Inspection STOP (04.06.2021, 21:47)
 
     // Получение всех карточек определенной категории
     @Query("SELECT * FROM cardmodel WHERE mCategory = :category")

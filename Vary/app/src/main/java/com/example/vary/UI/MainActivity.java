@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public final String TAG = "MyLogger";
     SharedPreferences mPrefs;
     SharedPreferences.Editor editor;
-    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+    private final AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
 
         @Override
         public void onAudioFocusChange(int focusChange) {
@@ -269,7 +268,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             if (!viewModel.getSoundState() || volume < 5)
             {
-                Toast.makeText(this, "Включите звук в настройках игры или увеличьте громкость для того, чтобы все команды могли следить за игрой", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,
+                        R.string.sound_off_notification,
+                        Toast.LENGTH_LONG).show();
             }
             OnGameFragment fragment = new OnGameFragment();
             fragment.setCallbackFunctions(this);
@@ -480,10 +481,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
 
-    public void setSound(boolean setting) {
-        AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        manager.setStreamMute(AudioManager.STREAM_MUSIC, !setting);
-    }
+// --Commented out by Inspection START (04.06.2021, 21:36):
+//    public void setSound(boolean setting) {
+//        AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+//        manager.setStreamMute(AudioManager.STREAM_MUSIC, !setting);
+//    }
+// --Commented out by Inspection STOP (04.06.2021, 21:36)
 
     private boolean requestAudioFocusForMyApp(final Context context) {
         AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);

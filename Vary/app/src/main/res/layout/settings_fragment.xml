@@ -53,7 +53,7 @@
                     android:layout_height="80dp"
                     android:layout_alignParentEnd="true"
                     tools:src="@drawable/ic_baseline_music_note_24"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/soundview" />
 
             </RelativeLayout>
 
@@ -87,7 +87,7 @@
                     android:layout_height="80dp"
                     android:layout_alignParentEnd="true"
                     tools:src="@drawable/ic_baseline_system_update_24"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/checkupdatesview" />
 
 
             </RelativeLayout>

@@ -19,7 +19,9 @@ public interface CategoryModelDao {
     @Query("SELECT * FROM categorymodel")
     List<CategoryModel> getAllCategories();
 
-    // Получение количества категорий
-    @Query("SELECT COUNT(*) FROM categorymodel")
-    int getCategoriesCount();
+// --Commented out by Inspection START (04.06.2021, 21:47):
+//    // Получение количества категорий
+//    @Query("SELECT COUNT(*) FROM categorymodel")
+//    int getCategoriesCount();
+// --Commented out by Inspection STOP (04.06.2021, 21:47)
 }
