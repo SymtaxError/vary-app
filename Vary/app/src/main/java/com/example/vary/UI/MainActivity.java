@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -111,26 +112,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         Intent intent = new Intent(this, LocalService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         mPrefs = getPreferences(MODE_PRIVATE);
-        editor = mPrefs.edit();
 
         readModel();
-        Observer<SettingsModel> settingsModelObserver = new Observer<SettingsModel>() {
-            @Override
-            public void onChanged(SettingsModel settingsModel) {
-                if (settingsModel.isSoundOn())
-                {
-                    Log.d("Sound", "Attempt was " +
-                            requestAudioFocusForMyApp(MainActivity.this));
-                }
-                else
-                {
-                    releaseAudioFocusForMyApp(MainActivity.this);
-                }
-                if (settingsModel.isNotificationsOn())
-                    viewModel.getVersion();
-                else
-                    allowStart = true;
+        Observer<SettingsModel> settingsModelObserver = settingsModel -> {
+            if (settingsModel.isSoundOn())
+            {
+                Log.d("Sound", "Attempt was " +
+                        requestAudioFocusForMyApp(MainActivity.this));
             }
+            else
+            {
+                releaseAudioFocusForMyApp(MainActivity.this);
+            }
+            if (settingsModel.isNotificationsOn())
+                viewModel.getVersion();
+            else
+                allowStart = true;
         };
 
         viewModel.getSettings().observe(this, settingsModelObserver);
@@ -182,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     private void saveModel() {
+        editor = mPrefs.edit();
         viewModel.saveState(editor);
         SharedPreferences.Editor ed = getSharedPreferences(prefs, MODE_PRIVATE).edit();
         viewModel.saveSettings(ed, soundKey, checkUpdatesKey);
@@ -267,6 +265,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .findFragmentById(R.id.container))
                 .getClass()
                 .equals(OnGameFragment.class)) {
+            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            if (!viewModel.getSoundState() || volume < 5)
+            {
+                Toast.makeText(this, "Включите звук в настройках игры или увеличьте громкость для того, чтобы все команды могли следить за игрой", Toast.LENGTH_LONG).show();
+            }
             OnGameFragment fragment = new OnGameFragment();
             fragment.setCallbackFunctions(this);
             fragment.setTimerService(mService);
