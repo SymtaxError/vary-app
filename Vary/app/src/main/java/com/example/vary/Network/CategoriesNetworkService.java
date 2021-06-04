@@ -43,11 +43,10 @@ public class CategoriesNetworkService {
         return mInstance;
     }
 
-    public CategoriesAPI getCategoriesAPI() {
+    public void getCategoriesAPI() {
         if (mCategoriesAPI == null) {
             mCategoriesAPI = mRetrofit.create(CategoriesAPI.class);
         }
-        return mCategoriesAPI;
     }
 
 
@@ -98,7 +97,7 @@ public class CategoriesNetworkService {
                 callback.onLoaded(e);
             }
         }
-        Log.d(TAG, "Loaded " + result.size() + " elems");
+        Log.d(TAG, "Loaded " + result.size() + " elements");
         return result;
     }
 

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -16,7 +15,6 @@ import com.example.vary.R;
 import com.example.vary.Repositories.CategoriesRepo;
 import com.example.vary.Repositories.TeamsRepo;
 import com.example.vary.Repositories.CurrentGameRepo;
-import com.example.vary.Database.DbManager;
 import com.example.vary.UI.CardCallback;
 import com.example.vary.UI.GameActions;
 import com.example.vary.UI.PenaltyType;
@@ -47,14 +45,9 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public CardsViewModel(@NonNull Application application) {
         super(application);
-        mTeamsRepo.setDbManager(application);
         mCategoriesRepo.setNetworkService(application);
         mCategoriesRepo.setDbManager(application);
         mCategoriesRepo.setLoadCallback(this);
-    }
-
-    public void smth() {
-        DbManager.getInstance(getApplication());
     }
 
     public void declineCard() {
@@ -80,7 +73,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public String getUsedCardByPosition(int pos) {
         String result = mCategoriesRepo.getUsedCardByPosition(pos);
         int team = mCategoriesRepo.getAnsweredTeam(pos);
-        if (gameRepo.getSteal() && pos == getAmountOfUsedCards() - 1 && team != -1 && getTimerCount().getValue() != -2) {
+        Integer time = getTimerCount().getValue();
+        if (time == null)
+            time = 0;
+        if (gameRepo.getSteal() && pos == getAmountOfUsedCards() - 1 && team != -1 && time != -2) {
             result = result + " (" + getCurTeamName(team) + ")";
         }
         return result;
@@ -98,16 +94,8 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mCategoriesRepo.newRoundMix();
     }
 
-    public void fillCards(int index, int amount) {
-        mCategoriesRepo.fillCards(index, amount);
-    }
-
     public LiveData<List<CardModel>> getCards() {
         return mCategoriesRepo.getCards();
-    }
-
-    public void mixCards() {
-        mCategoriesRepo.mixCards();
     }
 
     public String getCard() {
@@ -184,10 +172,6 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     }
 
-    public int getRoundTimeLeft() {
-        return gameRepo.getRoundTimeLeft();
-    }
-
     public void sortTeamsByPoints() {
         mTeamsRepo.sortTeamsByPoints();
     }
@@ -248,6 +232,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public GameMode getNextGameMode() {
         boolean nextGameMode = mCategoriesRepo.newRoundRequired();
         GameMode gameMode = getGameMode();
+        Log.d("GameMode", "game mode == " + gameMode);
         if (nextGameMode) {
             if (gameMode == GameMode.explain_mode)
                 gameMode = GameMode.gesture_mode;
@@ -288,9 +273,11 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         return mCategoriesRepo.getCategories();
     }
 
-    public void getCount(DbManager.CountListener listener) {
-        mCategoriesRepo.getCount(listener);
-    }
+// --Commented out by Inspection START (04.06.2021, 12:50):
+//    public void getCount(DbManager.CountListener listener) {
+//        mCategoriesRepo.getCount(listener);
+//    }
+// --Commented out by Inspection STOP (04.06.2021, 12:50)
 
     public LiveData<CurrentGameModel> getGameModel() {
         return gameRepo.getGameModel();
@@ -322,10 +309,6 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public int getAmountOfTeams() {
         return mTeamsRepo.getSize();
-    }
-
-    public int getAmountOfCards() {
-        return mCategoriesRepo.getAmountOfCards();
     }
 
     public String getTeamName(int position) {
@@ -362,6 +345,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
 
     public LiveData<Integer> getTimerCount() {
         return mTimerCount;
+    }
+
+    public Integer getTime() {
+        return (mTimerCount.getValue() == null) ? 0 : mTimerCount.getValue();
     }
 
 }

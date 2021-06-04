@@ -1,5 +1,6 @@
 package com.example.vary.UI;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SwitchCompat;
@@ -11,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,7 +19,6 @@ import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.vary.Models.CategoryModel;
@@ -79,7 +78,7 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         roundDuration = 60;
         penalty = PenaltyType.lose_points;
 
-        bindButton(R.id.start_game_button, GameActions.start_game_process);
+        bindButton();
 
         amountCards = view.findViewById(R.id.amount_cards_dynamic);
         amountCards.setText(amountOfCards + getString(R.string.pieces));
@@ -122,28 +121,22 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
     }
 
     protected void setObservers() {
-        Observer<List<TeamModel>> observer = new Observer<List<TeamModel>>() {
-            @Override
-            public void onChanged(List<TeamModel> teamModels) {
-                if (teamModels != null) {
-                    mTeamsNames = viewModel.getTeamsNames();
-                    arrayAdapterTeams.clear();
-                    arrayAdapterTeams.add(getResources().getString(R.string.random));
-                    arrayAdapterTeams.addAll(mTeamsNames);
-                    arrayAdapterTeams.notifyDataSetChanged();
-                }
+        Observer<List<TeamModel>> observer = teamModels -> {
+            if (teamModels != null) {
+                mTeamsNames = viewModel.getTeamsNames();
+                arrayAdapterTeams.clear();
+                arrayAdapterTeams.add(getResources().getString(R.string.random));
+                arrayAdapterTeams.addAll(mTeamsNames);
+                arrayAdapterTeams.notifyDataSetChanged();
             }
         };
 
-        Observer<List<CategoryModel>> observerCategories = new Observer<List<CategoryModel>>() {
-            @Override
-            public void onChanged(List<CategoryModel> categoryModels) {
-                if (categoryModels != null) {
-                    mCategoriesNames = viewModel.getCategoriesNames();
-                    arrayAdapterCategories.clear();
-                    arrayAdapterCategories.addAll(mCategoriesNames);
-                    arrayAdapterCategories.notifyDataSetChanged();
-                }
+        Observer<List<CategoryModel>> observerCategories = categoryModels -> {
+            if (categoryModels != null) {
+                mCategoriesNames = viewModel.getCategoriesNames();
+                arrayAdapterCategories.clear();
+                arrayAdapterCategories.addAll(mCategoriesNames);
+                arrayAdapterCategories.notifyDataSetChanged();
             }
         };
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
@@ -193,8 +186,8 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
         fCallback = callback;
     }
 
-    void bindButton(int id, GameActions action) {
-        Button button = view.findViewById(id);
+    void bindButton() {
+        Button button = view.findViewById(R.id.start_game_button);
         button.setOnClickListener(v -> {
             Log.d("Settings", "round duration: " + roundDuration);
             if (startTeam == 0) {
@@ -206,11 +199,12 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
             viewModel.setCurrentGame(startCategory, amountOfCards, roundDuration, penalty, steal, startTeam);
             viewModel.setRoundTimeLeft(roundDuration);
             viewModel.setRoundDuration(roundDuration);
-            fCallback.callback(action);
+            fCallback.callback(GameActions.start_game_process);
         });
     }
 
-    public void onPenaltyGroupClicked( RadioGroup group, int checkedId) {
+    @SuppressLint("NonConstantResourceId")
+    public void onPenaltyGroupClicked(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.no_penalty:
                 penalty = PenaltyType.no_penalty;
@@ -222,17 +216,5 @@ public class GameSettingsFragment extends Fragment implements SeekBar.OnSeekBarC
                 penalty = PenaltyType.players_task;
                 break;
         }
-    }
-
-    public void onCardDeckButtonClick(View view) {
-        // TODO нажали на кнопку выбрать деку
-    }
-
-    @Override
-    public void onDestroyView() {
-
-        // если выбрана случайная команда в спинере
-
-        super.onDestroyView();
     }
 }

@@ -14,7 +14,6 @@ import com.example.vary.Models.CurrentGameModel;
 import com.google.gson.Gson;
 
 import java.util.List;
-import java.util.Objects;
 
 public class CurrentGameRepo {
     private final MutableLiveData<CurrentGameModel> gameModel = new MutableLiveData<>();
@@ -153,14 +152,6 @@ public class CurrentGameRepo {
             return gameModel.getValue().getTeams();
         }
         return null;
-    }
-
-    public void setCurrentAndStartCard(int curCard, int startCard) {
-        CurrentGameModel model = gameModel.getValue();
-        if (model != null) {
-            model.setCurrentAndStartCard(curCard, startCard);
-            gameModel.postValue(model);
-        }
     }
 
     public void setNewGame(SharedPreferences.Editor editor) {

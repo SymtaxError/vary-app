@@ -2,18 +2,14 @@ package com.example.vary.UI;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
-import android.media.Image;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -33,11 +29,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CurrentGameModel;
-import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
@@ -45,28 +39,26 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("SameParameterValue")
 public class OnGameFragment extends Fragment implements CardCallback {
     //TODO: анимации
     //TODO: динамический размер текста
     private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
-    private AlphaAnimation swiped = new AlphaAnimation(1F, 0.6F);
-    private int _yDelta;
+    private final AlphaAnimation swiped = new AlphaAnimation(1F, 0.6F);
     private int dropCardValue;
     TextView roundScoreView;
     TextView cardText;
     TextView timeLeft;
     private int roundScore;
     private CardsViewModel viewModel;
-    private int category;
     private FrameLayout card;
     private RelativeLayout pause;
     private RelativeLayout preview;
     private RelativeLayout playersTask;
     private boolean paused = false;
-    private boolean previewed;
     private boolean onPlayersTask = false;
     private boolean cardTextSetted = false;
     private boolean isLastCard = false;
@@ -95,8 +87,12 @@ public class OnGameFragment extends Fragment implements CardCallback {
         super.onCreate(savedInstanceState);
     }
 
+    private int dp() {
+        return dp(200);
+    }
+
     private int dp(int x) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
         return Math.round(x * metrics.density);
     }
 
@@ -109,7 +105,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     }
 
     @SuppressLint("SetTextI18n") //TODO refactor
-    private void swipeUp(View v) {
+    private void swipeUp() {
         soundPool.play(idSwipeUp, volume, volume, 1, 0, 1f);
         swipeable = false;
         topView.startAnimation(swiped);
@@ -118,9 +114,9 @@ public class OnGameFragment extends Fragment implements CardCallback {
             cardText.setText(viewModel.getCard());
             roundScoreView.setText(String.valueOf(++roundScore));
         } else {
-            if (viewModel.getSteal()) {
+            if (viewModel.getSteal() && getContext() != null) {
                 CharSequence[] teamsNames = viewModel.getTeamsNamesChar(getContext());
-                new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialog)
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()), R.style.AlertDialog)
                         .setTitle(getContext().getString(R.string.pick_team))
                         .setItems(teamsNames, (dialog, which) -> {
                             if (which < viewModel.getAmountOfTeams())
@@ -136,7 +132,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     }
 
     @SuppressLint("SetTextI18n") //TODO refactor
-    private void swipeDown(View v) {
+    private void swipeDown() {
         soundPool.play(idSwipeDown, volume, volume, 1, 0, 1f);
         PenaltyType penalty = viewModel.getPenalty();
         if (penalty == PenaltyType.lose_points)
@@ -157,22 +153,22 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private String getGameModeStr() {
         String out;
         if (gameMode == GameMode.explain_mode)
-            out = getContext().getResources().getString(R.string.explain_mode_str);
+            out = getResources().getString(R.string.explain_mode_str);
         else if (gameMode == GameMode.gesture_mode)
-            out = getContext().getResources().getString(R.string.gesture_mode_str);
+            out = getResources().getString(R.string.gesture_mode_str);
         else
-            out = getContext().getResources().getString(R.string.one_word_mode_str);
+            out = getResources().getString(R.string.one_word_mode_str);
         return out;
     }
 
     private String getGameModeStrPreview() {
         String out;
         if (gameMode == GameMode.explain_mode)
-            out = getContext().getResources().getString(R.string.explain_mode_str_preview);
+            out = getResources().getString(R.string.explain_mode_str_preview);
         else if (gameMode == GameMode.gesture_mode)
-            out = getContext().getResources().getString(R.string.gesture_mode_str_preview);
+            out = getResources().getString(R.string.gesture_mode_str_preview);
         else
-            out = getContext().getResources().getString(R.string.one_word_mode_str_preview);
+            out = getResources().getString(R.string.one_word_mode_str_preview);
         return out;
     }
 
@@ -222,7 +218,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         roundScoreView = view.findViewById(R.id.round_score);
         roundScore = viewModel.getRoundPoints();
         roundScoreView.setText(String.valueOf(roundScore));
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(dp(200), dp(200));
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(dp(), dp());
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -246,69 +242,57 @@ public class OnGameFragment extends Fragment implements CardCallback {
             }
         });
 
-        card.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
-                        dY = v.getY() - event.getRawY();
-                        startY = event.getRawY();
-                        yAnimation.cancel();
-                        swipeable = true;
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (!swipeable)
-                            return true;
-                        if (event.getRawY() - startY < -dropCardValue) {
-                            swipeUp(v);
-                            yAnimation.start();
-                        } else if (event.getRawY() - startY > dropCardValue) {
-                            swipeDown(v);
-                            yAnimation.start();
-                        } else {
-                            card.animate()
-                                    .y(event.getRawY() + dY)
-                                    .setDuration(0)
-                                    .start();
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
+        card.setOnTouchListener((v, event) -> {
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN:
+                    dY = v.getY() - event.getRawY();
+                    startY = event.getRawY();
+                    yAnimation.cancel();
+                    swipeable = true;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (!swipeable)
+                        return true;
+                    if (event.getRawY() - startY < -dropCardValue) {
+                        swipeUp();
                         yAnimation.start();
-                        break;
-                }
-                ;
-                root.invalidate();
-                return true;
+                    } else if (event.getRawY() - startY > dropCardValue) {
+                        swipeDown();
+                        yAnimation.start();
+                    } else {
+                        card.animate()
+                                .y(event.getRawY() + dY)
+                                .setDuration(0)
+                                .start();
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    yAnimation.start();
+                    break;
             }
+            root.invalidate();
+            return true;
         });
         pause = view.findViewById(R.id.pause);
         paused = false;
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                endPause();
-            }
+        pause.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
+            endPause();
         });
         playersTask = view.findViewById(R.id.players_task);
-        playersTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                setPlayersTask(false);
-            }
+        playersTask.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
+            setPlayersTask(false);
         });
         preview = view.findViewById(R.id.preview);
         setPreview(true);
-        preview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                endPreview();
-            }
+        preview.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
+            endPreview();
         });
 
-        setSounds(getContext());
+        if (getContext() != null)
+            setSounds(Objects.requireNonNull(getContext()));
 
 //        AudioManager manager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -357,7 +341,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     }
 
     private String getGameModeStrPreviewContent() {
-        return getContext().getResources().getString(R.string.preview_text);
+        return getResources().getString(R.string.preview_text);
     }
 
     boolean isPaused() {
@@ -370,14 +354,6 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     public void endPause() {
         setPause(false);
-    }
-
-    boolean isPreviewed() {
-        return previewed;
-    }
-
-    public void toPreview() {
-        setPreview(true);
     }
 
     public void endPreview() {
@@ -398,7 +374,6 @@ public class OnGameFragment extends Fragment implements CardCallback {
                     card.setVisibility(View.VISIBLE);
                     playersTask.setVisibility(View.INVISIBLE);
                     preview.setVisibility(View.INVISIBLE);
-                    previewed = false;
                 } catch (Exception e) {
                     Log.println(Log.ERROR, "Database", "Not loaded");
                 }
@@ -406,7 +381,6 @@ public class OnGameFragment extends Fragment implements CardCallback {
                 card.setVisibility(View.VISIBLE);
                 preview.setVisibility(View.INVISIBLE);
                 playersTask.setVisibility(View.INVISIBLE);
-                previewed = false;
             }
         }
     }
@@ -437,51 +411,39 @@ public class OnGameFragment extends Fragment implements CardCallback {
             timerService.pauseTask();
             pause.setVisibility(View.VISIBLE);
             card.setVisibility(View.INVISIBLE);
-            playersTask.setVisibility(View.INVISIBLE);
         } else {
             soundPool.play(idPauseOut, volume, volume, 1, 0, 1f);
             timerService.resumeTask();
             card.setVisibility(View.VISIBLE);
             pause.setVisibility(View.INVISIBLE);
-            playersTask.setVisibility(View.INVISIBLE);
         }
+        playersTask.setVisibility(View.INVISIBLE);
         paused = newPauseValue;
     }
 
     protected void setViewModel() {
-        Observer<List<CardModel>> observer = new Observer<List<CardModel>>() {
-            @Override
-            public void onChanged(List<CardModel> cardModels) {
-                cardText.setText(viewModel.getCard());
+        Observer<List<CardModel>> observer = cardModels -> cardText.setText(viewModel.getCard());
+
+        Observer<Integer> observerTimer = timerCount -> {
+            if (timerCount < 5)
+                playEndSound(timerCount);
+            if (timerCount < 0) {
+                viewModel.setRoundTimeLeft(viewModel.getRoundDuration());
+                return; //TODO убрать костыль
             }
+
+            if (timerCount == 0) {
+                timeEnded();
+            }
+            timeLeft.setText(String.format("%02d:%02d", timerCount / 60, timerCount % 60));
+            Log.d("Timer is ticking...", timerCount.toString());
         };
 
-        Observer<Integer> observerTimer = new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer timerCount) {
-                if (timerCount < 5)
-                    playEndSound(timerCount);
-                if (timerCount < 0) {
-                    viewModel.setRoundTimeLeft(viewModel.getRoundDuration());
-                    return; //TODO убрать костыль
-                }
-
-                if (timerCount == 0) {
-                    timeEnded();
-                }
-                timeLeft.setText(String.format("%02d:%02d", (int) (timerCount / 60), timerCount % 60));
-                Log.d("Timer is ticking...", timerCount.toString());
-            }
-        };
-
-        Observer<CurrentGameModel> observerCurrentGame = new Observer<CurrentGameModel>() {
-            @Override
-            public void onChanged(CurrentGameModel gameModel) {
-                timerService.runTask(gameModel.getRoundTimeLeft());
-                timerService.pauseTask();
-                Log.d("OnGame", "duration = " + gameModel.getRoundDuration() + ", time left = " + gameModel.getRoundTimeLeft());
-                //TODO вписать изменение gamemodel
-            }
+        Observer<CurrentGameModel> observerCurrentGame = gameModel -> {
+            timerService.runTask(gameModel.getRoundTimeLeft());
+            timerService.pauseTask();
+            Log.d("OnGame", "duration = " + gameModel.getRoundDuration() + ", time left = " + gameModel.getRoundTimeLeft());
+            //TODO вписать изменение gamemodel
         };
 
 

@@ -11,7 +11,6 @@ import com.example.vary.UI.CardCallback;
 import com.example.vary.UI.LoadDataCallback;
 import com.example.vary.Models.CardModel;
 import com.example.vary.Models.CategoryModel;
-import com.example.vary.Network.CategoriesAPI;
 import com.example.vary.Network.CategoriesNetworkService;
 import com.example.vary.R;
 import com.example.vary.UI.PenaltyType;
@@ -180,7 +179,7 @@ public class CategoriesRepo implements SetDataCallback {
             addCategories(categories);
             mCallback.onLoad(null, false);
         } else {
-            Log.d("Sadddd", "Wrong data back");
+            Log.d("Sad", "Wrong data back");
         }
     }
 
@@ -245,13 +244,11 @@ public class CategoriesRepo implements SetDataCallback {
         Log.d("Network", "Version ???? " + version);
     }
 
-    public void getCount(DbManager.CountListener listener) {
-        dbManager.getCount(listener);
-    }
-
-    public CategoriesAPI getCategoriesAPI() {
-        return categoriesNetworkService.getCategoriesAPI();
-    }
+// --Commented out by Inspection START (04.06.2021, 14:25):
+//    public void getCount(DbManager.CountListener listener) {
+//        dbManager.getCount(listener);
+//    }
+// --Commented out by Inspection STOP (04.06.2021, 14:25)
 
     public void getNewCategories() { //TODO переделать
         //откуда брать версию? отсюда же
@@ -263,9 +260,11 @@ public class CategoriesRepo implements SetDataCallback {
         return mCardsRepo.countPoints(penalty);
     }
 
-    public int getAmountOfCards() {
-        return mCardsRepo.getAmountOfCards();
-    }
+// --Commented out by Inspection START (04.06.2021, 14:25):
+//    public int getAmountOfCards() {
+//        return mCardsRepo.getAmountOfCards();
+//    }
+// --Commented out by Inspection STOP (04.06.2021, 14:25)
 
     private void loadCategoriesToDatabase(List<CategoryModel> categoryModelList) {
         dbManager.update(categoryModelList);

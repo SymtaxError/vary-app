@@ -49,28 +49,19 @@ public class TeamsAdapter extends RecyclerView.Adapter<ViewHolder> {
         final int itemType = getItemViewType(position);
         if (itemType == type_team) {
             String team = mViewModel.getTeamName(position);
-            View.OnClickListener delListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.startAnimation(buttonClick);
-                    deleteListener.deleteItem(position);
-                }
+            View.OnClickListener delListener = v -> {
+                v.startAnimation(buttonClick);
+                deleteListener.deleteItem(position);
             };
-            View.OnClickListener renListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.startAnimation(buttonClick);
-                    renameListener.renameItem(position);
-                }
+            View.OnClickListener renListener = v -> {
+                v.startAnimation(buttonClick);
+                renameListener.renameItem(position);
             };
             ((TeamsViewHolder) holder).bind(team, delListener, renListener);
         } else if (itemType == type_add_button) {
-            View.OnClickListener listener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.startAnimation(buttonClick);
-                    addListener.addItem();
-                }
+            View.OnClickListener listener = v -> {
+                v.startAnimation(buttonClick);
+                addListener.addItem();
             };
             ((AddButtonViewHolder) holder).bind(listener);
         }

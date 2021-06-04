@@ -76,6 +76,7 @@ public class CurrentGameModel {
             mCurMode = GameMode.one_word_mode;
         }
         else {
+            mCurMode = GameMode.end;
             return false;
         }
         return true;

@@ -1,13 +1,13 @@
 package com.example.vary.UI;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -66,22 +66,16 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
         recyclerView.setAdapter(adapter);
 
         MaterialButton button = view.findViewById(R.id.open_game_settings);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                fCallback.callback(GameActions.open_game_settings);
-            }
+        button.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
+            fCallback.callback(GameActions.open_game_settings);
         });
 
-        Observer<List<TeamModel>> observer = new Observer<List<TeamModel>>() {
-            @Override
-            public void onChanged(List<TeamModel> commandModels) {
-                if (commandModels != null) {
-                    adapter.setViewModel(viewModel);
+        Observer<List<TeamModel>> observer = commandModels -> {
+            if (commandModels != null) {
+                adapter.setViewModel(viewModel);
 
-                    adapter.notifyDataSetChanged();
-                }
+                adapter.notifyDataSetChanged();
             }
         };
 
@@ -91,13 +85,10 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
                 .observe(getViewLifecycleOwner(), observer);
 
         regulateMinAmount();
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                RelativeLayout root = view.findViewById(R.id.team_layout);
-                viewHeight = root.getHeight();
-                amount = recyclerView.getHeight() / viewHeight - 2;
-            }
+        view.post(() -> {
+            RelativeLayout root = view.findViewById(R.id.team_layout);
+            viewHeight = root.getHeight();
+            amount = recyclerView.getHeight() / viewHeight - 2;
         });
 
         return view;
@@ -120,30 +111,30 @@ public class SetTeamsFragment extends Fragment implements OnDeleteTeamClickListe
         LayoutInflater inflater = LayoutInflater.from(context);
         View promView = inflater.inflate(R.layout.add_command_window, null);
 
+        if (context != null) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
 
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
+            EditText commandInput = promView.findViewById(R.id.edit_command_name);
+            commandInput.setText(viewModel.getTeamName(pos));
+            commandInput.setSelection(commandInput.getText().length());
+            String add = getResources().getString(R.string.save);
+            String cancel = getResources().getString(R.string.cancel);
+            alertDialogBuilder
+                    .setView(promView)
+                    .setCancelable(false)
+                    .setPositiveButton(add, (dialog, which) -> viewModel.renameTeam(commandInput.getText().toString(), pos))
+                    .setNegativeButton(cancel, (dialog, which) -> dialog.cancel());
 
-        EditText commandInput = promView.findViewById(R.id.edit_command_name);
-        commandInput.setText(viewModel.getTeamName(pos));
-        commandInput.setSelection(commandInput.getText().length());
-        String add = getResources().getString(R.string.save);
-        String cancel = getResources().getString(R.string.cancel);
-        alertDialogBuilder
-                .setView(promView)
-                .setCancelable(false)
-                .setPositiveButton(add, (dialog, which) -> {
-                    viewModel.renameTeam(commandInput.getText().toString(), pos);
-                })
-                .setNegativeButton(cancel, (dialog, which) -> dialog.cancel());
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 
     public void addItem() { // Добавить элемент
         String command = getResources().getString(R.string.team);
         viewModel.addTeams(command + ' ' + namePostfix);
-        if (viewModel.getAmountOfTeams() > getContext().getResources().getInteger(R.integer.min_teams_amount))
+        int min_teams_amount = getResources().getInteger(R.integer.min_teams_amount);
+        if (viewModel.getAmountOfTeams() > min_teams_amount)
             scrollToEnd();
         namePostfix++;
     }

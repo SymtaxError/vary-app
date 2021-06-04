@@ -1,27 +1,18 @@
 package com.example.vary.UI;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.vary.R;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import static com.example.vary.UI.SettingActions.*;
 
@@ -59,7 +50,7 @@ public class SettingsFragment extends Fragment {
                 soundView.setImageResource(R.drawable.ic_baseline_music_note_24);
                 sCallback.callback(sound_setting, sound);
             } else {
-                sCallback.callback(sound_setting, sound);
+                sCallback.callback(sound_setting, false);
                 soundView.setImageResource(R.drawable.ic_baseline_music_off_24);
             }
         });
@@ -71,7 +62,7 @@ public class SettingsFragment extends Fragment {
                 soundView.setImageResource(R.drawable.ic_baseline_music_note_24);
                 sCallback.callback(sound_setting, sound);
             } else {
-                sCallback.callback(sound_setting, sound);
+                sCallback.callback(sound_setting, false);
                 soundView.setImageResource(R.drawable.ic_baseline_music_off_24);
             }
         });
@@ -83,7 +74,7 @@ public class SettingsFragment extends Fragment {
                 updatesView.setImageResource(R.drawable.ic_baseline_system_update_24);
                 sCallback.callback(check_updates_setting, check_updates);
             } else {
-                sCallback.callback(check_updates_setting, check_updates);
+                sCallback.callback(check_updates_setting, false);
                 updatesView.setImageResource(R.drawable.ic_baseline_mobile_off_24);
             }
         });
@@ -94,7 +85,7 @@ public class SettingsFragment extends Fragment {
                 updatesView.setImageResource(R.drawable.ic_baseline_system_update_24);
                 sCallback.callback(check_updates_setting, check_updates);
             } else {
-                sCallback.callback(check_updates_setting, check_updates);
+                sCallback.callback(check_updates_setting, false);
                 updatesView.setImageResource(R.drawable.ic_baseline_mobile_off_24);
             }
         });

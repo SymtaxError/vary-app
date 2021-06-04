@@ -1,11 +1,8 @@
 package com.example.vary.Repositories;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.vary.Database.DbManager;
 import com.example.vary.Models.TeamModel;
 
 import java.util.ArrayList;
@@ -15,15 +12,9 @@ import java.util.List;
 public class TeamsRepo {
     private final MutableLiveData<List<TeamModel>> mTeams = new MutableLiveData<>();
     private static TeamsRepo sInstance;
-    @SuppressLint("StaticFieldLeak")
-    private static DbManager dbManager = null;
 
     public TeamsRepo() {
         mTeams.setValue(new ArrayList<>());
-    }
-
-    public void setDbManager(Context context) {
-        dbManager = DbManager.getInstance(context);
     }
 
     public void changeOrder(int newStartIndex) {
@@ -47,6 +38,7 @@ public class TeamsRepo {
         mTeams.postValue(teams);
     }
 
+    @SuppressWarnings("CollectionAddedToSelf")
     public void removeTeams() {
         List<TeamModel> listTeams = mTeams.getValue();
         if (listTeams != null) {

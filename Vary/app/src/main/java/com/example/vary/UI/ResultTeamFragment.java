@@ -1,17 +1,12 @@
 package com.example.vary.UI;
 
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,15 +20,13 @@ import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import java.util.Objects;
 
 public class ResultTeamFragment extends Fragment {
     View view;
     private CardsViewModel viewModel;
     private CallbackFragment callbackFunctions;
-    boolean saved = false;
     int acceptColor, dismissColor;
 
     private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
@@ -80,31 +73,23 @@ public class ResultTeamFragment extends Fragment {
             String wordName = viewModel.getUsedCardByPosition(position);
             boolean answerState = viewModel.getAnswerState(position);
             View.OnClickListener listener;
-            if (position == getItemCount() - 1 && viewModel.getSteal() && viewModel.getTimerCount().getValue() != -2) {
-                listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        v.startAnimation(buttonClick);
-                        CharSequence[] teamsNames = viewModel.getTeamsNamesChar(getContext());
-                        new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialog)
+            if (position == getItemCount() - 1 && viewModel.getSteal() && viewModel.getTime() != -2) {
+                listener = v -> {
+                    v.startAnimation(buttonClick);
+                    CharSequence[] teamsNames = viewModel.getTeamsNamesChar(getContext());
+                    if (getContext() != null)
+                        new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()), R.style.AlertDialog)
                                 .setTitle(getContext().getString(R.string.pick_team))
-                                .setItems(teamsNames, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        which = (which < viewModel.getAmountOfTeams()) ? which : -1;
-                                        viewModel.setAnsweredTeam(which);
-                                    }
+                                .setItems(teamsNames, (dialog, which) -> {
+                                    which = (which < viewModel.getAmountOfTeams()) ? which : -1;
+                                    viewModel.setAnsweredTeam(which);
                                 }).show();
-                    }
                 };
             }
             else {
-                listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        v.startAnimation(buttonClick);
-                        viewModel.changeAnswerState(position);
-                        }
+                listener = v -> {
+                    v.startAnimation(buttonClick);
+                    viewModel.changeAnswerState(position);
                     };
                 }
 
@@ -119,11 +104,6 @@ public class ResultTeamFragment extends Fragment {
 
     public void setCallback(CallbackFragment callback) {
         callbackFunctions = callback;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     public void setViewModel(CardsViewModel viewModel) {
@@ -151,12 +131,9 @@ public class ResultTeamFragment extends Fragment {
         TeamStatsAdapter teamStatsAdapter = new TeamStatsAdapter();
         teamStatsAdapter.setViewModel(viewModel);
 
-        Observer<List<CardModel>> observerCurrentGame = new Observer<List<CardModel>>() {
-            @Override
-            public void onChanged(List<CardModel> cardModels) {
-                if (cardModels != null) {
-                    teamStatsAdapter.notifyDataSetChanged();
-                }
+        Observer<List<CardModel>> observerCurrentGame = cardModels -> {
+            if (cardModels != null) {
+                teamStatsAdapter.notifyDataSetChanged();
             }
         };
         viewModel

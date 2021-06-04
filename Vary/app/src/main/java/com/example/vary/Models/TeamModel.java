@@ -3,7 +3,7 @@ package com.example.vary.Models;
 public class TeamModel {
     String mName;
     int mPoints;
-    int mId;
+    final int mId;
 
     public TeamModel(String name, int id) {
         mName = name;
@@ -27,7 +27,4 @@ public class TeamModel {
         mName = name;
     }
 
-    public int getId() {
-        return mId;
-    }
 }

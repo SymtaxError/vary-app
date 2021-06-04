@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class CardModel {
-    public int mVersion;
+    public final int mVersion;
     @PrimaryKey @NonNull
-    public String mId;
-    public String mText;
-    public String mCategory;
+    public final String mId;
+    public final String mText;
+    public final String mCategory;
     @Ignore
     private int answeredTeam;
     @Ignore
@@ -29,9 +29,11 @@ public class CardModel {
         this.mCategory = mCategory;
     }
 
-    public int getVersion() {
-        return mVersion;
-    }
+// --Commented out by Inspection START (04.06.2021, 12:48):
+//    public int getVersion() {
+//        return mVersion;
+//    }
+// --Commented out by Inspection STOP (04.06.2021, 12:48)
 
     @Ignore
     public void setAnswerState(boolean ansState) {

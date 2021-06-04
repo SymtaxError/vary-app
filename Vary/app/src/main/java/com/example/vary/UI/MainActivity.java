@@ -22,19 +22,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.vary.Models.CategoryModel;
 import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
 import com.example.vary.ViewModels.CardsViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements CallbackFragment, CallbackSettings {
     public static final String prefs = "settingsPrefs";
-    private static final int version = 0;
     private CardsViewModel viewModel;
 
     public LocalService mService;
@@ -43,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public boolean allowStart = true;
     public static final String soundKey = "sound";
     public static final String checkUpdatesKey = "check_updates";
-    public static final String pushKey = "push";
     boolean startGamePressed = false;
 
     public final String TAG = "MyLogger";
@@ -68,16 +64,16 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
 
         viewModel = new ViewModelProvider(this).get(CardsViewModel.class);
-        Observer<List<CategoryModel>> observer = new Observer<List<CategoryModel>>() {
-            @Override
-            public void onChanged(List<CategoryModel> categoryModels) {
-                if (categoryModels.size() != 0) {
-                    String countText = "Loaded from " + categoryModels.size() + " categories";
-                }
-            }
-        };
+//        Observer<List<CategoryModel>> observer = new Observer<List<CategoryModel>>() {
+//            @Override
+//            public void onChanged(List<CategoryModel> categoryModels) {
+//                if (categoryModels.size() != 0) {
+//                    String countText = "Loaded from " + categoryModels.size() + " categories";
+//                }
+//            }
+//        };
 
-        viewModel.getCategories().observe(this, observer);
+//        viewModel.getCategories().observe(this, observer);
         Intent intent = new Intent(this, LocalService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         mPrefs = getPreferences(MODE_PRIVATE);
@@ -91,30 +87,27 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     @Override
     protected void onResume() {
         super.onResume();
-        Observer<LoadStatus> observerLoadStatus = new Observer<LoadStatus>() {
-            @Override
-            public void onChanged(LoadStatus loadStatus) {
+        Observer<LoadStatus> observerLoadStatus = loadStatus -> {
 //                Toast toast;
 //                if (loadStatus.getError() != null && loadStatus.getNotification()) {
 //                    toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
 //                    toast.show();
 //                }
-                if (loadStatus.getError() != null && loadStatus.getNotification()) {
-                    LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-                    View contextView = findViewById(R.id.context_view);
-                    Snackbar bar = Snackbar.make(contextView, R.string.no_cards_message, Snackbar.LENGTH_LONG);
-                    bar.setAction(R.string.download, v -> {
-                        startGamePressed = false;
-                        viewModel.getNewCategories();
-                    });
-                    allowStart = false;
-                    bar.show();
-                }
-                else {
-                    allowStart = true;
-                    if (startGamePressed) {
-                        callback(GameActions.new_game_action);
-                    }
+            if (loadStatus.getError() != null && loadStatus.getNotification()) {
+                LayoutInflater.from(getApplicationContext());
+                View contextView = findViewById(R.id.context_view);
+                Snackbar bar = Snackbar.make(contextView, R.string.no_cards_message, Snackbar.LENGTH_LONG);
+                bar.setAction(R.string.download, v -> {
+                    startGamePressed = false;
+                    viewModel.getNewCategories();
+                });
+                allowStart = false;
+                bar.show();
+            }
+            else {
+                allowStart = true;
+                if (startGamePressed) {
+                    callback(GameActions.new_game_action);
                 }
             }
         };
@@ -270,7 +263,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     public void startMainFragment() {
-        viewModel.setNewGame(editor);
+        if (viewModel.getGameMode() == GameMode.end)
+            viewModel.setNewGame(editor);
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()

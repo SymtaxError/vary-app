@@ -12,9 +12,9 @@ import java.util.List;
 @Entity
 public class CategoryModel {
     @PrimaryKey @NonNull
-    public String mName;
-    public int mVersion;
-    public int mAccessLevel;
+    public final String mName;
+    public final int mVersion;
+    public final int mAccessLevel;
 
     @Ignore
     public List<CardModel> mCards;

@@ -17,7 +17,7 @@
         android:id="@+id/edit_command_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:contentDescription="@string/add_team"
         android:backgroundTint="@color/primary_additional"
 
         android:autofillHints="@string/team"

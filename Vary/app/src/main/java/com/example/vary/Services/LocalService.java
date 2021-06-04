@@ -1,22 +1,12 @@
 package com.example.vary.Services;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.lifecycle.Observer;
-
-import com.example.vary.Models.CardModel;
-import com.example.vary.Models.CurrentGameModel;
 import com.example.vary.ViewModels.CardsViewModel;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -81,11 +71,6 @@ public class LocalService extends Service {
                 }
             }
         }
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-//        Toast.makeText(this, "Service Stopped ...", Toast.LENGTH_SHORT).show();
     }
 
     public class LocalBinder extends Binder {

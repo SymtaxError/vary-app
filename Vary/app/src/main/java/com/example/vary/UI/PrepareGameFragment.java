@@ -32,7 +32,7 @@ public class PrepareGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_prepare_game, container, false);
 
-        bindButton(R.id.start_game_process_button, GameActions.start_game_process);
+        bindButton();
         TextView teamBeginName = view.findViewById(R.id.start_team);
         setViewModel();
 
@@ -46,16 +46,13 @@ public class PrepareGameFragment extends Fragment {
         fCallback = callback;
     }
 
-    void bindButton(int id, GameActions action) {
-        Button button = view.findViewById(id);
-        button.setOnClickListener(v -> fCallback.callback(action));
+    void bindButton() {
+        Button button = view.findViewById(R.id.start_game_process_button);
+        button.setOnClickListener(v -> fCallback.callback(GameActions.start_game_process));
     }
 
     protected void setViewModel() {
-        Observer<List<CardModel>> observer = new Observer<List<CardModel>>() {
-            @Override
-            public void onChanged(List<CardModel> cardModels) {
-            }
+        Observer<List<CardModel>> observer = cardModels -> {
         };
 
         viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);

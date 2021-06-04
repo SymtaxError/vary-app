@@ -117,7 +117,6 @@ public class ResultRoundFragment extends Fragment {
         viewModel.getGameModel().observe(getViewLifecycleOwner(), currentGameModelObserver);
 
         Button nextRoundButton = view.findViewById(R.id.next_round_bottom_text);
-        GameActions tempCallback;
         if (viewModel.endGame()) {
             viewModel.sortTeamsByPoints();
             nextRoundButton.setText("Закончить игру");

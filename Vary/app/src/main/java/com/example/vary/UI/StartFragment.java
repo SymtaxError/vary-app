@@ -12,16 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.view.ViewGroup.MarginLayoutParams;
-import android.widget.Toast;
 
 import com.example.vary.Models.CurrentGameModel;
-import com.example.vary.Models.TeamModel;
 import com.example.vary.R;
 import com.example.vary.ViewModels.CardsViewModel;
-
-import java.util.List;
 
 public class StartFragment extends Fragment {
 
@@ -29,7 +24,6 @@ public class StartFragment extends Fragment {
     Button continue_game;
     View view;
     int width;
-    private CardsViewModel viewModel;
     private final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.5F);
 
     public StartFragment() {
@@ -57,19 +51,16 @@ public class StartFragment extends Fragment {
         params.setMarginStart(margin);
         continue_game.setLayoutParams(params);
         Button new_game = view.findViewById(R.id.new_game);
-        new_game.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                fCallback.callback(GameActions.new_game_action);
-            }
+        new_game.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
+            fCallback.callback(GameActions.new_game_action);
         });
         new_game.setLayoutParams(params);
 
         bindButton(R.id.rules, GameActions.open_rules);
         bindButton(R.id.settings, GameActions.open_settings);
 
-        Button infobtn = view.findViewById(R.id.rules);
+//        Button infobtn = view.findViewById(R.id.rules);
 //        infobtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -81,22 +72,14 @@ public class StartFragment extends Fragment {
 
 
 //        checkContinueButtonVisibility(false);
-        Observer<CurrentGameModel> observerGameModel = new Observer<CurrentGameModel>() {
-            @Override
-            public void onChanged(CurrentGameModel currentGameModel) {
-                Log.d("Model", "Gor value of model, it is void: " + currentGameModel.isVoid());
-                if (!currentGameModel.isVoid()) {
-//                    Toast toast = Toast.makeText(getContext(), "Model isn't void, info : " + currentGameModel.getCardModelList().size(), Toast.LENGTH_LONG);
-//                    toast.show();
-                    checkContinueButtonVisibility(true);
-                }
-                else {
-                    checkContinueButtonVisibility(false);
-                }
-            }
+        Observer<CurrentGameModel> observerGameModel = currentGameModel -> {
+            Log.d("Model", "Gor value of model, it is void: " + currentGameModel.isVoid());
+            //                    Toast toast = Toast.makeText(getContext(), "Model isn't void, info : " + currentGameModel.getCardModelList().size(), Toast.LENGTH_LONG);
+            //                    toast.show();
+            checkContinueButtonVisibility(!currentGameModel.isVoid());
         };
 
-        viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
+        CardsViewModel viewModel = new ViewModelProvider(requireActivity()).get(CardsViewModel.class);
 
         viewModel
                 .getGameModel()
@@ -117,12 +100,9 @@ public class StartFragment extends Fragment {
 
     void bindButton(int id, GameActions action) {
         Button button = view.findViewById(id);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.startAnimation(buttonClick);
-                fCallback.callback(action);
-            }
+        button.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
+            fCallback.callback(action);
         });
     }
 

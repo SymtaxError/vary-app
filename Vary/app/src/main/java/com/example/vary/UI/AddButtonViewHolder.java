@@ -1,8 +1,6 @@
 package com.example.vary.UI;
 
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;

@@ -28,7 +28,7 @@
     <string name="start_next_round_button">Next round</string>
     <string name="results">Results</string>
     <string name="guessed_words">Score</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="pause_title">Pause</string>
     <string name="pause_content">Tap the screen to continue</string>
     <string name="preview_title">Preview</string>
@@ -59,7 +59,7 @@
     <string name="check_updates">Check updates</string>
     <string name="back">Back</string>
     <string name="game_description">Author\'s game for companies from four people.</string>
-    <string name="beginning_of_game_decription">\tPlayers are divided into several teams from two people. Then the deck size is chosen.\n\tThe one must explain as much words as possible to one\'s team using the specified explanation way within the chosen time. Next team\'s deck consists of all the words except the guessed in current mode ones.\n\Once the cards run out, the main deck is shuffled and the same cards are explained in a new way:</string>
+    <string name="beginning_of_game_description">\tPlayers are divided into several teams from two people. Then the deck size is chosen.\n\tThe one must explain as much words as possible to one\'s team using the specified explanation way within the chosen time. Next team\'s deck consists of all the words except the guessed in current mode ones.\n\Once the cards run out, the main deck is shuffled and the same cards are explained in a new way:</string>
     <string name="mode_explain_with_words">Mode Explain with words</string>
     <string name="explain_with_words_description">\tTell stories, give examples, remember songs and come up with clues, but don\'t explain letters, don\'t use cognate (for example take - undertaking) and foreign words.\n\tSimilar game is Alias.</string>
     <string name="mode_explain_with_gestures">Mode Explain with gestures</string>
