@@ -199,6 +199,8 @@ public class CategoriesRepo implements SetDataCallback {
         if (version == -1) {
             mCallback.onLoad(t, true);
         }
+        else
+            mCallback.onLoad(null, false);
     }
 
     private void addCategories(List<CategoryModel> categories) {
