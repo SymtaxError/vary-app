@@ -9,7 +9,6 @@
     <string name="continue_game">Продолжить</string>
     <string name="new_game">Новая игра</string>
     <string name="available_settings">Настройки</string>
-    <string name="vk_auth">Войти с помощью VK</string>
     <string name="sound_on">Включить звук</string>
     <string name="push_on">Включить push уведомления</string>
     <string name="no_cards_message">Нет доступных карточек</string>
@@ -58,4 +57,18 @@
     <string name="sounds">Звуки в игре</string>
     <string name="check_updates">Проверять обновления</string>
     <string name="back">Назад</string>
+    <string name="game_description">Авторская игра для компаний от четырех человек.</string>
+    <string name="beginning_of_game_decription">\tИгроки разбиваются на команды от двух человек. Выбирается размер колоды карт.\n\tДалее нужно за выбранное время объяснить своей команде как можно больше слов указанным способом. Следующая команда получает колоду со словами, необъясненными ранее в текущем режиме игры.\n\tПосле того как карты закончатся, начальная колода перемешивается, и команды объясняют те же слова, но новым способом:</string>
+    <string name="mode_explain_with_words">Режим Объясни словами</string>
+    <string name="explain_with_words_description">\tРассказывай истории, приводи примеры, вспоминай песни и придумывай подсказки, но не объясняй буквы, не используй однокоренные (например качели - качаются) и иностранные слова.\n\tПохожие игры - Шляпа, Alias.</string>
+    <string name="mode_explain_with_gestures">Режим Покажи жестами</string>
+    <string name="explain_with_gestures_description">\tДвигай любой частью тела, принимай любые позы, рисуй жестами, но не издавай ни звука, не указывай на какие-либо предметы и не показывай буквы.\n\tПохожие игры - Крокодил.</string>
+    <string name="mode_explain_with_one_word">Режим Объясни одним словом</string>
+    <string name="explain_with_one_word_description">\tТы можешь сказать лишь одно слово, ведь за два раунда все игроки выучили колоду карт. Будь внимателен: это слово нельзя изменить, и исправить свою ошибку можно лишь сбросив карту. Не забывай про запрет на однокоренные и иностранные слова.</string>
+    <string name="additional_info">Дополнительные указания</string>
+    <string name="additional_info_text">\tПобеждает команда, набравшая наибольшее количество очков по итогам всех раундов.\n\tИгроки могут включить режим общего последнего слова: по истечении времени карточку может отгадать любая команда.\n\tЗадание от игроков может быть любым, начиная от правды или действия, заканчивая кукареканьем под столом.</string>
+    <string name="about_us">\tМГТУ им. Н.Э. Баумана\n\tТехнопарк Mail.ru\n\tSymtax error\n\t2021</string>
+    <string name="about_us_label">О нас</string>
+    <string name="answered">ОТГАДАНО</string>
+    <string name="declined">ПРОПУЩЕНО</string>
 </resources>

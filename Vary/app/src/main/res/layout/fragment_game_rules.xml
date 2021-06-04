@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="Авторская игра для компаний от четырех человек."
+                android:text="@string/game_description"
                 android:textColor="@color/secondary"
                 android:gravity="center"
                 android:textSize="18sp"
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:textColor="@color/text_bright"
-                android:text="\tИгроки разбиваются на команды от двух человек. Выбирается размер колоды карт.\n\tДалее нужно за выбранное время указанным способом объяснить своей команде как можно больше слов. Следующая команда получает колоду со всеми словами, кроме объясненных ранее.\n\tПосле того, как карты закончатся, начальная колода перемешивается и команды объясняют те же слова, но новым способом:"/>
+                android:text="@string/beginning_of_game_decription"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,14 +143,14 @@
                 android:padding="8dp"
                 android:textSize="18sp"
                 android:textColor="@color/secondary"
-                android:text='Режим "Объясни словами"'
+                android:text="@string/mode_explain_with_words"
             />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:textColor="@color/text_bright"
-                android:text='\tРассказывай истории, приводи примеры, вспоминай песни и придумывай подсказки, но не объясняй буквы, не используй однокоренные (например качели - качаются) и слова из других языков.\n\tПохожие игры - Шляпа, Alias.'
+                android:text="@string/explain_with_words_description"
             />
             <TextView
                 android:layout_width="match_parent"
@@ -158,14 +158,14 @@
                 android:padding="8dp"
                 android:textSize="18sp"
                 android:textColor="@color/secondary"
-                android:text='Режим "Покажи жестами"'
+                android:text="@string/mode_explain_with_gestures"
             />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:textColor="@color/text_bright"
-                android:text='\tДвигай любой частью тела, принимай любые позы, рисуй жестами, но не издавай звуков, не показывай на какие-либо предметы и не показывай буквы.\n\tПохожие игры - Крокодил.'
+                android:text="@string/explain_with_gestures_description"
             />
             <TextView
                 android:layout_width="match_parent"
@@ -173,14 +173,14 @@
                 android:padding="8dp"
                 android:textSize="18sp"
                 android:textColor="@color/secondary"
-                android:text='Режим "Объясни одним словом"'
+                android:text="@string/mode_explain_with_one_word"
             />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:textColor="@color/text_bright"
-                android:text='\tТы можешь сказать лишь одно слово, ведь за два раунда все игроки уже выучили колоду карт. Будь внимателен - это слово нельзя будет изменить и исправить свою ошибку можно лишь сбросив карту. Не забывай про однокоренные и иностранные слова.'
+                android:text="@string/explain_with_one_word_description"
             />
             <TextView
                 android:layout_width="match_parent"
@@ -188,14 +188,14 @@
                 android:padding="8dp"
                 android:textSize="18sp"
                 android:textColor="@color/secondary"
-                android:text='Дополнительные указания'
+                android:text="@string/additional_info"
             />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:textColor="@color/text_bright"
-                android:text='\tПобеждает команда, набравшая наибольшее количество очков по итогам всех раундов.\n\tИгроки могут включить последнее общее слово - по истечении времени карточку может отгадать любая команда.\n\t"Задание от игроков" - может быть что угодно, начиная от правды или действия, заканчивая кукареканьем под столом.'
+                android:text="@string/additional_info_text"
             />
 
             <TextView
@@ -204,7 +204,7 @@
                 android:padding="8dp"
                 android:textSize="18sp"
                 android:textColor="@color/secondary"
-                android:text='О нас'
+                android:text="@string/about_us_label"
                 />
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -216,7 +216,7 @@
                     android:padding="8dp"
                     android:textColor="@color/text_bright"
                     android:layout_alignParentLeft="true"
-                    android:text="\tМГТУ им. Н.Э. Баумана\n\tТехнопарк Mail.ru\n\tSymtax error\n\t2021"/>
+                    android:text="@string/about_us"/>
                 <View
                     android:layout_width="60dp"
                     android:layout_height="64dp"
