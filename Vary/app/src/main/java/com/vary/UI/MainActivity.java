@@ -162,6 +162,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             }
         };
 
+        if (viewModel.getCategories().getValue() != null) {
+            allowStart = true;
+        }
+
         if (viewModel.getSoundState())
             requestAudioFocusForMyApp(this);
 
@@ -395,6 +399,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     void openSettings() {
+        if (!allowStart)
+            return;
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
