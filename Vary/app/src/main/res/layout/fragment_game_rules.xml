@@ -218,7 +218,7 @@
                 <View
                     android:layout_width="60dp"
                     android:layout_height="64dp"
-                    android:background="@drawable/bmstu"
+                    android:background="@drawable/bmstu_min_opt"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="4dp"/>
