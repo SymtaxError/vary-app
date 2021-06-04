@@ -106,7 +106,13 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @SuppressLint("SetTextI18n") //TODO refactor
     private void swipeUp() {
-        soundPool.play(idSwipeUp, volume, volume, 1, 0, 1f);
+        Log.d("Sound", "state = " + viewModel.getSoundState());
+        if (viewModel.getSoundState()) {
+            if (viewModel.getLowerVolume())
+                soundPool.play(idSwipeUp, volume / 3, volume / 3, 1, 0, 1f);
+            else
+                soundPool.play(idSwipeUp, volume, volume, 1, 0, 1f);
+        }
         swipeable = false;
         topView.startAnimation(swiped);
         if (!isLastCard) {
@@ -133,7 +139,12 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @SuppressLint("SetTextI18n") //TODO refactor
     private void swipeDown() {
-        soundPool.play(idSwipeDown, volume, volume, 1, 0, 1f);
+        if (viewModel.getSoundState()) {
+            if (viewModel.getLowerVolume())
+                soundPool.play(idSwipeDown, volume / 3, volume / 3, 1, 0, 1f);
+            else
+                soundPool.play(idSwipeDown, volume, volume, 1, 0, 1f);
+        }
         PenaltyType penalty = viewModel.getPenalty();
         if (penalty == PenaltyType.lose_points)
             roundScoreView.setText(String.valueOf(--roundScore));
@@ -309,9 +320,6 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private void setSounds(Context context) {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         float actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            if (audioManager.isStreamMute(AudioManager.STREAM_MUSIC))
-                actualVolume = 0;
         float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         volume = actualVolume / maxVolume;
         AudioAttributes audioAttrib = new AudioAttributes.Builder()
@@ -405,14 +413,23 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     private void setPause(boolean newPauseValue) {
         if (newPauseValue) {
-            if (!paused)
-                soundPool.play(idPauseIn, volume, volume, 1, 0, 1f);
+            if (!paused && viewModel.getSoundState()) {
+                if (viewModel.getLowerVolume())
+                    soundPool.play(idPauseIn, volume / 3, volume / 3, 1, 0, 1f);
+                else
+                    soundPool.play(idPauseIn, volume, volume, 1, 0, 1f);
+            }
             setPreview(false);
             timerService.pauseTask();
             pause.setVisibility(View.VISIBLE);
             card.setVisibility(View.INVISIBLE);
         } else {
-            soundPool.play(idPauseOut, volume, volume, 1, 0, 1f);
+            if (viewModel.getSoundState()) {
+                if (viewModel.getLowerVolume())
+                    soundPool.play(idPauseOut, volume / 3, volume / 3, 1, 0, 1f);
+                else
+                    soundPool.play(idPauseOut, volume, volume, 1, 0, 1f);
+            }
             timerService.resumeTask();
             card.setVisibility(View.VISIBLE);
             pause.setVisibility(View.INVISIBLE);
@@ -425,7 +442,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         Observer<List<CardModel>> observer = cardModels -> cardText.setText(viewModel.getCard());
 
         Observer<Integer> observerTimer = timerCount -> {
-            if (timerCount < 5)
+            if (timerCount < 5 && viewModel.getSoundState())
                 playEndSound(timerCount);
             if (timerCount < 0) {
                 viewModel.setRoundTimeLeft(viewModel.getRoundDuration());
@@ -461,14 +478,15 @@ public class OnGameFragment extends Fragment implements CardCallback {
     }
 
     private void playEndSound(int timerCount) {
+        float vol = (viewModel.getLowerVolume()) ? volume / 3 : volume;
         if (timerCount == 3)
-            soundPool.play(idEnding1, volume, volume, 1, 0, 1f);
+            soundPool.play(idEnding1, vol, vol, 1, 0, 1f);
         else if (timerCount == 2)
-            soundPool.play(idEnding2, volume, volume, 1, 0, 1f);
+            soundPool.play(idEnding2, vol, vol, 1, 0, 1f);
         else if (timerCount == 1)
-            soundPool.play(idEnding3, volume, volume, 1, 0, 1f);
+            soundPool.play(idEnding3, vol, vol, 1, 0, 1f);
         else if (timerCount == 0 && endNotPlayed) {
-            soundPool.play(idEnded, volume, volume, 1, 0, 1f);
+            soundPool.play(idEnded, vol, vol, 1, 0, 1f);
             endNotPlayed = false;
         }
 

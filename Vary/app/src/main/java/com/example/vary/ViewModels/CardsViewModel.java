@@ -11,8 +11,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.vary.Models.CurrentGameModel;
+import com.example.vary.Models.SettingsModel;
 import com.example.vary.R;
 import com.example.vary.Repositories.CategoriesRepo;
+import com.example.vary.Repositories.SettingsRepo;
 import com.example.vary.Repositories.TeamsRepo;
 import com.example.vary.Repositories.CurrentGameRepo;
 import com.example.vary.UI.CardCallback;
@@ -30,10 +32,11 @@ import java.util.List;
 
 public class CardsViewModel extends AndroidViewModel implements LoadDataCallback {
     private static final TeamsRepo mTeamsRepo = TeamsRepo.getInstance();
-    private static final LiveData<List<TeamModel>> mTeams = mTeamsRepo.getTeams();
     private static final MutableLiveData<LoadStatus> mLoadStatus = new MutableLiveData<>();
     private static final CategoriesRepo mCategoriesRepo = CategoriesRepo.getInstance();
     private static final CurrentGameRepo gameRepo = CurrentGameRepo.getInstance();
+    private static final SettingsRepo settingsRepo = SettingsRepo.getInstance();
+
 
     public void getNewCategories() {
         mCategoriesRepo.getNewCategories();
@@ -103,7 +106,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     }
 
     public LiveData<List<TeamModel>> getTeams() {
-        return mTeams;
+        return mTeamsRepo.getTeams();
     }
 
     public void removeTeams() {
@@ -350,5 +353,52 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public Integer getTime() {
         return (mTimerCount.getValue() == null) ? 0 : mTimerCount.getValue();
     }
+
+    /*
+    Settings
+     */
+
+    public LiveData<SettingsModel> getSettings() {
+        return settingsRepo.getSettings();
+    }
+
+    public void setSettings(boolean soundOn, boolean notificationsOn) {
+        settingsRepo.setSettings(soundOn, notificationsOn);
+    }
+
+    public boolean getSoundState() {
+        return settingsRepo.getSoundState();
+    }
+
+    public boolean getNotificationState() {
+        return settingsRepo.getNotificationState();
+    }
+
+    public void setSoundState(boolean sound) {
+        settingsRepo.setSoundState(sound);
+    }
+
+    public void setNotificationState(boolean notifications) {
+        settingsRepo.setNotificationState(notifications);
+    }
+
+    public void restoreSettings(SharedPreferences sp, String soundKey, String checkUpdatesKey) {
+        boolean sound = sp.getBoolean(soundKey, true);
+        boolean updates = sp.getBoolean(checkUpdatesKey, true);
+        setSettings(sound, updates);
+    }
+
+    public void saveSettings(SharedPreferences.Editor editor, String soundKey, String checkUpdatesKey) {
+        editor.putBoolean(soundKey, getSoundState());
+        editor.putBoolean(checkUpdatesKey, getNotificationState());
+    }
+    public void setLowerVolume(boolean lower) {
+       settingsRepo.setLowerVolume(lower);
+    }
+
+    public boolean getLowerVolume() {
+        return settingsRepo.getLowerVolume();
+    }
+
 
 }

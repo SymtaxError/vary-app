@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
@@ -22,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.vary.Models.SettingsModel;
 import com.example.vary.Network.LoadStatus;
 import com.example.vary.R;
 import com.example.vary.Services.LocalService;
@@ -45,6 +47,38 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public final String TAG = "MyLogger";
     SharedPreferences mPrefs;
     SharedPreferences.Editor editor;
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    Log.i(TAG, "AUDIOFOCUS_GAIN");
+                    viewModel.setSoundState(true);
+                    viewModel.setLowerVolume(false);
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS:
+                    Log.e(TAG, "AUDIOFOCUS_LOSS");
+                    requestAudioFocusForMyApp(MainActivity.this);
+                    viewModel.setSoundState(false);
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                    Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
+                    //Loss of audio focus for a short time
+                    viewModel.setSoundState(false);
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
+                    viewModel.setLowerVolume(true);
+                    //Loss of audio focus for a short time.
+                    //But one can duck .Mostly lower the volume of playing the sound
+                    break;
+
+                default:
+                    //
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +114,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         editor = mPrefs.edit();
 
         readModel();
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        Observer<SettingsModel> settingsModelObserver = new Observer<SettingsModel>() {
+            @Override
+            public void onChanged(SettingsModel settingsModel) {
+                if (settingsModel.isSoundOn())
+                {
+                    Log.d("Sound", "Attempt was " +
+                            requestAudioFocusForMyApp(MainActivity.this));
+                }
+                else
+                {
+                    releaseAudioFocusForMyApp(MainActivity.this);
+                }
+            }
+        };
+
+        viewModel.getSettings().observe(this, settingsModelObserver);
     }
 
 
@@ -112,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             }
         };
 
+        if (viewModel.getSoundState())
+            requestAudioFocusForMyApp(this);
+
         viewModel
                 .getLoadStatus()
                 .observe(this, observerLoadStatus);
@@ -120,15 +172,20 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         saveModel();
+        releaseAudioFocusForMyApp(this);
         super.onSaveInstanceState(outState);
     }
 
     private void saveModel() {
         viewModel.saveState(editor);
+        SharedPreferences.Editor ed = getSharedPreferences(prefs, MODE_PRIVATE).edit();
+        viewModel.saveSettings(ed, soundKey, checkUpdatesKey);
         Log.v(TAG, "saved");
     }
 
     private void readModel() {
+        SharedPreferences sp = getSharedPreferences(prefs, MODE_PRIVATE);
+        viewModel.restoreSettings(sp, soundKey, checkUpdatesKey);
         viewModel.restoreState(mPrefs);
     }
 
@@ -327,10 +384,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             fragment.setCallback(this);
             fragment.setFCallback(this);
 
-            SharedPreferences sp = getSharedPreferences(prefs, MODE_PRIVATE);
-
-            fragment.setSwitches(sp.getBoolean(soundKey, true),
-                                 sp.getBoolean(checkUpdatesKey, true));
+            fragment.setSwitches(viewModel.getSoundState(),
+                                 viewModel.getNotificationState());
 
             getSupportFragmentManager()
                     .beginTransaction()
@@ -398,16 +453,17 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
     @Override
     public void callback(SettingActions type, boolean setting) {
-        SharedPreferences.Editor editor = getSharedPreferences(prefs, MODE_PRIVATE).edit();
 
         switch (type) {
             case sound_setting:
-                editor.putBoolean(soundKey, setting);
-                setSound(setting);
+                if (!setting)
+                    releaseAudioFocusForMyApp(this);
+                viewModel.setSoundState(setting);
+//                setSound(setting);
                 break;
             case check_updates_setting:
                 // TODO udpates settings
-                editor.putBoolean(checkUpdatesKey, setting);
+                viewModel.setNotificationState(setting);
             default:
                 break;
         }
@@ -418,5 +474,29 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public void setSound(boolean setting) {
         AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         manager.setStreamMute(AudioManager.STREAM_MUSIC, !setting);
+    }
+
+    private boolean requestAudioFocusForMyApp(final Context context) {
+        AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+
+        // Request audio focus for playback
+        int result = am.requestAudioFocus(mOnAudioFocusChangeListener,
+                // Use the music stream.
+                AudioManager.STREAM_MUSIC,
+                // Request permanent focus.
+                AudioManager.AUDIOFOCUS_GAIN);
+
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            Log.d(TAG, "Audio focus received");
+            return true;
+        } else {
+            Log.d(TAG, "Audio focus NOT received");
+            return false;
+        }
+    }
+
+    void releaseAudioFocusForMyApp(final Context context) {
+        AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+        am.abandonAudioFocus(mOnAudioFocusChangeListener);
     }
 }
