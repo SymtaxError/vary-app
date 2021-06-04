@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public LocalService mService;
     boolean mBound = false;
 
-    public boolean allowStart = true;
+    public boolean allowStart = false;
     public static final String soundKey = "sound";
     public static final String checkUpdatesKey = "check_updates";
     boolean startGamePressed = false;
@@ -126,6 +126,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 {
                     releaseAudioFocusForMyApp(MainActivity.this);
                 }
+                if (settingsModel.isNotificationsOn())
+                    viewModel.getVersion();
+                else
+                    allowStart = true;
             }
         };
 
@@ -142,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 //                    toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
 //                    toast.show();
 //                }
+            Log.d("Load", "Was set");
             if (loadStatus.getError() != null && loadStatus.getNotification()) {
                 LayoutInflater.from(getApplicationContext());
                 View contextView = findViewById(R.id.context_view);

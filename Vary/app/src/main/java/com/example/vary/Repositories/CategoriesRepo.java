@@ -38,8 +38,11 @@ public class CategoriesRepo implements SetDataCallback {
         else {
             version = -1;
         }
-        categoriesNetworkService.getVersion(this);
     };
+
+    public void getVersion() {
+        categoriesNetworkService.getVersion(this);
+    }
 
     public void setLoadCallback(LoadDataCallback callback) {
         mCallback = callback;

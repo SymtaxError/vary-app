@@ -125,6 +125,10 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
         mTeamsRepo.increasePoints(0, points);
     }
 
+    public void getVersion() {
+        mCategoriesRepo.getVersion();
+    }
+
     public CharSequence[] getTeamsNamesChar(Context context) {
         int count = getAmountOfTeams() + 1;
         CharSequence[] teamsNames = new CharSequence[count];
@@ -391,6 +395,7 @@ public class CardsViewModel extends AndroidViewModel implements LoadDataCallback
     public void saveSettings(SharedPreferences.Editor editor, String soundKey, String checkUpdatesKey) {
         editor.putBoolean(soundKey, getSoundState());
         editor.putBoolean(checkUpdatesKey, getNotificationState());
+        editor.commit();
     }
     public void setLowerVolume(boolean lower) {
        settingsRepo.setLowerVolume(lower);
