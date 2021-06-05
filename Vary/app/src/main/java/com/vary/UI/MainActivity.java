@@ -439,17 +439,17 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     private void showSoundWarning() {
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        if (viewModel.getSoundState() && volume >= 10)
+        if (viewModel.getSoundState() && volume >= 7)
             return;
         View view = findViewById(R.id.container);
         String string1, string2;
         Snackbar bar;
-        if (!viewModel.getSoundState() && volume < 5) {
+        if (!viewModel.getSoundState() && volume < 7) {
             string1 = getResources().getString(R.string.sound_off_notification);
             bar = Snackbar.make(view, string1, Snackbar.LENGTH_LONG);
             string2 = getResources().getString(R.string.sound_off_option);
             bar.setAction(string2, v -> {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 15, 0);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
                 callback(SettingActions.sound_setting, true);
             });
         } else if (!viewModel.getSoundState()) {
@@ -464,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             bar = Snackbar.make(view, string1, Snackbar.LENGTH_LONG);
             string2 = getResources().getString(R.string.sound_low_option);
             bar.setAction(string2, v -> {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 15, 0);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
             });
         }
         bar.setMaxInlineActionWidth(3);
