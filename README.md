@@ -6,6 +6,8 @@
 
 ### [Установка apk](https://drive.google.com/file/d/1mgjrBb70a2zKy3Ly5rBEq_4V3qH3II6u/view?usp=sharing)
 
+### [Обратная связь](https://t.me/sntgl)
+
 ### Стек технологий
 * Java
 * Room (SQLite)
