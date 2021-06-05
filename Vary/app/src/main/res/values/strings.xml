@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Vary</string>
-    <string name="add_team">+</string>
+    <string name="app_name" translatable="false">Vary</string>
+    <string name="add_team" translatable="false">+</string>
     <string name="next">Далее</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
@@ -8,8 +8,8 @@
     <string name="continue_game">Продолжить</string>
     <string name="new_game">Новая игра</string>
     <string name="available_settings">Настройки</string>
-    <string name="no_cards_message">Нет доступных карточек</string>
-    <string name="download">Скачать</string>
+    <string name="no_cards_message">Не удалось скачать карточки</string>
+    <string name="download">Повторить..</string>
     <string name="settings_game">Настройки игры</string>
     <string name="amount_cards">Количество карт</string>
     <string name="time_round">Время раунда</string>
@@ -19,7 +19,7 @@
     <string name="players_task">Задание от игроков</string>
     <string name="theft_right">Общее последнее слово</string>
     <string name="start_command">Начинающая команда</string>
-    <string name="base_url">http://95.165.156.185:33727</string>
+    <string name="base_url" translatable="false">http://95.165.156.185:33727</string>
     <string name="start_next_round_button">Следующий раунд</string>
     <string name="results">Результаты</string>
     <string name="guessed_words">Набранные баллы</string>
@@ -28,7 +28,7 @@
     <string name="pause_content">Нажмите на экран, чтобы продолжить</string>
     <string name="preview_title">Превью</string>
     <string name="preview_text">Нажми на экран, когда будешь готов</string>
-    <string name="_0">0</string>
+    <string name="_0" translatable="false">0</string>
     <string name="explain_mode_str">Объясни словами</string>
     <string name="gesture_mode_str">Покажи жестами</string>
     <string name="one_word_mode_str">Объясни одним словом</string>
@@ -68,6 +68,11 @@
     <string name="declined">ПРОПУЩЕНО</string>
     <string name="soundview">SoundView</string>
     <string name="checkupdatesview">CheckUpdatesView</string>
-    <string name="sound_off_notification">Включите звук в настройках игры или увеличьте громкость для того, чтобы все команды могли следить за игрой</string>
+    <string name="sound_off_notification">Включите звук, чтобы все команды могли следить за игрой</string>
+    <string name="sound_off_option">Включить</string>
+    <string name="sound_low_notification">Увеличьте громкость для того, чтобы все команды могли следить за игрой</string>
+    <string name="sound_low_option">Увеличить</string>
     <string name="previewview">PreviewView</string>
+    <string name="pool_ended_message">Колода пуста</string>
+    <string name="firstly_download_cards">Сначала скачай карточки</string>
 </resources>

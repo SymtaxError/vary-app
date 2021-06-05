@@ -122,8 +122,8 @@ public class ResultTeamFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_result_team, container, false);
         viewModel.setGameAction(GameActions.open_team_result);
 
-        acceptColor = getResources().getColor(R.color.primary);
-        dismissColor = getResources().getColor(R.color.primary_additional);
+        acceptColor = getContext().getResources().getColor(R.color.primary);
+        dismissColor = getContext().getResources().getColor(R.color.primary_additional);
 
         RecyclerView teamStatsList = view.findViewById(R.id.result_team_list);
         teamStatsList.setLayoutManager(new LinearLayoutManager(getContext()));

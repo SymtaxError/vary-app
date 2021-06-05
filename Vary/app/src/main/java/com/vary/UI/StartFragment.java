@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.TextView;
 
 import com.vary.Models.CurrentGameModel;
 import com.vary.R;
@@ -59,6 +60,11 @@ public class StartFragment extends Fragment {
 
         bindButton(R.id.rules, GameActions.open_rules);
         bindButton(R.id.settings, GameActions.open_settings);
+        TextView textView = view.findViewById(R.id.app_title);
+        textView.setOnClickListener(v -> {
+            v.startAnimation(buttonClick);
+            fCallback.callback(GameActions.open_rules);
+        });
 
 //        Button infobtn = view.findViewById(R.id.rules);
 //        infobtn.setOnClickListener(new View.OnClickListener() {

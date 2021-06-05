@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.vary.Models.CardModel;
 import com.vary.Models.CurrentGameModel;
 import com.vary.R;
@@ -76,6 +77,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
     private CallbackFragment callbackFunctions;
     private LocalService timerService;
     private boolean endNotPlayed = true;
+    Snackbar cardsEndedSnackBar;
 
     public OnGameFragment() {
         // Required empty public constructor
@@ -121,7 +123,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         } else {
             if (viewModel.getSteal() && getContext() != null) {
                 CharSequence[] teamsNames = viewModel.getTeamsNamesChar(getContext());
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()), R.style.AlertDialog)
+                new MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
                         .setTitle(getContext().getString(R.string.pick_team))
                         .setItems(teamsNames, (dialog, which) -> {
                             if (which < viewModel.getAmountOfTeams())
@@ -199,6 +201,8 @@ public class OnGameFragment extends Fragment implements CardCallback {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
+        String snackBarText = getResources().getString(R.string.pool_ended_message);
+        cardsEndedSnackBar = Snackbar.make(container, snackBarText, Snackbar.LENGTH_LONG);
         viewModel.setGameAction(GameActions.start_game_process);
         swiped.setRepeatCount(2);
         swiped.setDuration(100);
@@ -302,7 +306,7 @@ public class OnGameFragment extends Fragment implements CardCallback {
         });
 
         if (getContext() != null)
-            setSounds(Objects.requireNonNull(getContext()));
+            setSounds(requireContext());
 
 //        AudioManager manager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -512,17 +516,9 @@ public class OnGameFragment extends Fragment implements CardCallback {
 
     @Override
     public void callback() {
-//        Toast.makeText(getContext(), "Карты закончились", Toast.LENGTH_SHORT).show();
-//        if (paused || onPlayersTask) {
-//            ended = true;
-//        } else {
-//            endFragment();
-//        }
-//        viewModel.setRoundTimeLeft(0);
-        //TODO переход
+        cardsEndedSnackBar.show();
         paused = true;
         endFragment();
-
     }
 
     private void timeEnded() {

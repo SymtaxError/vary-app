@@ -47,38 +47,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     public final String TAG = "MyLogger";
     SharedPreferences mPrefs;
     SharedPreferences.Editor editor;
-    private final AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-
-        @Override
-        public void onAudioFocusChange(int focusChange) {
-            switch (focusChange) {
-                case AudioManager.AUDIOFOCUS_GAIN:
-                    Log.i(TAG, "AUDIOFOCUS_GAIN");
-                    viewModel.setSoundState(true);
-                    viewModel.setLowerVolume(false);
-                    break;
-                case AudioManager.AUDIOFOCUS_LOSS:
-                    Log.e(TAG, "AUDIOFOCUS_LOSS");
-                    requestAudioFocusForMyApp(MainActivity.this);
-                    viewModel.setSoundState(false);
-                    break;
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                    Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
-                    //Loss of audio focus for a short time
-                    viewModel.setSoundState(false);
-                    break;
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    Log.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
-                    viewModel.setLowerVolume(true);
-                    //Loss of audio focus for a short time.
-                    //But one can duck .Mostly lower the volume of playing the sound
-                    break;
-
-                default:
-                    //
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,31 +66,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
 
         viewModel = new ViewModelProvider(this).get(CardsViewModel.class);
-//        Observer<List<CategoryModel>> observer = new Observer<List<CategoryModel>>() {
-//            @Override
-//            public void onChanged(List<CategoryModel> categoryModels) {
-//                if (categoryModels.size() != 0) {
-//                    String countText = "Loaded from " + categoryModels.size() + " categories";
-//                }
-//            }
-//        };
-
-//        viewModel.getCategories().observe(this, observer);
         Intent intent = new Intent(this, LocalService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         mPrefs = getPreferences(MODE_PRIVATE);
 
         readModel();
         Observer<SettingsModel> settingsModelObserver = settingsModel -> {
-            if (settingsModel.isSoundOn())
-            {
-                Log.d("Sound", "Attempt was " +
-                        requestAudioFocusForMyApp(MainActivity.this));
-            }
-            else
-            {
-                releaseAudioFocusForMyApp(MainActivity.this);
-            }
             if (settingsModel.isNotificationsOn())
                 viewModel.getVersion();
             else
@@ -137,22 +86,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     protected void onResume() {
         super.onResume();
         Observer<LoadStatus> observerLoadStatus = loadStatus -> {
-//                Toast toast;
-//                if (loadStatus.getError() != null && loadStatus.getNotification()) {
-//                    toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_server_load) + loadStatus.getError(), Toast.LENGTH_LONG);
-//                    toast.show();
-//                }
-            Log.d("Load", "Was set");
             if (loadStatus.getError() != null && loadStatus.getNotification()) {
                 LayoutInflater.from(getApplicationContext());
-                View contextView = findViewById(R.id.context_view);
-                Snackbar bar = Snackbar.make(contextView, R.string.no_cards_message, Snackbar.LENGTH_LONG);
-                bar.setAction(R.string.download, v -> {
-                    startGamePressed = false;
-                    viewModel.getNewCategories();
-                });
-                allowStart = false;
-                bar.show();
+                View contextView = findViewById(R.id.container);
+                if (contextView != null && contextView.getResources() != null) {
+                    Snackbar bar = Snackbar
+                            .make(contextView, R.string.no_cards_message, Snackbar.LENGTH_LONG);
+                    bar.setAction(R.string.download, v -> {
+                        startGamePressed = false;
+                        viewModel.getNewCategories();
+                    });
+                    allowStart = false;
+                    bar.show();
+                }
             }
             else {
                 allowStart = true;
@@ -166,9 +112,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             allowStart = true;
         }
 
-        if (viewModel.getSoundState())
-            requestAudioFocusForMyApp(this);
-
         viewModel
                 .getLoadStatus()
                 .observe(this, observerLoadStatus);
@@ -177,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         saveModel();
-        releaseAudioFocusForMyApp(this);
         super.onSaveInstanceState(outState);
     }
 
@@ -268,14 +210,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .findFragmentById(R.id.container))
                 .getClass()
                 .equals(OnGameFragment.class)) {
-            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            if (!viewModel.getSoundState() || volume < 5)
-            {
-                Toast.makeText(this,
-                        R.string.sound_off_notification,
-                        Toast.LENGTH_LONG).show();
-            }
             OnGameFragment fragment = new OnGameFragment();
             fragment.setCallbackFunctions(this);
             fragment.setTimerService(mService);
@@ -306,6 +240,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             viewModel.getNewCategories();
             return;
         }
+        else {
+            showSoundWarning();
+        }
         viewModel.continueOldGame();
         callback(viewModel.getGameAction());
     }
@@ -316,6 +253,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
             startGamePressed = true;
             viewModel.getNewCategories();
             return;
+        }
+        else {
+            showSoundWarning();
         }
         if (viewModel.getAmountOfTeams() != 0)
             viewModel.removeTeams();
@@ -388,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
                 .findFragmentById(R.id.container))
                 .getClass()
                 .equals(GameRulesFragment.class)) {
+            startGamePressed = false;
             GameRulesFragment fragment = new GameRulesFragment();
             fragment.setFCallback(this);
 
@@ -399,12 +340,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     void openSettings() {
-        if (!allowStart)
+        if (!allowStart) {
+            View contextView = findViewById(R.id.container);
+            Snackbar
+                    .make(contextView, R.string.firstly_download_cards, Snackbar.LENGTH_SHORT)
+                    .show();
             return;
+        }
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
                 .equals(SettingsFragment.class)) {
+            startGamePressed = false;
+
             SettingsFragment fragment = new SettingsFragment();
             fragment.setCallback(this);
             fragment.setFCallback(this);
@@ -434,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         }
     }
 
-    void openRoundOrGameResult() { //TODO добавить бекстек
+    void openRoundOrGameResult() {
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
@@ -481,13 +429,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
 
         switch (type) {
             case sound_setting:
-                if (!setting)
-                    releaseAudioFocusForMyApp(this);
                 viewModel.setSoundState(setting);
-//                setSound(setting);
                 break;
             case check_updates_setting:
-                // TODO udpates settings
                 viewModel.setNotificationState(setting);
             default:
                 break;
@@ -496,35 +440,46 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         editor.apply();
     }
 
-
-// --Commented out by Inspection START (04.06.2021, 21:36):
-//    public void setSound(boolean setting) {
-//        AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-//        manager.setStreamMute(AudioManager.STREAM_MUSIC, !setting);
-//    }
-// --Commented out by Inspection STOP (04.06.2021, 21:36)
-
-    private boolean requestAudioFocusForMyApp(final Context context) {
-        AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-
-        // Request audio focus for playback
-        int result = am.requestAudioFocus(mOnAudioFocusChangeListener,
-                // Use the music stream.
-                AudioManager.STREAM_MUSIC,
-                // Request permanent focus.
-                AudioManager.AUDIOFOCUS_GAIN);
-
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            Log.d(TAG, "Audio focus received");
-            return true;
+    private void showSoundWarning() {
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (viewModel.getSoundState() && volume >= 5)
+            return;
+//        {
+//            Toast.makeText(this,
+//                    R.string.sound_off_notification,
+//                    Toast.LENGTH_LONG).show();
+//        }
+        View view = findViewById(R.id.container);
+        String string1, string2;
+        Snackbar bar;
+        if (!viewModel.getSoundState() && volume < 5) {
+            string1 = getResources().getString(R.string.sound_off_notification);
+            bar = Snackbar.make(view, string1, Snackbar.LENGTH_LONG);
+            string2 = getResources().getString(R.string.sound_off_option);
+            bar.setAction(string2, v -> {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 15, 0);
+                callback(SettingActions.sound_setting, true);
+            });
+        } else if (!viewModel.getSoundState()) {
+            string1 = getResources().getString(R.string.sound_off_notification);
+            bar = Snackbar.make(view, string1, Snackbar.LENGTH_LONG);
+            string2 = getResources().getString(R.string.sound_off_option);
+            bar.setAction(string2, v -> {
+                callback(SettingActions.sound_setting, true);
+            });
         } else {
-            Log.d(TAG, "Audio focus NOT received");
-            return false;
+            string1 = getResources().getString(R.string.sound_low_notification);
+            bar = Snackbar.make(view, string1, Snackbar.LENGTH_LONG);
+            string2 = getResources().getString(R.string.sound_low_option);
+            bar.setAction(string2, v -> {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 15, 0);
+            });
         }
+        bar.setMaxInlineActionWidth(3);
+        bar.show();
+
     }
 
-    void releaseAudioFocusForMyApp(final Context context) {
-        AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-        am.abandonAudioFocus(mOnAudioFocusChangeListener);
-    }
+
 }

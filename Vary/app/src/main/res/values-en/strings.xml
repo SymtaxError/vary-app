@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Vary</string>
-    <string name="add_team">+</string>
     <string name="next">Next</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
@@ -20,7 +18,6 @@
     <string name="players_task">Task from players</string>
     <string name="theft_right">Common last word</string>
     <string name="start_command">Start team</string>
-    <string name="base_url">http://95.165.156.185:33727</string>
     <string name="start_next_round_button">Next round</string>
     <string name="results">Results</string>
     <string name="guessed_words">Score</string>
@@ -29,7 +26,6 @@
     <string name="pause_content">Tap the screen to continue</string>
     <string name="preview_title">Preview</string>
     <string name="preview_text">Tap the screen when you\'re ready</string>
-    <string name="_0">0</string>
     <string name="explain_mode_str">Explain with words</string>
     <string name="gesture_mode_str">Explain with gestures</string>
     <string name="one_word_mode_str">Explain with one word</string>
@@ -69,6 +65,11 @@
     <string name="declined">SKIPPED</string>
     <string name="soundview">SoundView</string>
     <string name="checkupdatesview">CheckUpdatesView</string>
-    <string name="sound_off_notification">Turn the sound on in the game settings or increase your device volume to let all the teams follow the progress of the game</string>
+    <string name="sound_off_notification">Turn the sound on  to let all the teams follow the progress of the game</string>
     <string name="previewview">PreviewView</string>
+    <string name="pool_ended_message">Pool is empty</string>
+    <string name="firstly_download_cards">Firstly, download the cards</string>
+    <string name="sound_off_option">Turn on</string>
+    <string name="sound_low_notification">Increase volume to let all the teams follow the progress of the game</string>
+    <string name="sound_low_option">Increase</string>
 </resources>
