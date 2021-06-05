@@ -16,5 +16,5 @@
 
 ### Backend server стек
 * Spring
-* Postgrees
+* Postgres
 * Hibernate
