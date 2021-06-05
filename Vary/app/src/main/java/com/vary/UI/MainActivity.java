@@ -446,13 +446,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     private void showSoundWarning() {
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        if (viewModel.getSoundState() && volume >= 5)
+        if (viewModel.getSoundState() && volume >= 10)
             return;
-//        {
-//            Toast.makeText(this,
-//                    R.string.sound_off_notification,
-//                    Toast.LENGTH_LONG).show();
-//        }
         View view = findViewById(R.id.container);
         String string1, string2;
         Snackbar bar;
