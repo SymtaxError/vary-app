@@ -74,8 +74,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         Observer<SettingsModel> settingsModelObserver = settingsModel -> {
             if (settingsModel.isNotificationsOn())
                 viewModel.getVersion();
-            else
-                allowStart = true;
+            allowStart = true;
         };
 
         viewModel.getSettings().observe(this, settingsModelObserver);
@@ -146,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     public void callback(GameActions type) {
+        Log.d("Load", "action = " + type);
         switch (type) {
             case new_game_action:
                 startNewGame();
@@ -324,6 +324,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     void showRules() {
+        Log.d("Load", "start = " + allowStart);
+        if (!allowStart)
+            return;
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()
