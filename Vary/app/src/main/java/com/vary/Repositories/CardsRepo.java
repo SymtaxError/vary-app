@@ -144,25 +144,8 @@ public class CardsRepo {
     public void endCards() {
         List<CardModel> cards = mCards.getValue();
         if (cards != null) {
-//            for (int i = startRoundPosition; i < getAmountOfCards() && answered; i++) {
-//                if (! cards
-//                        .get(i)
-//                        .getAnswerState()) {
-//                    answered = false;
-//                }
-//            }
-//            if (!answered) {
-//                ended = true;
-//                Log.d("Cards", "Mixed");
-//                int oldStartRound = startRoundPosition;
-//                newRoundMix();
-//                startRoundPosition = oldStartRound;
-//                Log.d("Cards", "new cur pos = " + currentPosition);
-//            }
-//            else {
             Log.d("Callback", "called");
             mCallback.callback();
-//            }
         }
     }
 

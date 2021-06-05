@@ -50,7 +50,7 @@
 
         android:gravity="center"
 
-        android:text="@string/ok"
+        android:text="@string/ready"
         android:textSize="@dimen/menu_bottom_text_size"
         android:textColor="@color/text_bright"/>
 

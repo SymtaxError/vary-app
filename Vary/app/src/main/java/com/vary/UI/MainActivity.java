@@ -14,9 +14,7 @@ import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -127,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
         viewModel.saveState(editor);
         SharedPreferences.Editor ed = getSharedPreferences(prefs, MODE_PRIVATE).edit();
         viewModel.saveSettings(ed, soundKey, checkUpdatesKey);
-        Log.v(TAG, "saved");
     }
 
     private void readModel() {
@@ -145,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     public void callback(GameActions type) {
-        Log.d("Load", "action = " + type);
         switch (type) {
             case new_game_action:
                 startNewGame();
@@ -324,9 +320,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragment,
     }
 
     void showRules() {
-        Log.d("Load", "start = " + allowStart);
-        if (!allowStart)
-            return;
         if (!Objects.requireNonNull(getSupportFragmentManager()
                 .findFragmentById(R.id.container))
                 .getClass()

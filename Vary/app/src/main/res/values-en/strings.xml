@@ -21,7 +21,7 @@
     <string name="start_next_round_button">Next round</string>
     <string name="results">Results</string>
     <string name="guessed_words">Score</string>
-    <string name="ok">OK</string>
+    <string name="ready">OK</string>
     <string name="pause_title">Pause</string>
     <string name="pause_content">Tap the screen to continue</string>
     <string name="preview_title">Preview</string>

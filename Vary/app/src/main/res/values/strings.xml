@@ -23,7 +23,8 @@
     <string name="start_next_round_button">Следующий раунд</string>
     <string name="results">Результаты</string>
     <string name="guessed_words">Набранные баллы</string>
-    <string name="ok">Готово</string>
+    <string name="ready">Готово</string>
+    <string name="ok" translatable="false">Ok</string>
     <string name="pause_title">Пауза</string>
     <string name="pause_content">Нажмите на экран, чтобы продолжить</string>
     <string name="preview_title">Превью</string>

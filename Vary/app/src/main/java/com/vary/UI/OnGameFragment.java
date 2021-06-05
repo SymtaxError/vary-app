@@ -40,7 +40,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
 @SuppressWarnings("SameParameterValue")
 public class OnGameFragment extends Fragment implements CardCallback {
@@ -202,7 +201,11 @@ public class OnGameFragment extends Fragment implements CardCallback {
         View view = inflater.inflate(R.layout.fragment_on_game, container, false);
         setViewModel();
         String snackBarText = getResources().getString(R.string.pool_ended_message);
-        cardsEndedSnackBar = Snackbar.make(container, snackBarText, Snackbar.LENGTH_LONG);
+        cardsEndedSnackBar = Snackbar.make(container, snackBarText, Snackbar.LENGTH_SHORT);
+        String string = getContext().getResources().getString(R.string.ok);
+        cardsEndedSnackBar.setAction(string, v -> {
+            cardsEndedSnackBar.dismiss();
+        });
         viewModel.setGameAction(GameActions.start_game_process);
         swiped.setRepeatCount(2);
         swiped.setDuration(100);
