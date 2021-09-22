@@ -17,4 +17,10 @@
 * Postgres
 * Hibernate
 
+### Правила
+
+<a href="https://yapx.ru/v/OQa7d" title="Фотография загружена на фотохостинг yapx.ru"><img src="https://i.yapx.ru/OQa7d.jpg" alt="Хостинг картинок yapx.ru"></a>
+
+[Больше скриншотов здесь](https://yapx.ru/v/OQa7V)
+
 ```Командный проект по дисциплине "Android" в Технопарке Mail.ru, 2021```
